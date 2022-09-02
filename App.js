@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
 
 import React from 'react';
 import {
@@ -17,10 +10,9 @@ import {
 } from 'react-native';
 
 import {
-  Colors,
-  
-  Header,
+  Colors, Header,
 } from 'react-native/Libraries/NewAppScreen';
+import { ConfirmEmailScreen } from './src/screens/ConfirmEmailScreen';
 
 
 const App = () => {
@@ -28,22 +20,20 @@ const App = () => {
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex:1
   };
 
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            flex: 1,
+            justifyContent:'center'
           }}>
-          <Text>Repets App</Text>
+          <ConfirmEmailScreen />
         </View>
-      </ScrollView>
     </SafeAreaView>
   );
 };
