@@ -1,5 +1,6 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Button } from '../components/Button'
 
 
 const windowWidth = Dimensions.get('screen').width
@@ -23,9 +24,7 @@ export const ConfirmEmailScreen = () => {
       <View style={{flexDirection:'row',paddingBottom:15}}>
         <Text style={{fontWeight:'500'}}>¿No recibiste el codigo?  </Text><Text style={{color:'#2782CA', fontWeight:'500'}}>Reenviar</Text>
       </View>
-      <TouchableOpacity style={styles.btn}>
-        <Text style={styles.btnText}>Continuar</Text>
-      </TouchableOpacity>
+      <Button text={'Continuar'} />
     </View>
   )
 }
@@ -64,17 +63,4 @@ const styles = StyleSheet.create({
     textAlign:'center',
     fontSize:20
   },
-  btn:{
-    backgroundColor:'#2782CA',
-    height: 40,
-    width: windowWidth * 0.92,
-    borderRadius:10,
-    justifyContent:'center',
-    alignItems:'center',
-  },
-  btnText:{
-    color: 'white',
-    fontSize:16
-  }
-
 })
