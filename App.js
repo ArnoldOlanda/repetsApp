@@ -13,6 +13,7 @@ import {
   Colors, Header,
 } from 'react-native/Libraries/NewAppScreen';
 import { ConfirmEmailScreen } from './src/screens/ConfirmEmailScreen';
+import { LoginScreen } from './src/screens/LoginScreen';
 
 
 const App = () => {
@@ -32,7 +33,8 @@ const App = () => {
             flex: 1,
             justifyContent:'center'
           }}>
-          <ConfirmEmailScreen />
+          <LoginScreen></LoginScreen>
+          
         </View>
     </SafeAreaView>
   );
