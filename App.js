@@ -14,6 +14,10 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import { ConfirmEmailScreen } from './src/screens/ConfirmEmailScreen';
 import { LoginScreen } from './src/screens/LoginScreen';
+import { RegisterScreen } from './src/screens/RegisterScreen';
+import { ResetPasswordScreen } from './src/screens/ResetPasswordScreen';
+import { SplashScreen } from './src/screens/SplashScreen';
+import { WelcomeScreen } from './src/screens/WelcomeScreen';
 
 
 const App = () => {
@@ -29,11 +33,12 @@ const App = () => {
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <View
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            //backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            backgroundColor: '#fff',
             flex: 1,
             justifyContent:'center'
           }}>
-          <LoginScreen></LoginScreen>
+          <RegisterScreen></RegisterScreen>
           
         </View>
     </SafeAreaView>
