@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 
 import React from 'react';
 import {
@@ -8,7 +9,12 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 
+import { Colors, } from 'react-native/Libraries/NewAppScreen';
+import { MainStackNavigator } from './src/navigation/MainStackNavigator';
+
+<<<<<<< HEAD
 import {
   Colors, Header,
 } from 'react-native/Libraries/NewAppScreen';
@@ -18,6 +24,8 @@ import { RegisterScreen } from './src/screens/RegisterScreen';
 import { ResetPasswordScreen } from './src/screens/ResetPasswordScreen';
 import { SplashScreen } from './src/screens/SplashScreen';
 import { WelcomeScreen } from './src/screens/WelcomeScreen';
+=======
+>>>>>>> arti
 
 
 const App = () => {
@@ -29,19 +37,27 @@ const App = () => {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <View
-          style={{
+    <NavigationContainer>
+      <SafeAreaView style={backgroundStyle}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+          <View
+           style={{
             //backgroundColor: isDarkMode ? Colors.black : Colors.white,
             backgroundColor: '#fff',
             flex: 1,
             justifyContent:'center'
           }}>
+<<<<<<< HEAD
           <RegisterScreen></RegisterScreen>
           
         </View>
     </SafeAreaView>
+=======
+              <MainStackNavigator />
+          </View>
+      </SafeAreaView>
+    </NavigationContainer>
+>>>>>>> arti
   );
 };
 

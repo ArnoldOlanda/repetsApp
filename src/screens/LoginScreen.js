@@ -5,7 +5,12 @@ import { Button } from '../components/Button'
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ navigation }) => {
+
+    const onPressForgotPasswordLink = () =>{
+        navigation.navigate('ResetPasswordScreen')
+    }
+
     return (
         <View style={styles.container}>
             <View style={{alignItems:'flex-start', width: windowWidth * 0.90}}>
@@ -21,7 +26,10 @@ export const LoginScreen = () => {
                 <TextInput style={styles.input} secureTextEntry placeholder='Tu password' />
             </View>
             <View style={{width:windowWidth * 0.90, alignItems:'flex-start', marginVertical:10}}>
-                <Text style={styles.link}>¿Olvido su contraseña?</Text>
+                <Text 
+                style={styles.link}
+                onPress={onPressForgotPasswordLink}
+                >¿Olvido su contraseña?</Text>
             </View>
             <Button text={'Login'} />
             <View style={{flexDirection:'row',marginVertical:15}}>
