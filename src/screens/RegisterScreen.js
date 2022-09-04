@@ -7,6 +7,9 @@ const windowHeight = Dimensions.get('screen').height
 export const RegisterScreen = () => {
   return (
     <View style={styles.container}>
+        <View style={styles.icon}>
+                <Text>IC</Text>
+        </View>
         <Text style={styles.title}>Registrate</Text>
         <Text style={styles.text}>Create una cuenta</Text>
         
@@ -50,11 +53,17 @@ export const RegisterScreen = () => {
 }
 
 const styles = StyleSheet.create({
+    icon:{
+        marginTop: 15,
+        alignItems:'flex-start', 
+        width: windowWidth * 0.90,
+        marginBottom: 20
+    },
     container: {
         flex: 1,
         padding: 5,
         alignItems: 'center',
-        marginTop: 40,
+        
         
     },
     title: {
