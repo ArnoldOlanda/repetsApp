@@ -6,7 +6,10 @@ const windowWidth = Dimensions.get('screen').width
 export const Button = ({ text, onPress }) => {
 
     return (
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity 
+        style={styles.btn}
+        onPress={ onPress }
+        >
             <Text style={styles.btnText}>{ text }</Text>
         </TouchableOpacity>
     )

@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 
 import React from 'react';
 import {
@@ -8,13 +9,11 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 
-import {
-  Colors, Header,
-} from 'react-native/Libraries/NewAppScreen';
-import { ConfirmEmailScreen } from './src/screens/ConfirmEmailScreen';
-import { LoginScreen } from './src/screens/LoginScreen';
-import { ResetPasswordScreen } from './src/screens/ResetPasswordScreen';
+import { Colors, } from 'react-native/Libraries/NewAppScreen';
+import { MainStackNavigator } from './src/navigation/MainStackNavigator';
+
 
 
 const App = () => {
@@ -26,20 +25,20 @@ const App = () => {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <View
-          style={{
+    <NavigationContainer>
+      <SafeAreaView style={backgroundStyle}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+          <View
+           style={{
             //backgroundColor: isDarkMode ? Colors.black : Colors.white,
             backgroundColor: '#fff',
             flex: 1,
             justifyContent:'center'
           }}>
-          {/* <ConfirmEmailScreen /> */}
-          {/* <LoginScreen /> */}
-          <ResetPasswordScreen />
-        </View>
-    </SafeAreaView>
+              <MainStackNavigator />
+          </View>
+      </SafeAreaView>
+    </NavigationContainer>
   );
 };
 

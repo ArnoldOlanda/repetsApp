@@ -7,7 +7,13 @@ const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
 
-export const ConfirmEmailScreen = () => {
+export const ConfirmEmailScreen = ({ navigation }) => {
+  
+
+  const onPressButton = () => {
+    navigation.navigate('StartScreen')
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Verificacion de Email</Text>
@@ -24,7 +30,7 @@ export const ConfirmEmailScreen = () => {
       <View style={{flexDirection:'row',paddingBottom:15}}>
         <Text style={{fontWeight:'500'}}>¿No recibiste el codigo?  </Text><Text style={{color:'#2782CA', fontWeight:'500'}}>Reenviar</Text>
       </View>
-      <Button text={'Continuar'} />
+      <Button text={'Continuar'} onPress={onPressButton} />
     </View>
   )
 }
