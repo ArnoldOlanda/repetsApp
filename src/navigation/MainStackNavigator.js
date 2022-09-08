@@ -3,10 +3,14 @@ import React from 'react';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { MainBottomTabNavigator } from './MainBottomTabNavigator';
 
-import { ConfirmEmailScreen } from '../screens/ConfirmEmailScreen';
-import { LoginScreen } from '../screens/LoginScreen';
-import { ResetPasswordScreen } from '../screens/ResetPasswordScreen';
-import { StartScreen } from '../screens/StartScreen';
+import { 
+    ConfirmEmailScreen,
+    LoginScreen,
+    ResetPasswordScreen,
+    StartScreen,
+    WelcomeScreen,
+    RegisterScreen 
+} from '../screens';
 
 
 
@@ -18,13 +22,20 @@ export const MainStackNavigator = () => {
     return (
         <Stack.Navigator
             screenOptions={{
+                headerStyle:{
+                    elevation:0
+                },
                 cardStyle: {
-                    backgroundColor: '#ffffff'
+                    backgroundColor: '#ffffff',
                 },
                 ...TransitionPresets.SlideFromRightIOS
             }}
             
         >
+            <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{title:'', headerShown: false}} />
+
+            <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{title:''}} />
+
             <Stack.Screen name="ConfirmEmailScreen" component={ConfirmEmailScreen} options={{title:''}} />
             
             <Stack.Screen name="StartScreen" component={StartScreen} options={{title:''}}/>

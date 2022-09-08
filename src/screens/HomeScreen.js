@@ -1,7 +1,11 @@
 import React from 'react'
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Avatar } from '../components/HomeScreen/Avatar'
+import { PetHouseItem } from '../components/HomeScreen/PetHouseItem'
+
+import img1 from './../assets/image1.png'
+import img2 from './../assets/image2.png'
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
@@ -43,6 +47,12 @@ export const HomeScreen = () => {
                 ))
             }
         </View>
+        <ScrollView style={styles.petHousesListContainer} contentContainerStyle={{ alignItems:'center' }}>
+            <PetHouseItem  imgSource={img1}/>
+            <PetHouseItem  imgSource={img2}/>
+            <PetHouseItem  imgSource={img1}/>
+            <PetHouseItem  imgSource={img2}/>
+        </ScrollView>
     </View>
   )
 }
@@ -101,5 +111,9 @@ const styles = StyleSheet.create({
         fontWeight:'500',
         lineHeight:20,
         color:'#000'
+    },
+    petHousesListContainer:{
+        marginTop:16,
+        width: windowWidth
     }
 })

@@ -1,21 +1,42 @@
 import React from 'react'
-import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import logoW from './../assets/images/logoW.png'
+
 const windowWidth = Dimensions.get('screen').width
+const windowHeight = Dimensions.get('screen').height
 
 
-export const WelcomeScreen = () => {
+
+export const WelcomeScreen = ({ navigation }) => {
+
+
+  const onPressGetStartedButton = () => {
+    navigation.navigate('RegisterScreen')
+  }
+
+  const onPressSignInButton = () => {
+    navigation.navigate('LoginScreen')
+  }
+
+  
   return (
+
     <View style={styles.container}>
 
         <Image style= {styles.img} source={logoW}/>
         <Text style={styles.text1}>Encuentra el lugar<Text style={{color:"#0060AC"}}> Perfecto</Text> para dejar a tu mascota</Text>
         <Text style={styles.text2}>Unete a nosotros y descubre el mejor lugar para hospedar a tu mascota</Text>
-        <TouchableOpacity style={{...styles.btn,backgroundColor: '#2782CA',}}>
+        <TouchableOpacity 
+        style={{...styles.btn,backgroundColor: '#2782CA',}}
+        onPress={onPressGetStartedButton}
+        >
             <Text style={styles.btnText}> Get Started </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={{...styles.btn,backgroundColor: '#ECF2F0',}}>
+        <TouchableOpacity 
+        style={{...styles.btn,backgroundColor: '#ECF2F0',}}
+        onPress={ onPressSignInButton }
+        >
             <Text style={{...styles.btnText, color:'#2782CA'}}> Sign in </Text>
         </TouchableOpacity>
     </View>
@@ -29,17 +50,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     img:{
-        width: 253,
-        height: 306,
+        width: windowWidth * 0.72,
+        height: windowHeight * 0.4,
         marginBottom: 18,
     },
     btn: {
       height: 44,
-      width: 300,
+      width: windowWidth * 0.90,
       borderRadius: 10,
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: 11,
+      marginBottom: windowWidth * 0.05,
     },
     btnText: {
         color: 'white',

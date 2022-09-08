@@ -1,14 +1,28 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { useDispatch } from 'react-redux'
+
 import { Button } from '../components/Button'
+import { getAuth, setLogin } from '../store/slices/auth'
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
 export const LoginScreen = ({ navigation }) => {
 
+    const dispatch = useDispatch();
+
     const onPressForgotPasswordLink = () =>{
         navigation.navigate('ResetPasswordScreen')
+    }
+
+    const onPressLoginButton = () => {
+        dispatch( getAuth() )
+        navigation.navigate('MainBottomTab')
+    }
+
+    const onPressRegisterLink = () => {
+        navigation.navigate('RegisterScreen')
     }
 
     return (
@@ -31,12 +45,15 @@ export const LoginScreen = ({ navigation }) => {
                 onPress={onPressForgotPasswordLink}
                 >¿Olvido su contraseña?</Text>
             </View>
-            <Button text={'Login'} />
+            <Button text={'Login'} onPress={onPressLoginButton} />
             <View style={{flexDirection:'row',marginVertical:15}}>
                 <Text style={{fontWeight:'500'}}>
                     ¿No tiene un cuenta?
                 </Text>
-                <Text style={{...styles.link, paddingLeft:10}}>
+                <Text 
+                style={{...styles.link, paddingLeft:10}}
+                onPress={onPressRegisterLink}
+                >
                     Registrese
                 </Text>
             </View>

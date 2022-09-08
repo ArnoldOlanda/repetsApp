@@ -1,12 +1,21 @@
 import React from 'react'
-import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
+import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, ScrollView } from 'react-native'
 import { Button } from '../components/Button'
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
-export const RegisterScreen = () => {
+export const RegisterScreen = ({ navigation }) => {
+
+    const onPressRegisterButton = () => {
+        navigation.navigate('ConfirmEmailScreen')
+    }
+
+    const onPressLoginLink = () => {
+        navigation.navigate('LoginScreen')
+    }
+
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={{ alignItems: 'center', padding: 5,  }} >
         <View style={styles.icon}>
                 <Text>IC</Text>
         </View>
@@ -43,12 +52,19 @@ export const RegisterScreen = () => {
                 <TextInput style={styles.input} placeholder='Tu email' />
         </View>
 
-        <Button text={'Aceptar'} />
-        <Text style={{fontWeight:'500', color:'#B7B7B7', marginTop:18}}>¿Tienes una cuenta?  <Text style={styles.link}>Iniciar Sesión</Text></Text>
+        <Button text={'Aceptar'} onPress={onPressRegisterButton} />
+        <Text style={{fontWeight:'500', color:'#B7B7B7', marginTop:18}}>¿Tienes una cuenta?  
+            <Text 
+            style={styles.link}
+            onPress={onPressLoginLink}
+            >
+                Iniciar Sesión
+            </Text>
+        </Text>
         <Text style={{fontWeight:'500', color:'#B7B7B7', marginTop:18 }}> Al hacer click en Registrar, estas aceptando nuestros</Text>
         <Text style={styles.link}>Terminos y Condiciones.</Text>
 
-    </View>
+    </ScrollView>
   )
 }
 
@@ -60,10 +76,6 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     container: {
-        flex: 1,
-        padding: 5,
-        alignItems: 'center',
-        
         
     },
     title: {
