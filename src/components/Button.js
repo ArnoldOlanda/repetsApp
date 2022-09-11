@@ -1,16 +1,21 @@
 import React from 'react'
-import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native'
 
 const windowWidth = Dimensions.get('screen').width
 
-export const Button = ({ text, onPress }) => {
+export const Button = ({ text, onPress, isLoading }) => {
 
     return (
         <TouchableOpacity 
         style={styles.btn}
         onPress={ onPress }
+        disabled={isLoading}
         >
-            <Text style={styles.btnText}>{ text }</Text>
+            {
+                (isLoading)
+                ? (<ActivityIndicator size='small' color='#fff' />)
+                : (<Text style={styles.btnText}>{ text }</Text>)
+            }
         </TouchableOpacity>
     )
 }

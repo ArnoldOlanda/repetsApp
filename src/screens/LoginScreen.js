@@ -1,24 +1,35 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Button } from '../components/Button'
+import { GoogleIcon } from '../components/GoogleIcon'
+import { useForm } from '../hooks'
 import { getAuth, setLogin } from '../store/slices/auth'
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
+const initialState = {
+    usuario:'',
+    password:''
+}
+
+
 export const LoginScreen = ({ navigation }) => {
 
+    const { isLoading } = useSelector( state => state.auth )
     const dispatch = useDispatch();
+
+    const {onInputTextChange, formState, onResetForm } = useForm(initialState);
+    const { usuario, password } = formState;
 
     const onPressForgotPasswordLink = () =>{
         navigation.navigate('ResetPasswordScreen')
     }
 
     const onPressLoginButton = () => {
-        dispatch( getAuth() )
-        navigation.navigate('MainBottomTab')
+        dispatch( getAuth( formState ) );
     }
 
     const onPressRegisterLink = () => {
@@ -33,11 +44,20 @@ export const LoginScreen = ({ navigation }) => {
             </View>
             <View style={styles.inputContainer}>
                 <Text style={styles.textInput}>Email</Text>
-                <TextInput style={styles.input} placeholder='Tu email' />
+                <TextInput 
+                style={ styles.input } 
+                value={ usuario }
+                onChangeText={ value => onInputTextChange('usuario', value) }
+                placeholder='Tu email' />
             </View>
             <View style={styles.inputContainer}>
                 <Text style={styles.textInput}>Password</Text>
-                <TextInput style={styles.input} secureTextEntry placeholder='Tu password' />
+                <TextInput 
+                style={styles.input} 
+                secureTextEntry 
+                value={ password }
+                onChangeText={ value => onInputTextChange('password', value) }
+                placeholder='Tu password' />
             </View>
             <View style={{width:windowWidth * 0.90, alignItems:'flex-start', marginVertical:10}}>
                 <Text 
@@ -45,7 +65,7 @@ export const LoginScreen = ({ navigation }) => {
                 onPress={onPressForgotPasswordLink}
                 >¿Olvido su contraseña?</Text>
             </View>
-            <Button text={'Login'} onPress={onPressLoginButton} />
+            <Button text={'Login'} onPress={onPressLoginButton} isLoading={ isLoading } />
             <View style={{flexDirection:'row',marginVertical:15}}>
                 <Text style={{fontWeight:'500'}}>
                     ¿No tiene un cuenta?
@@ -76,7 +96,8 @@ export const LoginScreen = ({ navigation }) => {
                 <Text style={{color:'#b7b7b7'}} >O</Text>
             </View>
             <TouchableOpacity style={styles.btnGoogle}>
-                <Text style={styles.btnGoogleText}>ic Continuar con Google</Text>
+                <GoogleIcon />
+                <Text style={styles.btnGoogleText}>Continuar con Google</Text>
             </TouchableOpacity>
         </View>
     )
@@ -132,11 +153,13 @@ const styles = StyleSheet.create({
         borderColor:'#bfbfbf',
         borderWidth:1,
         borderRadius: 10,
+        flexDirection:'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
     btnGoogleText:{
         color:'#000',
+        marginLeft:8,
         fontSize:14,
         fontWeight:'500'
     }

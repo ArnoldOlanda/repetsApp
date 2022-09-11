@@ -3,11 +3,14 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Button } from '../components/Button'
 import { WelcomeText } from '../components/StartScreen/WelcomeText'
 import { Icon } from '../components/StartScreen/Icon'
+import { useDispatch } from 'react-redux'
+import { loginNewUser } from '../store/slices/auth'
 
 export const StartScreen = ({ navigation }) => {
+    const dispatch = useDispatch();
 
     const onPressStartButton = () => {
-        navigation.navigate('MainBottomTab')
+        dispatch( loginNewUser() )
     } 
 
   return (
