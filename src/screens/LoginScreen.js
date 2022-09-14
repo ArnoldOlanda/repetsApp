@@ -1,35 +1,41 @@
 import React from 'react'
-import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View, Button as RNButton } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
 
 import { Button } from '../components/Button'
 import { GoogleIcon } from '../components/GoogleIcon'
 import { useForm } from '../hooks'
-import { getAuth, setLogin } from '../store/slices/auth'
+import { getAuth, setLogin, startLoginWithGoogle } from '../store/slices/auth'
+
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
 const initialState = {
-    usuario:'',
-    password:''
+    usuario: '',
+    password: ''
 }
 
 
 export const LoginScreen = ({ navigation }) => {
 
-    const { isLoading } = useSelector( state => state.auth )
+    const { isLoading } = useSelector(state => state.auth)
     const dispatch = useDispatch();
 
-    const {onInputTextChange, formState, onResetForm } = useForm(initialState);
+    const { onInputTextChange, formState, onResetForm } = useForm(initialState);
     const { usuario, password } = formState;
 
-    const onPressForgotPasswordLink = () =>{
+    const onPressForgotPasswordLink = () => {
         navigation.navigate('ResetPasswordScreen')
     }
 
     const onPressLoginButton = () => {
-        dispatch( getAuth( formState ) );
+        dispatch(getAuth(formState));
+    }
+
+    const onPressGoogleLogin = () => {
+        dispatch( startLoginWithGoogle() )   
     }
 
     const onPressRegisterLink = () => {
@@ -38,67 +44,79 @@ export const LoginScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={{alignItems:'flex-start', width: windowWidth * 0.90}}>
+            <View style={{ alignItems: 'flex-start', width: windowWidth * 0.90 }}>
                 <Text style={styles.title}>Bienvenido de nuevo ic</Text>
                 <Text style={styles.text}>Acceda a su cuenta</Text>
             </View>
             <View style={styles.inputContainer}>
                 <Text style={styles.textInput}>Email</Text>
-                <TextInput 
-                style={ styles.input } 
-                value={ usuario }
-                onChangeText={ value => onInputTextChange('usuario', value) }
-                placeholder='Tu email' />
+                <TextInput
+                    style={styles.input}
+                    value={usuario}
+                    onChangeText={value => onInputTextChange('usuario', value)}
+                    placeholder='Tu email' />
             </View>
             <View style={styles.inputContainer}>
                 <Text style={styles.textInput}>Password</Text>
-                <TextInput 
-                style={styles.input} 
-                secureTextEntry 
-                value={ password }
-                onChangeText={ value => onInputTextChange('password', value) }
-                placeholder='Tu password' />
+                <TextInput
+                    style={styles.input}
+                    secureTextEntry
+                    value={password}
+                    onChangeText={value => onInputTextChange('password', value)}
+                    placeholder='Tu password' />
             </View>
-            <View style={{width:windowWidth * 0.90, alignItems:'flex-start', marginVertical:10}}>
-                <Text 
-                style={styles.link}
-                onPress={onPressForgotPasswordLink}
+            <View style={{ width: windowWidth * 0.90, alignItems: 'flex-start', marginVertical: 10 }}>
+                <Text
+                    style={styles.link}
+                    onPress={onPressForgotPasswordLink}
                 >¿Olvido su contraseña?</Text>
             </View>
-            <Button text={'Login'} onPress={onPressLoginButton} isLoading={ isLoading } />
-            <View style={{flexDirection:'row',marginVertical:15}}>
-                <Text style={{fontWeight:'500'}}>
+            <Button text={'Login'} onPress={onPressLoginButton} isLoading={isLoading} />
+            <View style={{ flexDirection: 'row', marginVertical: 15 }}>
+                <Text style={{ fontWeight: '500' }}>
                     ¿No tiene un cuenta?
                 </Text>
-                <Text 
-                style={{...styles.link, paddingLeft:10}}
-                onPress={onPressRegisterLink}
+                <Text
+                    style={{ ...styles.link, paddingLeft: 10 }}
+                    onPress={onPressRegisterLink}
                 >
                     Registrese
                 </Text>
             </View>
             <View
-            style={{
-                marginTop:70,
-                borderBottomColor: '#b7b7b7',
-                borderBottomWidth: StyleSheet.hairlineWidth,
-                alignSelf:'stretch'
-            }}
+                style={{
+                    marginTop: 70,
+                    borderBottomColor: '#b7b7b7',
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                    alignSelf: 'stretch'
+                }}
             />
             <View style={{
-                backgroundColor:'#fff',
+                backgroundColor: '#fff',
                 width: 50,
                 height: 50,
-                justifyContent:'center',
-                alignItems:'center',
+                justifyContent: 'center',
+                alignItems: 'center',
                 top: -25
             }}>
-                <Text style={{color:'#b7b7b7'}} >O</Text>
+                <Text style={{ color: '#b7b7b7' }} >O</Text>
             </View>
-            <TouchableOpacity style={styles.btnGoogle}>
+            <TouchableOpacity
+                style={styles.btnGoogle}
+                onPress={onPressGoogleLogin}
+            >
                 <GoogleIcon />
                 <Text style={styles.btnGoogleText}>Continuar con Google</Text>
             </TouchableOpacity>
+            <Text />
+            <RNButton title='cerra sesion(prueba) ' onPress={async () => {
+                try {
+                    await GoogleSignin.signOut();
+                    //this.setState({ user: null }); // Remember to remove the user from your app's state as well
+                } catch (error) {
+                    console.error(error);
+                }
+            }} />
         </View>
     )
 }
@@ -111,13 +129,13 @@ const styles = StyleSheet.create({
         marginTop: 40,
     },
     title: {
-        textAlign:'left',
+        textAlign: 'left',
         fontSize: 22,
         fontWeight: '800',
         color: 'black',
     },
     text: {
-        textAlign:'left',
+        textAlign: 'left',
         fontSize: 14,
         fontWeight: '500',
         color: '#B7B7B7',
@@ -128,39 +146,39 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginVertical: 10
     },
-    textInput:{
-        fontWeight:'500',
-        fontSize:14,
-        color:'#000',
-        marginBottom:3
+    textInput: {
+        fontWeight: '500',
+        fontSize: 14,
+        color: '#000',
+        marginBottom: 3
     },
     input: {
         width: windowWidth * 0.90,
         height: 50,
-        paddingLeft:13,
+        paddingLeft: 13,
         backgroundColor: '#ECF2F0',
         borderRadius: 5,
         fontSize: 16
     },
-    link:{
-        color:'#2782CA', 
-        fontWeight:'500',
-        fontSize:14
+    link: {
+        color: '#2782CA',
+        fontWeight: '500',
+        fontSize: 14
     },
-    btnGoogle:{
+    btnGoogle: {
         height: 40,
         width: windowWidth * 0.90,
-        borderColor:'#bfbfbf',
-        borderWidth:1,
+        borderColor: '#bfbfbf',
+        borderWidth: 1,
         borderRadius: 10,
-        flexDirection:'row',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    btnGoogleText:{
-        color:'#000',
-        marginLeft:8,
-        fontSize:14,
-        fontWeight:'500'
+    btnGoogleText: {
+        color: '#000',
+        marginLeft: 8,
+        fontSize: 14,
+        fontWeight: '500'
     }
 })

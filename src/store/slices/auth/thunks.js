@@ -1,4 +1,6 @@
-import { login, logout, verifyCode, startLoading, loginNewUser, setErrorMessage, verifyNewUser } from "./authSlice"
+import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
+
+import { login, logout, verifyCode, startLoading, loginNewUser, setErrorMessage, verifyNewUser, loginWithGoogle } from "./authSlice"
 import { repetsAPI } from "../../../api";
 import { checkVerifyCode } from "../../../helpers/checkVerifyCode";
 
@@ -44,6 +46,32 @@ export const registerUser = (data) => {
         } catch (error) {
             console.log(error);
             throw error
+        }
+
+    }
+}
+
+export const startLoginWithGoogle = () => {
+    return async (dispatch, getState) => {
+        try {
+    
+            const hasPlayService = await GoogleSignin.hasPlayServices();
+            
+            if(hasPlayService){
+
+                const userInfo = await GoogleSignin.signIn();
+
+                const {data} = await repetsAPI.post('/auth/google',{
+                    id_token: userInfo.idToken
+                });
+
+                const { token, usuario } = data;
+                
+                dispatch( loginWithGoogle({ token, usuario }) )
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch( logout(JSON.stringify(error)) )
         }
 
     }

@@ -1,9 +1,11 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, TextInput, View, ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+
+
 import { Button } from '../components/Button'
 import { useForm } from '../hooks'
-import { setErrorMessage,registerUser } from '../store/slices/auth'
+import { setErrorMessage, registerUser } from '../store/slices/auth'
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
@@ -18,19 +20,19 @@ const initialForm = {
 
 export const RegisterScreen = ({ navigation }) => {
 
-    const { errorMessage } = useSelector( state => state.auth )
+    const { errorMessage } = useSelector(state => state.auth)
     const dispatch = useDispatch();
 
     const { formState, onInputTextChange, onResetForm } = useForm(initialForm);
     const { nombre, apellido, celular, correo, password } = formState;
 
     const onPressRegisterButton = () => {
-        if( nombre.length < 1 || apellido.length <1  || celular.length < 9 || 
-        !correo.includes('@') || password.length <8 ){
-            return dispatch( setErrorMessage('Revise la informacion ingresada') )
+        if (nombre.length < 1 || apellido.length < 1 || celular.length < 9 ||
+            !correo.includes('@') || password.length < 8) {
+            return dispatch(setErrorMessage('Revise la informacion ingresada'))
         }
 
-        dispatch( registerUser( formState ) );
+        dispatch(registerUser(formState));
         onResetForm();
         navigation.navigate('ConfirmEmailScreen');
     }
@@ -38,6 +40,8 @@ export const RegisterScreen = ({ navigation }) => {
     const onPressLoginLink = () => {
         navigation.navigate('LoginScreen')
     }
+
+
 
     return (
         <ScrollView contentContainerStyle={{ alignItems: 'center', padding: 5, }} >
@@ -51,7 +55,7 @@ export const RegisterScreen = ({ navigation }) => {
                 <Text style={styles.textInput}> Nombre </Text>
                 <TextInput
                     style={styles.input}
-                    value={ nombre }
+                    value={nombre}
                     onChangeText={value => onInputTextChange('nombre', value)}
                     placeholder='Su nombre' />
             </View>
@@ -60,17 +64,17 @@ export const RegisterScreen = ({ navigation }) => {
                 <Text style={styles.textInput}> Apellido </Text>
                 <TextInput
                     style={styles.input}
-                    value={ apellido }
+                    value={apellido}
                     onChangeText={value => onInputTextChange('apellido', value)}
                     placeholder='Su apellido' />
             </View>
 
             <View style={styles.inputContainer}>
                 <Text style={styles.textInput}> Celular </Text>
-                <TextInput 
-                    style={styles.input} 
-                    value={ celular }
-                    onChangeText={value => onInputTextChange('celular', value)} 
+                <TextInput
+                    style={styles.input}
+                    value={celular}
+                    onChangeText={value => onInputTextChange('celular', value)}
                     placeholder='Su celular' />
             </View>
 
@@ -78,26 +82,26 @@ export const RegisterScreen = ({ navigation }) => {
                 <Text style={styles.textInput}> Email </Text>
                 <TextInput
                     style={styles.input}
-                    value={ correo }
+                    value={correo}
                     onChangeText={value => onInputTextChange('correo', value)}
                     placeholder='Tu email' />
             </View>
 
-            <View style={ styles.inputContainer }>
+            <View style={styles.inputContainer}>
                 <Text style={styles.textInput}> Password </Text>
                 <TextInput
                     style={styles.input}
-                    value={ password }
+                    value={password}
                     onChangeText={value => onInputTextChange('password', value)}
                     placeholder='Tu password' />
-                <Text style={{ fontSize:10 }} >El password debe contener al menos 8 caracteres</Text>
+                <Text style={{ fontSize: 10 }} >El password debe contener al menos 8 caracteres</Text>
             </View>
 
             {
                 errorMessage !== ''
                 && (
                     <View style={styles.errorMessageContainer}>
-                        <Text style={styles.errorMessageText} >{ errorMessage }</Text>
+                        <Text style={styles.errorMessageText} >{errorMessage}</Text>
                     </View>
                 )
             }
@@ -181,15 +185,15 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 14
     },
-    errorMessageContainer:{
-        paddingVertical:5,
-        paddingHorizontal:2,
-        backgroundColor:'#facaca',
+    errorMessageContainer: {
+        paddingVertical: 5,
+        paddingHorizontal: 2,
+        backgroundColor: '#facaca',
         width: windowWidth * 0.9,
         marginVertical: 15,
     },
-    errorMessageText:{
-        color:'#f00'
+    errorMessageText: {
+        color: '#f00'
     }
 
 })

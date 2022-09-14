@@ -4,11 +4,14 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         status: 'no-authenticated', // 'authenticated'
-        user: null, //object
+        user: null, //string
+        email: null, //string
+        //image: null, //string
         isLoading: false, //boolean,
         verifyCode: '',
         token: '',
         verifiedNewUser: false,
+        loginWithGoogle: false,
         errorMessage: '',
         pets: []
     },
@@ -19,16 +22,28 @@ export const authSlice = createSlice({
         },
         login: (state, { payload }) => {
             state.isLoading = false
-            state.status = "authenticated",
-            state.user= payload.usuario,
+            state.status = "authenticated"
+            state.user= payload.usuario.nombre + " " + payload.usuario.apellido
+            state.email= payload.usuario.correo
             state.token= payload.token
         },
+        loginWithGoogle:(state, { payload }) => {
+            state.isLoading = false
+            state.status = "authenticated"
+            state.user = payload.usuario.nombre
+            state.email = payload.usuario.correo
+            state.token = payload.token
+            state.loginWithGoogle = true
+
+        },
         logout: (state,{ payload })=>{
-            state.status='no-authenticated'; 
-            state.user= null; 
             state.isLoading= false; 
+            state.status='no-authenticated'; 
+            state.user= null;
+            state.email=null; 
             state.verifyCode= '';
             state.token= '';
+            state.loginWithGoogle = false;
             state.errorMessage= payload.error;
             state.pets= []
         },
@@ -39,7 +54,7 @@ export const authSlice = createSlice({
         },
         verifyNewUser: ( state, { payload } ) => {
             state.verifiedNewUser = true;
-            //state.token = payload;
+            state.token = payload.token;
         },
         loginNewUser: ( state ) => {
             state.status = "authenticated";
@@ -54,4 +69,4 @@ export const authSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { startLoading, login, logout, verifyCode,verifyNewUser, loginNewUser, setErrorMessage } = authSlice.actions;
+export const { startLoading, login,loginWithGoogle, logout, verifyCode,verifyNewUser, loginNewUser, setErrorMessage } = authSlice.actions;

@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { MainBottomTabNavigator } from './MainBottomTabNavigator';
+
+import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
+import { useSelector } from 'react-redux';
 
 import {
     ConfirmEmailScreen,
@@ -11,7 +14,6 @@ import {
     WelcomeScreen,
     RegisterScreen
 } from '../screens';
-import { useSelector } from 'react-redux';
 
 
 
@@ -22,6 +24,17 @@ const Stack = createStackNavigator();
 export const MainStackNavigator = () => {
 
     const { status } = useSelector(state => state.auth);
+
+    useEffect(() => {
+      
+        GoogleSignin.configure({
+            androidClientId: '621326626181-5feqjqd642e25peqk3p12uke1bofr6th.apps.googleusercontent.com',
+            webClientId: '621326626181-t80didd4oom94vbbq23v3k0jtc5ir3je.apps.googleusercontent.com'
+            //iosClientId: 'ADD_YOUR_iOS_CLIENT_ID_HERE',
+        });
+
+    }, [])
+    
 
     return (
         <Stack.Navigator
