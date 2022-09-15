@@ -1,47 +1,44 @@
 import 'react-native-gesture-handler';
-import {enableLatestRenderer} from 'react-native-maps';
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+
+import { SafeAreaView, StatusBar, View, } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
 
-import { Colors, } from 'react-native/Libraries/NewAppScreen';
-import { MainStackNavigator } from './src/navigation/MainStackNavigator';
-import { MapScreen } from './src/screens/MapScreen';
+import { MainStackNavigator } from './src/navigation';
+import { store } from './src/store/store';
 
-enableLatestRenderer();
 
 const App = () => {
-  
-  const isDarkMode = useColorScheme() === 'dark';
+  //const isDarkMode = useColorScheme() === 'dark';
+
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    flex:1
+    //backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1
   };
 
   return (
-    <NavigationContainer>
-      <SafeAreaView style={backgroundStyle}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+
+    <Provider store={ store }>
+      <NavigationContainer>
+        <SafeAreaView style={backgroundStyle}>
+          <StatusBar
+          //barStyle={isDarkMode ? 'light-content' : 'dark-content'} 
+          />
           <View
-           style={{
-            //backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            backgroundColor: '#fff',
-            flex: 1,
-            justifyContent:'center'
-          }}>
-              <MapScreen></MapScreen>
-              {//<MainStackNavigator />
-              }
+            style={{
+              //backgroundColor: isDarkMode ? Colors.black : Colors.white,
+              backgroundColor: '#fff',
+              flex: 1,
+              justifyContent: 'center'
+            }}>
+
+            <MainStackNavigator />
+
           </View>
-      </SafeAreaView>
-    </NavigationContainer>
+        </SafeAreaView>
+      </NavigationContainer>
+    </Provider>
   );
 };
 
