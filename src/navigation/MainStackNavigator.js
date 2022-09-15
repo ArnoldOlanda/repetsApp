@@ -16,6 +16,18 @@ import {
 } from '../screens';
 
 
+const config = {
+    animation: 'spring',
+    config: {
+        stiffness: 1000,
+        damping: 500,
+        mass: 3,
+        overshootClamping: true,
+        restDisplacementThreshold: 0.01,
+        restSpeedThreshold: 0.01,
+    },
+};
+
 
 const Stack = createStackNavigator();
 
@@ -26,7 +38,7 @@ export const MainStackNavigator = () => {
     const { status } = useSelector(state => state.auth);
 
     useEffect(() => {
-      
+
         GoogleSignin.configure({
             androidClientId: '621326626181-5feqjqd642e25peqk3p12uke1bofr6th.apps.googleusercontent.com',
             webClientId: '621326626181-t80didd4oom94vbbq23v3k0jtc5ir3je.apps.googleusercontent.com'
@@ -34,36 +46,72 @@ export const MainStackNavigator = () => {
         });
 
     }, [])
-    
+
 
     return (
         <Stack.Navigator
-        screenOptions={{
-            headerStyle: {
-                elevation: 0
-            },
-            cardStyle: {
-                backgroundColor: '#ffffff',
-            },
-            ...TransitionPresets.SlideFromRightIOS
-        }}
+            screenOptions={{
+                headerStyle: {
+                    elevation: 0
+                },
+                cardStyle: {
+                    backgroundColor: '#ffffff',
+                },
+
+            }}
         >
             {
                 (status === 'no-authenticated')
                 ? (
                     <>
-                        <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ title: '', headerShown: false }} />
-                        <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ title: '' }} />
-                        <Stack.Screen name="ConfirmEmailScreen" component={ConfirmEmailScreen} options={{ title: '' }} />
-                        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ title: '' }} />
-                        <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} options={{ title: '' }} />
-                        <Stack.Screen name="StartScreen" component={StartScreen} options={{ title: '' }} />
+                        <Stack.Screen name="WelcomeScreen" component={WelcomeScreen}
+                            options={{
+                                title: '',
+                                headerShown: false,
+                                transitionSpec: {
+                                    open: config,
+                                    close: config,
+                                },
+                            }} />
+                        <Stack.Screen
+                            name="RegisterScreen"
+                            component={RegisterScreen}
+                            options={{ title: '', ...TransitionPresets.SlideFromRightIOS }}
+                        />
+
+                        <Stack.Screen
+                            name="ConfirmEmailScreen"
+                            component={ConfirmEmailScreen}
+                            options={{ title: '', ...TransitionPresets.SlideFromRightIOS }}
+                        />
+
+                        <Stack.Screen
+                            name="LoginScreen"
+                            component={LoginScreen}
+                            options={{ title: '', ...TransitionPresets.SlideFromRightIOS }}
+                        />
+
+                        <Stack.Screen
+                            name="ResetPasswordScreen"
+                            component={ResetPasswordScreen}
+                            options={{ title: '', ...TransitionPresets.SlideFromRightIOS }}
+                        />
+
+                        <Stack.Screen
+                            name="StartScreen"
+                            component={StartScreen}
+                            options={{ title: '', ...TransitionPresets.SlideFromRightIOS }}
+                        />
                     </>
 
                 )
-                :(
+                : (
                     <>
-                        <Stack.Screen name="MainBottomTab" options={{ headerShown: false }} component={MainBottomTabNavigator} />
+                        <Stack.Screen
+                            name="MainBottomTab"
+                            component={MainBottomTabNavigator}
+                            options={{ headerShown: false, ...TransitionPresets.SlideFromRightIOS }}
+                        />
                     </>
                 )
             }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, TextInput, View, ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Button } from '../components/Button'
 import { useForm } from '../hooks'
@@ -89,11 +89,15 @@ export const RegisterScreen = ({ navigation }) => {
 
             <View style={styles.inputContainer}>
                 <Text style={styles.textInput}> Password </Text>
-                <TextInput
-                    style={styles.input}
-                    value={password}
-                    onChangeText={value => onInputTextChange('password', value)}
-                    placeholder='Tu password' />
+                <View style={styles.input}>
+                    <TextInput
+                        //style={styles.input}
+                        value={password}
+                        onChangeText={value => onInputTextChange('password', value)}
+                        placeholder='Tu password'
+                        secureTextEntry />
+                        {/* <Icon size={20} name='eye-outline' /> */}
+                </View>
                 <Text style={{ fontSize: 10 }} >El password debe contener al menos 8 caracteres</Text>
             </View>
 

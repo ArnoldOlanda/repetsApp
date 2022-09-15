@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View, Button as RNButton } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
+
 
 import { Button } from '../components/Button'
 import { GoogleIcon } from '../components/GoogleIcon'
@@ -109,14 +109,6 @@ export const LoginScreen = ({ navigation }) => {
                 <Text style={styles.btnGoogleText}>Continuar con Google</Text>
             </TouchableOpacity>
             <Text />
-            <RNButton title='cerra sesion(prueba) ' onPress={async () => {
-                try {
-                    await GoogleSignin.signOut();
-                    //this.setState({ user: null }); // Remember to remove the user from your app's state as well
-                } catch (error) {
-                    console.error(error);
-                }
-            }} />
         </View>
     )
 }
