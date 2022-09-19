@@ -16,13 +16,8 @@
     "@react-navigation/bottom-tabs": "^6.3.3",
     "@react-navigation/native": "^6.0.12",
     "@react-navigation/stack": "^6.2.3",
-<<<<<<< HEAD
-    "expo": "^46.0.10",
-    "expo-location": "^14.3.0",
-=======
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^0.27.2",
->>>>>>> 00c6eae6e7c1339075a5b647efbb1ae021603b67
     "react": "18.0.0",
     "react-native": "0.69.5",
     "react-native-confirmation-code-field": "^7.3.0",
