@@ -1,4 +1,3 @@
 <resources>
     <string name="app_name">repetsProject</string>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBCfrEA2OmSDNez112YIsyUojevCWmMBq0</string>
 </resources>
