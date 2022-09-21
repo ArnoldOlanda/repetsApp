@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { Button } from '../components/Button'
 import { GoogleIcon } from '../components/GoogleIcon'
+import { Title } from '../components/Title'
 import { useForm } from '../hooks'
 import { getAuth, setLogin, startLoginWithGoogle } from '../store/slices/auth'
 
@@ -45,7 +46,7 @@ export const LoginScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={{ alignItems: 'flex-start', width: windowWidth * 0.90 }}>
-                <Text style={styles.title}>Bienvenido de nuevo ic</Text>
+                <Title text='Bienvenido de nuevo' icon='👋' />
                 <Text style={styles.text}>Acceda a su cuenta</Text>
             </View>
             <View style={styles.inputContainer}>

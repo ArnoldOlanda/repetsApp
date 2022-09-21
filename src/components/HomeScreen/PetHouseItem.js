@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 import { HearthIcon } from './HearthIcon'
 
@@ -36,7 +37,7 @@ export const PetHouseItem = ({ imgSource, favorite }) => {
                     <Text style={styles.text}>S/. 50 noche</Text>
                 </View>
                 <View>
-                    <Text style={styles.text}>ic 4.7</Text>
+                    <Text style={styles.text}><Icon name='star'/> 4.7</Text>
                 </View>
             </View>
         </View>
@@ -46,7 +47,8 @@ export const PetHouseItem = ({ imgSource, favorite }) => {
 const styles = StyleSheet.create({
     container: {
         position: 'relative',
-        width: windowWidth * 0.7
+        width: windowWidth * 0.7,
+        marginBottom: 10
     },
     favoriteIconButton:{
         position: 'absolute',

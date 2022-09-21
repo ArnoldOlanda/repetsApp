@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import { Button, Dimensions, Image, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
-import { Avatar } from '../components/HomeScreen/Avatar'
+import { Avatar } from '../components/Avatar'
+import Icon from 'react-native-vector-icons/Ionicons';
+
 import { PetHouseItem } from '../components/HomeScreen/PetHouseItem'
 
 import img1 from './../assets/image1.png'
@@ -47,7 +49,7 @@ export const HomeScreen = ({ navigation }) => {
                     console.error(error);
                 }
             }} />
-            <View style={styles.locationContainer} ><Text>Ubicacion ic</Text></View>
+            <View style={styles.locationContainer} ><Text>Ubicacion <Icon name='chevron-down-outline' size={15} color='#2782CA' /> </Text></View>
             <View style={styles.titleWithAvatarContainer}>
                 <View style={{
                     flexDirection: 'row',
@@ -62,11 +64,17 @@ export const HomeScreen = ({ navigation }) => {
             </View>
             <View style={styles.categoryContainer}>
                 <Text style={styles.categoryText}>Categorias</Text>
-                <Text style={{ color: '#F8CF50' }}>Ver todos ic </Text>
+                <Text style={{ color: '#F8CF50' }}>Ver todos <Icon name='chevron-forward-circle' size={15} /> </Text>
             </View>
             <View style={styles.buttonCategoriesContainer}>
+                <TouchableOpacity style={{
+                    ...styles.buttonCategory,
+                    backgroundColor: '#ECF2F0',
+                }}>
+                    <Icon name='options-outline' size={30} color='#000' />
+                </TouchableOpacity>
                 {
-                    ['ic', 'Perros', 'Gatos', 'Pajaros', 'Peces'].map(e => (
+                    ['Perros', 'Gatos', 'Pajaros', 'Peces'].map(e => (
                         <TouchableOpacity
                             key={e}
                             style={{
