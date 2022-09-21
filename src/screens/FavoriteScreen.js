@@ -1,7 +1,7 @@
 import React from 'react'
-import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Title } from '../components/FavoriteScreen/Title';
+import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native' 
 import { PetHouseItem } from '../components/HomeScreen/PetHouseItem';
+import { Title } from '../components/Title';
 
 import img1 from './../assets/image1.png'
 import img2 from './../assets/image2.png'
@@ -14,7 +14,7 @@ export const FavoriteScreen = () => {
   return (
     <View style={styles.container}>
        <View style={styles.titleContainer}>
-       <Text><Title /> </Text>
+        <Title text='Favoritos' icon='🖤' />
        </View>
       <ScrollView
         style={styles.petHousesListContainer}

@@ -3,11 +3,11 @@ import { ActivityIndicator, Dimensions, StyleSheet, Text, TouchableOpacity } fro
 
 const windowWidth = Dimensions.get('screen').width
 
-export const Button = ({ text, onPress, isLoading }) => {
+export const Button = ({ text, onPress, isLoading, stylesProps = {} }) => {
 
     return (
         <TouchableOpacity 
-        style={styles.btn}
+        style={{ ...styles.btn, ...stylesProps }}
         onPress={ onPress }
         disabled={isLoading}
         >

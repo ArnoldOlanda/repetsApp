@@ -4,6 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { FavoriteScreen, HomeScreen, LocationScreen, MessagesScreen, ProfileScreen } from '../screens';
+import { MyPetsScreen } from '../screens/MyPetsScreen';
+import { ProfileUserStack } from './ProfileUserStack';
 
 
 const Tab = createBottomTabNavigator();
@@ -49,7 +51,7 @@ export const MainBottomTabNavigator = () => {
             <Tab.Screen name="Favorite" options={{title:'Favoritos'}} component={ FavoriteScreen } />
             <Tab.Screen name="Location" options={{title:'Mapa'}} component={ LocationScreen } />
             <Tab.Screen name="Messages" options={{title:'Mensajes'}} component={ MessagesScreen } />
-            <Tab.Screen name="Profile" options={{title:'Perfil'}} component={ ProfileScreen } />
+            <Tab.Screen name="Profile" options={{title:'Perfil'}} component={ ProfileUserStack } />
         </Tab.Navigator>
     );
 }
