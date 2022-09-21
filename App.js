@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 
 import { MainStackNavigator } from './src/navigation';
 import { store } from './src/store/store';
+import { MapScreen } from './src/screens/MapScreen';
+import { ChatScreen } from './src/screens/ChatScreen';
 
 
 const App = () => {
@@ -32,8 +34,12 @@ const App = () => {
               flex: 1,
               justifyContent: 'center'
             }}>
-
-            <MainStackNavigator />
+              {
+                <MainStackNavigator />
+                //<ChatScreen />
+              }
+              
+            
 
           </View>
         </SafeAreaView>
