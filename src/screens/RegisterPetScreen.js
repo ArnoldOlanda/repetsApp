@@ -1,27 +1,36 @@
+//@ts-check
+
 import React, { useState } from 'react'
 import { Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+
+import { useForm } from '../hooks'
 import { Button } from '../components/Button'
 import { Modal } from '../components/RegisterPetScreen/Modal'
 import { Title } from '../components/Title'
+import { useRegisterPet } from '../hooks/useRegisterPet'
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
+
+
 export const RegisterPetScreen = () => {
 
-    const [tipoMascotaModalVisible, setTipoMascotaModalVisible] = useState(false);
-    const [tipoMascotas, setTipoMascotas] = useState([]);
+    const { 
+        formState,
+        onInputTextChange, 
+        tipoMascotaModalVisible, 
+        caracteristicasModalVisible, 
+        setTipoMascotaModalVisible,
+        setCaracteristicasModalVisible,
+        onCloseModalTipoMascota, 
+        onCloseModalCaracteristicaMascota, 
+        onSelectOptionTipoMascota, 
+        onSelectOptionCaracteristicaMascota, 
+        onPressRegisterButton } = useRegisterPet();
 
-    const [caracteristicaMascotaModalVisible, setCaracteristicaMascotaModalVisible] = useState(false);
-    const [caracteristicaMascota, setCaracteristicaMascota] = useState([]);
 
-    const onCloseModalTipoMascota = () => {
-        setTipoMascotaModalVisible(false);
-    }
-
-    const onCloseModalCaracteristicaMascota = () => {
-        setCaracteristicaMascotaModalVisible(false);
-    }
+    const { nombre, tipoMascota, raza, edad, descripcion, caracteristicasMascota } = formState
 
     return (
         <View style={styles.container}>
@@ -35,7 +44,12 @@ export const RegisterPetScreen = () => {
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.labelText}>Nombre</Text>
-                    <TextInput style={styles.input} placeholder='Su nombre' />
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Su nombre'
+                        value={nombre}
+                        onChangeText={value => onInputTextChange('nombre', value)}
+                    />
                 </View>
 
                 <View style={styles.inputContainer}>
@@ -45,46 +59,69 @@ export const RegisterPetScreen = () => {
                         onPress={() => setTipoMascotaModalVisible(true)}
                     >
                         {
-                            (tipoMascotas.length === 0)
+                            (tipoMascota.length === 0)
                                 ? <Text>Presione para elegir un tipo de mascota</Text>
-                                : tipoMascotas.map(e => (
-                                    <Text>{e}</Text>
-                                ))
+                                : <Text>{tipoMascota}</Text>
                         }
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.labelText}>Raza</Text>
-                    <TextInput style={styles.input} placeholder='Raza de su mascota' />
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Raza de su mascota'
+                        value={raza}
+                        onChangeText={value => onInputTextChange('raza', value)}
+                    />
                 </View>
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.labelText}>Años</Text>
-                    <TextInput style={styles.input} placeholder='Edad de su mascota' />
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Edad de su mascota'
+                        value={edad}
+                        onChangeText={value => onInputTextChange('edad', value)}
+                    />
                 </View>
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.labelText}>Descripcion de la mascota</Text>
-                    <TextInput style={styles.input} placeholder='Descripcion corta de su mascota' />
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Descripcion corta de su mascota'
+                        value={descripcion}
+                        onChangeText={value => onInputTextChange('descripcion', value)}
+                    />
                 </View>
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.labelText}>Caracteristicas</Text>
                     <TouchableOpacity
                         style={styles.input}
-                        onPress={() => setCaracteristicaMascotaModalVisible(true)}
+                        onPress={() => setCaracteristicasModalVisible(true)}
                     >
                         {
-                            (caracteristicaMascota.length === 0)
+                            (caracteristicasMascota.length === 0)
                                 ? <Text>Presione para seleccionar</Text>
-                                : caracteristicaMascota.map(e => (
-                                    <Text>{e}</Text>
-                                ))
+                                : <Text>
+                                    {
+                                        caracteristicasMascota.map(e => (
+                                            e + ' '
+                                        ))
+                                    }
+                                </Text>
                         }
                     </TouchableOpacity>
                 </View>
-                <Button text='Registrar' stylesProps={{ marginTop: 51, width: windowWidth * 0.85 }} />
+
+                <Button
+                    text='Registrar'
+                    onPress={onPressRegisterButton}
+                    isLoading={false}
+                    stylesProps={{ marginTop: 51, width: windowWidth * 0.85 }} />
+
                 <View style={{ height: 10 }} />
             </ScrollView>
 
@@ -92,14 +129,18 @@ export const RegisterPetScreen = () => {
                 modalFor='tipoMascota'
                 visible={tipoMascotaModalVisible}
                 onCloseModal={onCloseModalTipoMascota}
+                onOptionSelected={onSelectOptionTipoMascota}
                 modalHeight={230}
+                currentOption={tipoMascota}
             />
 
             <Modal
                 modalFor='caracteristicaMascota'
-                visible={ caracteristicaMascotaModalVisible }
-                onCloseModal={ onCloseModalCaracteristicaMascota }
+                visible={caracteristicasModalVisible}
+                onCloseModal={onCloseModalCaracteristicaMascota}
+                onOptionSelected={onSelectOptionCaracteristicaMascota}
                 modalHeight={330}
+                currentOption={caracteristicasMascota}
             />
         </View>
     )

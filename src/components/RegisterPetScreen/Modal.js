@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-
 import ReacNativeModal from "react-native-modal";
-import Icon from "react-native-vector-icons/Ionicons";
+
 import { Button } from "../Button";
+import { optionsCaracteristicasMascota, optionsTipoMascota } from "./modalOptions";
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
 
-export const Modal = ({ modalFor, visible, onCloseModal, onOptionSelected, modalHeight }) => {
+export const Modal = ({ modalFor, visible, onCloseModal, onOptionSelected, modalHeight, currentOption }) => {
 
     return (
         <View style={{ flex: 1 }}>
@@ -24,62 +24,37 @@ export const Modal = ({ modalFor, visible, onCloseModal, onOptionSelected, modal
                 swipeDirection="down"
                 backdropOpacity={0.2}
             >
-                <View style={{...styles.modalContainer, height: modalHeight}}>
+                <View style={{ ...styles.modalContainer, height: modalHeight }}>
                     <View style={{ width: 35, height: 0, borderWidth: 4, borderColor: '#2782CA', borderRadius: 10, marginVertical: 5 }} />
                     {
                         (modalFor === 'tipoMascota')
                             ? (
                                 <View style={styles.optionsContainer}>
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Perro 🐶</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Gato 🐱</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Loro 🦜</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Otro</Text>
-                                    </TouchableOpacity>
+                                    {
+                                        optionsTipoMascota.map(e => (
+                                            <TouchableOpacity
+                                            key={e}
+                                            style={currentOption === e ? styles.buttonSelected : styles.button}
+                                            onPress={() => onOptionSelected(e)}>
+                                                <Text style={styles.buttonText} >{e}</Text>
+                                            </TouchableOpacity>
+                                        ))
+                                    }
                                 </View>
                             )
                             : (
                                 <View style={styles.optionsContainer}>
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Alegre</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Enojon</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Sociable</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Agresivo</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Curioso</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Jugueton</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Activo</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText} >Amigable</Text>
-                                    </TouchableOpacity>
+                                    {
+                                        optionsCaracteristicasMascota.map( e => (
+                                            <TouchableOpacity
+                                            key={e}
+                                            style={currentOption.find(el => el === e) ? styles.buttonSelected : styles.button}
+                                            onPress={() => onOptionSelected(e)}
+                                            >
+                                                <Text style={styles.buttonText} >{ e }</Text>
+                                            </TouchableOpacity>
+                                        ))
+                                    }
                                 </View>
                             )
                     }
@@ -128,5 +103,14 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         lineHeight: 22,
         color: '#2782CA'
+    },
+    buttonSelected: {
+        width: 122,
+        height: 40,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 23,
+        backgroundColor: '#ECF2F0'
     }
 })

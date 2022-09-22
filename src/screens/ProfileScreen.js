@@ -7,7 +7,7 @@ export const ProfileScreen = ({ navigation }) => {
   return (
     <View>
         <Text>ProfileScreen</Text>
-        <Button title='MyPetsScreen' onPress={()=> navigation.navigate('MyPets') } />
+        <Button title='MyPets' onPress={()=> navigation.navigate('MyPets') } />
     </View>
   )
 }
