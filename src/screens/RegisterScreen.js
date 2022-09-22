@@ -45,9 +45,6 @@ export const RegisterScreen = ({ navigation }) => {
 
     return (
         <ScrollView contentContainerStyle={{ alignItems: 'center', padding: 5, }} >
-            <View style={styles.icon}>
-                <Text>IC</Text>
-            </View>
             <Text style={styles.title}>Registrate</Text>
             <Text style={styles.text}>Create una cuenta</Text>
 

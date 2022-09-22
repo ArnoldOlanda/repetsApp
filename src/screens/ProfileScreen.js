@@ -96,8 +96,6 @@ export const ProfileScreen = () => {
         </View>
        </View>
       </ScrollView>
-
-      
     </View>
   )
 }
