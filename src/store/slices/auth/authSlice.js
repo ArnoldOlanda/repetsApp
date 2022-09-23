@@ -5,6 +5,7 @@ export const authSlice = createSlice({
     initialState: {
         status: 'no-authenticated', // 'authenticated'
         user: null, //string
+        uid: null,
         email: null, //string
         //image: null, //string
         isLoading: false, //boolean,
@@ -13,7 +14,6 @@ export const authSlice = createSlice({
         verifiedNewUser: false,
         loginWithGoogle: false,
         errorMessage: '',
-        pets: []
     },
     reducers: {
         startLoading: (state, /* action */ ) => {
@@ -23,7 +23,8 @@ export const authSlice = createSlice({
         login: (state, { payload }) => {
             state.isLoading = false
             state.status = "authenticated"
-            state.user= payload.usuario.nombre + " " + payload.usuario.apellido
+            state.user = payload.usuario.nombre + " " + payload.usuario.apellido
+            state.uid = payload.usuario.uid
             state.email= payload.usuario.correo
             state.token= payload.token
         },
@@ -31,6 +32,7 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.status = "authenticated"
             state.user = payload.usuario.nombre
+            state.uid = payload.usuario.uid
             state.email = payload.usuario.correo
             state.token = payload.token
             state.loginWithGoogle = true
@@ -40,12 +42,12 @@ export const authSlice = createSlice({
             state.isLoading= false; 
             state.status='no-authenticated'; 
             state.user= null;
-            state.email=null; 
+            state.email = null; 
+            state.uid = null;
             state.verifyCode= '';
             state.token= '';
             state.loginWithGoogle = false;
             state.errorMessage= payload.error;
-            state.pets= []
         },
         verifyCode: (state, { payload }) => {
             state.isLoading = false;

@@ -1,5 +1,7 @@
-//@ts-check
+
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { registerPet } from '../helpers/registerPet';
 import { useForm } from './useForm';
 
@@ -14,6 +16,10 @@ const initialState = {
 
 
 export const useRegisterPet = () => {
+
+    const navigation = useNavigation()
+
+    const { uid } = useSelector( state => state.auth )
 
     const { formState, onInputTextChange, onResetForm } = useForm( initialState );
 
@@ -42,12 +48,11 @@ export const useRegisterPet = () => {
         }
     }
 
-    const onPressRegisterButton = async() => {
-        //TODO: preparar el body con los campos requeridos por la api
+    const onPressRegisterButton = async () => {
 
-        await registerPet( formState, 'askdjlaksjfudfihduhfda' )
-
+        await registerPet( formState, uid );
         onResetForm();
+        navigation.navigate('MyPets')
     }
 
   return {
