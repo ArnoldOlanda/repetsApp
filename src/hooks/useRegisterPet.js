@@ -1,9 +1,11 @@
 
-import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { registerPet } from '../helpers/registerPet';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from './useForm';
+
+import { registerPet } from '../helpers/registerPet';
+import { obtenerMascotasUsuario } from '../store/slices/pets/thunks';
 
 const initialState = {
     nombre:'',
@@ -19,7 +21,8 @@ export const useRegisterPet = () => {
 
     const navigation = useNavigation()
 
-    const { uid } = useSelector( state => state.auth )
+    const { uid } = useSelector( state => state.auth );
+    const dispatch = useDispatch();
 
     const { formState, onInputTextChange, onResetForm } = useForm( initialState );
 
@@ -49,10 +52,10 @@ export const useRegisterPet = () => {
     }
 
     const onPressRegisterButton = async () => {
-
         await registerPet( formState, uid );
         onResetForm();
-        navigation.navigate('MyPets')
+        navigation.navigate('MyPets');
+        dispatch( obtenerMascotasUsuario() )
     }
 
   return {

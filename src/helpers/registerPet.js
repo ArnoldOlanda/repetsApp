@@ -1,11 +1,12 @@
 import { repetsAPI } from "../api"
 
-export const registerPet = async (data={}, user='') => {
+export const registerPet = async ( data = {}, user = '' ) => {
 
     const { nombre, tipoMascota, raza, edad, descripcion, caracteristicasMascota } = data
 
     const body = {
         nombre,
+        propietarioUid: user,
         tipo: tipoMascota,
         raza,
         edad: parseInt( edad ),
@@ -13,12 +14,11 @@ export const registerPet = async (data={}, user='') => {
         caracteristicas: caracteristicasMascota
     }
 
-    console.log(body);
     try {
-        const { data } = await repetsAPI.post(`/pets/${ user }`, body)
+        const { data } = await repetsAPI.post(`/pets`, body)
 
         console.log(data);
     } catch (error) {
-        console.log(error);
+        console.log(error.response);
     }
 }

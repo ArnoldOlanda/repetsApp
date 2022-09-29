@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View, Button as RNButton } from 'react-native'
+import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View, Button as RNButton, ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
 
@@ -44,7 +44,7 @@ export const LoginScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', }}>
             <View style={{ alignItems: 'flex-start', width: windowWidth * 0.90 }}>
                 <Title text='Bienvenido de nuevo' icon='👋' />
                 <Text style={styles.text}>Acceda a su cuenta</Text>
@@ -86,7 +86,7 @@ export const LoginScreen = ({ navigation }) => {
             </View>
             <View
                 style={{
-                    marginTop: 70,
+                    marginTop: windowHeight * 0.05, //70
                     borderBottomColor: '#b7b7b7',
                     borderBottomWidth: StyleSheet.hairlineWidth,
                     alignSelf: 'stretch'
@@ -110,7 +110,7 @@ export const LoginScreen = ({ navigation }) => {
                 <Text style={styles.btnGoogleText}>Continuar con Google</Text>
             </TouchableOpacity>
             <Text />
-        </View>
+        </ScrollView>
     )
 }
 
@@ -118,8 +118,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 5,
-        alignItems: 'center',
-        marginTop: 40,
+        marginTop: windowHeight * 0.05,
     },
     title: {
         textAlign: 'left',
