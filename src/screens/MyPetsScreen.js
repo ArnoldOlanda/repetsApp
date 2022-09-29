@@ -1,10 +1,12 @@
-import React from 'react'
-import { Dimensions, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
+import React, {useEffect} from 'react'
+import { Dimensions, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Avatar } from '../components/Avatar'
 import { PetListItem } from '../components/MyPetsScreen/PetListItem';
 import { Title } from '../components/Title';
+import { obtenerMascotasUsuario } from '../store/slices/pets/thunks';
 
 
 const windowWidth = Dimensions.get('screen').width
@@ -12,6 +14,17 @@ const windowHeight = Dimensions.get('screen').height
 
 
 export const MyPetsScreen = ({ navigation }) => {
+
+    const { pets } = useSelector(state => state.pets);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      
+        dispatch( obtenerMascotasUsuario() )
+
+    }, [])
+   
+
   return (
     <View style={styles.container}>
         <View style={ styles.titleContainer }>
@@ -34,13 +47,19 @@ export const MyPetsScreen = ({ navigation }) => {
             </TouchableOpacity>
         </View>
 
-        <ScrollView style={styles.petListContainer} contentContainerStyle={{ alignItems: 'center' }}>
-            {
-                [1,2,3,4,5,6].map((e,i)=> (
-                    <PetListItem key={ e } />
-                ))
-            }
-        </ScrollView>
+        {
+            (pets.length < 1)
+            ? <View style={{ marginTop: 20 }}><Text>Aun no tienes mascotas</Text></View>
+            :(
+                <FlatList 
+                style={ styles.petListContainer }
+                contentContainerStyle={{ alignItems: 'center', paddingTop: 10, }}
+                data={ pets }
+                renderItem={ ({item}) => <PetListItem pet={ item } />}
+                keyExtractor={ (item) => item.uid }
+                />
+            )
+        }
     </View>
   )
 }
@@ -90,6 +109,6 @@ const styles = StyleSheet.create({
         marginTop:15,
         flex: 1,
         width: windowWidth,
-        paddingHorizontal: 27
+        paddingHorizontal: 27,
     }
 })

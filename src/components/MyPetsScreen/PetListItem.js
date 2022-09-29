@@ -1,19 +1,45 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
-import petListItem from '../../assets/petListItem.png'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { useDispatch } from 'react-redux'
+import { setCurrentPet } from '../../store/slices/pets'
 
-export const PetListItem = () => {
+import petListItem from '../../assets/petListItemNone.png'
 
+export const PetListItem = ({ pet }) => {
 
+    const navigation = useNavigation();
+    const {nombre, raza, edad} = pet;
+    const dispatch = useDispatch();
+
+    const onPressPetListItem = () => {
+
+        dispatch( setCurrentPet( pet ) );
+        navigation.navigate('DetailPet');
+
+    }
 
     return (
-        <View style={[styles.container, styles.shadowProp]}>
-            <Image source={petListItem} style={{ flex: 1 }} />
+        
+        <TouchableOpacity 
+        activeOpacity={0.7}
+        style={[styles.container, styles.shadowProp]}
+        onPress={ onPressPetListItem }
+        >
+            <Image source={petListItem} style={{ flex: 1, width:244 }} />
             <View style={styles.cardFooter}>
-                <Text style={{ fontSize: 16, fontWeight: '700', color: '#2782CA', lineHeight: 19 }} > Itachi </Text>
-                <Text style={{ fontSize: 14, fontWeight: '400', color: '#5F5F63', lineHeight: 18 }}> French Bulldog  1 año(s) </Text>
+                <Text style={{ 
+                    fontSize: 16, 
+                    fontWeight: '700', 
+                    color: '#2782CA', 
+                    lineHeight: 19 }} >{ nombre }</Text>
+                <Text style={{ 
+                    fontSize: 14, 
+                    fontWeight: '400', 
+                    color: '#5F5F63', 
+                    lineHeight: 18 }}> { raza }  { edad } año(s) </Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

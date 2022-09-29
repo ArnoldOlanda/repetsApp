@@ -4,7 +4,7 @@ import { Chat } from '../components/ChatScreen/Chat';
 import { SubTitle1 } from '../components/ChatScreen/SubTitle1';
 import { SubTitle2 } from '../components/ChatScreen/SubTitle2';
 import { Title } from '../components/ChatScreen/Title';
-import { Avatar } from '../components/HomeScreen/Avatar';
+import { Avatar } from '../components/Avatar';
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height

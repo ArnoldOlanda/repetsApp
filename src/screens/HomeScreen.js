@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react'
-import { Button, Dimensions, Image, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
-import { Avatar } from '../components/Avatar'
+import { Button, Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { useDispatch } from 'react-redux';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-import { PetHouseItem } from '../components/HomeScreen/PetHouseItem'
 
 import img1 from './../assets/image1.png'
 import img2 from './../assets/image2.png'
-import { useDispatch } from 'react-redux';
 import { logout } from '../store/slices/auth';
+
+import { Avatar } from '../components/Avatar'
+import { PetHouseItem } from '../components/HomeScreen/PetHouseItem'
+import { resetStorePets } from '../store/slices/pets';
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
@@ -17,39 +18,24 @@ const windowHeight = Dimensions.get('screen').height
 export const HomeScreen = ({ navigation }) => {
 
     const dispatch = useDispatch();
-    // useEffect(() => {
-    //     navigation.addListener('beforeRemove', (e) => {
 
-    //         e.preventDefault();
-
-    //         Alert.alert(
-    //             'Cierre de Sesion',
-    //             '¿Realmente deseas cerrar la sesion?',
-    //             [
-    //                 { text: "No, cancelar", style: 'cancel', onPress: () => { } },
-    //                 {
-    //                     text: 'Si, salir', style: 'destructive',
-    //                     onPress: () => navigation.dispatch(e.data.action),
-    //                 },
-    //             ]
-    //         );
-    //     })
-
-    // }, [navigation]);
-
+    const onPressGoogleSignOut = async () => {
+        try {
+            await GoogleSignin.signOut();
+            dispatch( logout({error:''}) );
+            dispatch( resetStorePets() );
+            //this.setState({ user: null }); // Remember to remove the user from your app's state as well
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <View style={styles.container}>
-            <Button title='cerrar sesion(prueba) ' onPress={async () => {
-                try {
-                    await GoogleSignin.signOut();
-                    dispatch( logout({error:''}) )
-                    //this.setState({ user: null }); // Remember to remove the user from your app's state as well
-                } catch (error) {
-                    console.error(error);
-                }
-            }} />
-            <View style={styles.locationContainer} ><Text>Ubicacion <Icon name='chevron-down-outline' size={15} color='#2782CA' /> </Text></View>
+            <Button title='cerrar sesion(prueba) ' onPress={ onPressGoogleSignOut } />
+            <View style={styles.locationContainer} >
+                <Text>Ubicacion <Icon name='chevron-down-outline' size={15} color='#2782CA' /> </Text>
+            </View>
             <View style={styles.titleWithAvatarContainer}>
                 <View style={{
                     flexDirection: 'row',
