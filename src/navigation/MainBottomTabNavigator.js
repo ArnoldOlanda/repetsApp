@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { FavoriteScreen, HomeScreen, LocationScreen, MessagesScreen, ProfileScreen } from '../screens';
 import { MyPetsScreen } from '../screens/MyPetsScreen';
 import { ProfileUserStack } from './ProfileUserStack';
+import { ChatStack } from './ChatStack';
 
 
 const Tab = createBottomTabNavigator();
@@ -50,7 +51,7 @@ export const MainBottomTabNavigator = () => {
             <Tab.Screen name="Home" options={{title:'Explorar'}} component={ HomeScreen } />
             <Tab.Screen name="Favorite" options={{title:'Favoritos'}} component={ FavoriteScreen } />
             <Tab.Screen name="Location" options={{title:'Mapa'}} component={ LocationScreen } />
-            <Tab.Screen name="Messages" options={{title:'Mensajes'}} component={ MessagesScreen } />
+            <Tab.Screen name="Messages" options={{title:'Mensajes'}} component={ ChatStack } />
             <Tab.Screen name="Profile" options={{title:'Perfil'}} component={ ProfileUserStack } />
         </Tab.Navigator>
     );

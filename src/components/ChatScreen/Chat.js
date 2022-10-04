@@ -1,9 +1,14 @@
 import React from "react"
 import { StyleSheet, Text, View } from "react-native"
 import { Avatar } from "../HomeScreen/Avatar"
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export const Chat = (props) => (
-  <View style={styles.container}>
+export const Chat = (props) => {
+  const navigation = useNavigation();
+  
+  return (
+  <TouchableOpacity style={styles.container} onPress={()=>{navigation.navigate("Chat")}}>
     <Avatar/>
     <View style={{flexGrow: 1, paddingHorizontal:5}}>
         <Text style= {{fontWeight: 'bold', color:"black"}}>Nombre alojamiento</Text>
@@ -13,8 +18,8 @@ export const Chat = (props) => (
         <Text>6:37 PM</Text>
         <View style={styles.iconNum}><Text style={{color:"white"}}>4</Text></View>
     </View>
-  </View>
-)
+  </TouchableOpacity>
+)}
 
 
 

@@ -40,15 +40,7 @@ export const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Button title='cerrar sesion(prueba) ' onPress={async () => {
-                try {
-                    await GoogleSignin.signOut();
-                    dispatch( logout({error:''}) )
-                    //this.setState({ user: null }); // Remember to remove the user from your app's state as well
-                } catch (error) {
-                    console.error(error);
-                }
-            }} />
+            
             <View style={styles.locationContainer} ><Text>Ubicacion <Icon name='chevron-down-outline' size={15} color='#2782CA' /> </Text></View>
             <View style={styles.titleWithAvatarContainer}>
                 <View style={{

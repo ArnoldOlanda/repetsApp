@@ -1,13 +1,12 @@
 import React from 'react';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
-
-import { ProfileScreen, MyPetsScreen } from '../screens';
+import { ProfileScreen, MyPetsScreen, MessagesScreen, ChatScreen } from '../screens';
 import { RegisterPetScreen } from '../screens/RegisterPetScreen';
 
 const Stack = createStackNavigator();
 
 
-export const ProfileUserStack = () => {
+export const ChatStack = () => {
 
     return (
         <Stack.Navigator
@@ -19,12 +18,12 @@ export const ProfileUserStack = () => {
                     backgroundColor: '#ffffff',
                 },
                 ...TransitionPresets.SlideFromRightIOS,
-                
+                headerShown: false
             }}
+            
         >
-            <Stack.Screen name='MainProfile' component={ ProfileScreen } />
-            <Stack.Screen name='MyPets' options={{ title:'' }} component={ MyPetsScreen } />
-            <Stack.Screen name='RegisterPet' options={{ title:'' }} component={ RegisterPetScreen }/>
+            <Stack.Screen name='Message' component={ MessagesScreen } />
+            <Stack.Screen name='Chat' component={ ChatScreen } />
             
         </Stack.Navigator>
     );

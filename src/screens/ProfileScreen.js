@@ -1,14 +1,20 @@
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import React from 'react'
 import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
+import { Button } from '../components/Button';
 import { Arrow, Edit, EditPhoto, History, Hosp, Language, Learn, Notification, Pay, Pet } from '../components/ProfileScreen/Icons';
 import { Rectangule } from '../components/ProfileScreen/Rectangule';
+import { logout } from '../store/slices/auth';
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
 
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({navigation}) => {
+  const dispatch = useDispatch();
   const Rectangle = () => {
     return <View style={styles.rectangle} />;
   };
@@ -26,16 +32,16 @@ export const ProfileScreen = () => {
         <Text>correo | numero</Text>
       </View>
       
-      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+      <ScrollView  contentContainerStyle={{ alignItems: 'center' }}>
        <View style={styles.boxChatListContainer}>
         <Text style={styles.title}>Mis Mascotas</Text>
-        <View style={styles.subtitle}>
+        <TouchableOpacity onPress={()=>{navigation.navigate('MyPets')}} style={styles.subtitle}>
           <View style={{flexDirection: "row"}}>
             <Pet/>
             <Text style={{marginLeft:5}}>Ver mis mascotas</Text>
           </View>
           <Arrow/>
-        </View>
+        </TouchableOpacity>
         <View style={styles.subtitle}>
           <View style={{flexDirection: "row"}}>
             <History/>
@@ -94,7 +100,27 @@ export const ProfileScreen = () => {
           </View>
           <Arrow/>
         </View>
+        
+        
        </View>
+       <View style={styles.boxChatListContainer}>
+        <TouchableOpacity onPress={async () => {
+                try {
+                    await GoogleSignin.signOut();
+                    dispatch( logout({error:''}) )
+                    //sthis.setState({ user: null }); // Remember to remove the user from your app's state as well
+                } catch (error) {
+                    console.error(error);
+                }
+        }}>
+          <View style={{flexDirection: "row"}}>
+            <Learn/>
+            <Text style={{marginLeft:5}}>Cerrar Sesion</Text>
+          </View>
+        </TouchableOpacity>
+        
+       </View>
+
       </ScrollView>
     </View>
   )
