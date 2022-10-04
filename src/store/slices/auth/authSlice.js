@@ -7,8 +7,12 @@ export const authSlice = createSlice({
         user: null, //string
         uid: null,
         email: null, //string
-        //image: null, //string
+        image: null, //string
         isLoading: false, //boolean,
+        location:{
+            latitude:null,
+            logintude:null
+        },
         verifyCode: '',
         token: '',
         verifiedNewUser: false,
@@ -20,12 +24,16 @@ export const authSlice = createSlice({
             state.isLoading = true
             state.errorMessage = ''
         },
+        setLocation:(state, { payload })=>{
+            state.location = payload;
+        },
         login: (state, { payload }) => {
             state.isLoading = false
             state.status = "authenticated"
             state.user = payload.usuario.nombre + " " + payload.usuario.apellido
             state.uid = payload.usuario.uid
             state.email= payload.usuario.correo
+            state.image = payload.usuario.img
             state.token= payload.token
         },
         loginWithGoogle:(state, { payload }) => {
@@ -34,6 +42,7 @@ export const authSlice = createSlice({
             state.user = payload.usuario.nombre
             state.uid = payload.usuario.uid
             state.email = payload.usuario.correo
+            state.image = payload.usuario.img
             state.token = payload.token
             state.loginWithGoogle = true
 
@@ -44,6 +53,7 @@ export const authSlice = createSlice({
             state.user= null;
             state.email = null; 
             state.uid = null;
+            state.image = null;
             state.verifyCode= '';
             state.token= '';
             state.loginWithGoogle = false;
@@ -52,10 +62,14 @@ export const authSlice = createSlice({
         verifyCode: (state, { payload }) => {
             state.isLoading = false;
             state.verifyCode = payload.verifyCode;
-            state.user = payload.usuario;
+            state.user = payload.usuario.nombre + " " + payload.usuario.apellido
+            state.uid = payload.usuario.uid
+            state.email= payload.usuario.correo
+            state.image = payload.usuario.img
         },
         verifyNewUser: ( state, { payload } ) => {
             state.verifiedNewUser = true;
+            state.uid = payload.usuario.uid
             state.token = payload.token;
         },
         loginNewUser: ( state ) => {
@@ -65,10 +79,23 @@ export const authSlice = createSlice({
         setErrorMessage: (state,{ payload }) => {
             state.isLoading = false;
             state.errorMessage = payload;
+        },
+        updateProfilePhoto: (state,{ payload }) => {
+            state.isLoading = false;
+            state.image = payload
         }
     }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { startLoading, login,loginWithGoogle, logout, verifyCode,verifyNewUser, loginNewUser, setErrorMessage } = authSlice.actions;
+export const { 
+    startLoading,
+    setLocation,
+    login,loginWithGoogle,
+    logout,
+    verifyCode,verifyNewUser,
+    loginNewUser,
+    setErrorMessage,
+    updateProfilePhoto 
+} = authSlice.actions;

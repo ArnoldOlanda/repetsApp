@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import { Button, Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { useDispatch } from 'react-redux';
+import { Button, Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -17,6 +17,8 @@ const windowHeight = Dimensions.get('screen').height
 
 export const HomeScreen = ({ navigation }) => {
 
+    const { image } = useSelector( state => state.auth );
+    
     const dispatch = useDispatch();
 
     const onPressGoogleSignOut = async () => {
@@ -45,7 +47,7 @@ export const HomeScreen = ({ navigation }) => {
                     <Text style={styles.ciudadText}> AQP</Text>
                 </View>
                 <View>
-                    <Avatar />
+                    <Image source={{uri:image}} style={{ width:42, height: 42, borderRadius:50 }} />
                 </View>
             </View>
             <View style={styles.categoryContainer}>

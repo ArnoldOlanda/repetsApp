@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import { Dimensions, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity, FlatList } from 'react-native'
+import { Dimensions, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity, FlatList, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,6 +15,7 @@ const windowHeight = Dimensions.get('screen').height
 
 export const MyPetsScreen = ({ navigation }) => {
 
+    const { image } = useSelector( state => state.auth )
     const { pets } = useSelector(state => state.pets);
     const dispatch = useDispatch();
 
@@ -30,7 +31,7 @@ export const MyPetsScreen = ({ navigation }) => {
         <View style={ styles.titleContainer }>
             <Title text='Mis Mascotas' icon='🐶' />
             <View>
-                <Avatar />
+                <Image source={{ uri:image }} style={{ width:42, height:42, borderRadius:50 }}/>
             </View>
         </View>
 

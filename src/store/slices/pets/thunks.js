@@ -11,8 +11,6 @@ export const obtenerMascotasUsuario = () => {
 
             const { data } = await repetsAPI.get(`/pets/${uid}`);
 
-            console.log(data);
-
             dispatch( setPets(data) )
 
         } catch (error) {

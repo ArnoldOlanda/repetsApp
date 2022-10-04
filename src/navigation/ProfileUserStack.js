@@ -22,7 +22,7 @@ export const ProfileUserStack = () => {
                 ...TransitionPresets.SlideFromRightIOS
             }}
         >
-            <Stack.Screen name='MainProfile' component={ ProfileScreen } />
+            <Stack.Screen name='MainProfile' options={{ headerShown: false }} component={ ProfileScreen } />
             <Stack.Screen name='MyPets' options={{ title:'' }} component={ MyPetsScreen } />
             <Stack.Screen name='RegisterPet' options={{ title:'' }} component={ RegisterPetScreen } />
             <Stack.Screen name='DetailPet' options={{ title:'' }} component={ DetailPetScreen } />

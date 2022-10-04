@@ -1,87 +1,49 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import RNLocation from 'react-native-location';
-import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import { Title } from '../components/LocationScreen/Title';
+import { useSelector } from 'react-redux';
 //import {GOOGLE_MAPS_KEY} from '@env'
 export const LocationScreen = () => {
-    
-    const [origin, setOrigin] = React.useState({
-        latitude: 37.78825,
-        longitude: -122.4324,
-    })
 
-     
-    RNLocation.configure({
-    distanceFilter: 5.0
-    })
-    
-    const getLocationPermission = async () => {
+    const { location } = useSelector(state => state.auth);
+  
 
-        RNLocation.requestPermission({
-        ios: "whenInUse",
-        android: {
-            detail: "coarse"
-        }
-        }).then(granted => {
-            if (granted) {
-                RNLocation.getLatestLocation({ timeout: 60000 })
-                .then(latestLocation => {
-                    setOrigin({
-                        latitude: latestLocation["latitude"],
-                        longitude: latestLocation["longitude"],
-                    })
-                })
-            }
-        })
-        RNLocation.getLatestLocation({ timeout: 60000 })
-        .then(latestLocation => {
-            setOrigin({
-                latitude: latestLocation["latitude"],
-                longitude: latestLocation["longitude"],
-            })
-        })
-        
-    }
-    
-    React.useEffect(() => {
-        try{
-        getLocationPermission();
-        }catch(error){
-            console.log(error)
-        }
-
-    },[])
-
- //image={{uri: 'custom_pin'}}
-  return (
-    <View style={styles.container}>
-        <Text style={styles.title}>
-            <Title/>
-        </Text>
-        <View style={styles.containerMap}>
-            <MapView style={styles.map}  
-            provider={PROVIDER_GOOGLE}
-            initialRegion={{
-                latitude: origin.latitude,
-                longitude: origin.longitude,
-                latitudeDelta:0.09,
-                longitudeDelta: 0.04
-            }}>
-                <Marker
-                    coordinate={{ latitude : origin.latitude , longitude : origin.longitude }}
-                    
-                />
-            </MapView>
+    //image={{uri: 'custom_pin'}}
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>
+                <Title />
+            </Text>
+            <View style={styles.containerMap}>
+                {
+                    (location.latitude && location.longitude)
+                    ?(
+                        <MapView style={styles.map}
+                            provider={PROVIDER_GOOGLE}
+                            initialRegion={{
+                                latitude: location.latitude,
+                                longitude: location.longitude,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421,
+                            }}
+                            >
+                                
+                            <Marker coordinate={location} />
+                        </MapView>
+                    )
+                    : <ActivityIndicator size='large' color='#000' />
+                }
+            </View>
         </View>
-    </View>
-  )
+    )
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center', 
-        paddingTop: 39, 
+        alignItems: 'center',
+        paddingTop: 39,
     },
     map: {
         width: '100%',
@@ -94,7 +56,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     title: {
-        textAlign:'left',
+        textAlign: 'left',
         width: '90%',
         fontSize: 22,
         fontWeight: '800',
