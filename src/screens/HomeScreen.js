@@ -1,42 +1,23 @@
 import React, { useEffect } from 'react'
-import { Button, Dimensions, Image, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
-import { Avatar } from '../components/Avatar'
+import { Button, Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-import { PetHouseItem } from '../components/HomeScreen/PetHouseItem'
 
 import img1 from './../assets/image1.png'
 import img2 from './../assets/image2.png'
-import { useDispatch } from 'react-redux';
 import { logout } from '../store/slices/auth';
+
+import { Avatar } from '../components/Avatar'
+import { PetHouseItem } from '../components/HomeScreen/PetHouseItem'
+import { resetStorePets } from '../store/slices/pets';
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
 export const HomeScreen = ({ navigation }) => {
 
-    const dispatch = useDispatch();
-    // useEffect(() => {
-    //     navigation.addListener('beforeRemove', (e) => {
-
-    //         e.preventDefault();
-
-    //         Alert.alert(
-    //             'Cierre de Sesion',
-    //             '¿Realmente deseas cerrar la sesion?',
-    //             [
-    //                 { text: "No, cancelar", style: 'cancel', onPress: () => { } },
-    //                 {
-    //                     text: 'Si, salir', style: 'destructive',
-    //                     onPress: () => navigation.dispatch(e.data.action),
-    //                 },
-    //             ]
-    //         );
-    //     })
-
-    // }, [navigation]);
-
+    const { image } = useSelector( state => state.auth );
 
     return (
         <View style={styles.container}>
@@ -51,7 +32,7 @@ export const HomeScreen = ({ navigation }) => {
                     <Text style={styles.ciudadText}> AQP</Text>
                 </View>
                 <View>
-                    <Avatar />
+                    <Image source={{uri:image}} style={{ width:42, height: 42, borderRadius:50 }} />
                 </View>
             </View>
             <View style={styles.categoryContainer}>

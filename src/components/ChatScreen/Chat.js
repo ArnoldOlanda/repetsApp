@@ -1,8 +1,8 @@
 import React from "react"
 import { StyleSheet, Text, View } from "react-native"
-import { Avatar } from "../HomeScreen/Avatar"
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Avatar } from "../Avatar"
 
 export const Chat = (props) => {
   const navigation = useNavigation();
