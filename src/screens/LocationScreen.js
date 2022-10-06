@@ -9,7 +9,7 @@ import { Modal } from '../components/LocationScreen/Modal';
 export const LocationScreen = () => {
 
     const { location } = useSelector(state => state.auth);
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     
     const closeModal = ()=>{
         setIsOpen(false)
@@ -43,7 +43,6 @@ export const LocationScreen = () => {
             </View>
             <Modal
                 onCloseModal={closeModal}
-                modalFor='tipoMascota'
                 visible={isOpen}
                 modalHeight={230} 
             />
