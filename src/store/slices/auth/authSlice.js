@@ -11,7 +11,11 @@ export const authSlice = createSlice({
         isLoading: false, //boolean,
         location:{
             latitude:null,
-            logintude:null
+            longitude:null
+        },
+        currentLocation:{
+            latitude:0,
+            longitude:0
         },
         verifyCode: '',
         token: '',
@@ -26,6 +30,9 @@ export const authSlice = createSlice({
         },
         setLocation:(state, { payload })=>{
             state.location = payload;
+        },
+        setCurrentLocation:(state,{payload}) => {
+            state.currentLocation = payload
         },
         login: (state, { payload }) => {
             state.isLoading = false
@@ -92,9 +99,12 @@ export const authSlice = createSlice({
 export const { 
     startLoading,
     setLocation,
-    login,loginWithGoogle,
+    setCurrentLocation,
+    login,
+    loginWithGoogle,
     logout,
-    verifyCode,verifyNewUser,
+    verifyCode,
+    verifyNewUser,
     loginNewUser,
     setErrorMessage,
     updateProfilePhoto 

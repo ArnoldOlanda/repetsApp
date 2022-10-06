@@ -1,8 +1,8 @@
-import React, { useEffect,useState } from 'react'
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
-import RNLocation from 'react-native-location';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { setLocation } from '../store/slices/auth';
+import Geolocation from '@react-native-community/geolocation';
+
 import logoW from './../assets/images/logoW.png'
 
 const windowWidth = Dimensions.get('screen').width
@@ -13,7 +13,6 @@ const windowHeight = Dimensions.get('screen').height
 export const WelcomeScreen = ({ navigation }) => {
 
   const dispatch = useDispatch()
-  const [unsubscribe, setUnsubscribe] = useState(null);
 
   const onPressGetStartedButton = () => {
     navigation.navigate('RegisterScreen')
@@ -22,55 +21,6 @@ export const WelcomeScreen = ({ navigation }) => {
   const onPressSignInButton = () => {
     navigation.navigate('LoginScreen')
   }
-
-  const getLocationPermission = async () => {
-
-    RNLocation.requestPermission({
-      ios: "whenInUse",
-      android: {
-        detail: "coarse"
-      }
-    })
-      .then(granted => {
-        if (granted) {
-          RNLocation.subscribeToLocationUpdates(locations => {
-            console.log(JSON.stringify(locations, null, 4));
-
-            const location = {
-              latitude: locations[locations.length - 1].latitude,
-              longitude: locations[locations.length - 1].longitude,
-            }
-
-            dispatch(setLocation(location))
-          })
-        }
-      })
-      .catch(console.log)
-  }
-
- 
-  useEffect(() => {
-
-    try {
-      RNLocation.configure({
-        distanceFilter: 5.0,
-        // desiredAccuracy: {
-        //   ios: "best",
-        //   android: "balancedPowerAccuracy"
-        // },
-        // androidProvider: "auto",
-        // interval: 1000, // Milliseconds
-        // fastestInterval: 6000, // Milliseconds
-        // maxWaitTime: 5000, // Milliseconds
-      })
-
-      getLocationPermission();
-    } catch (error) {
-      console.log(error)
-    }
-
-  }, [])
-
 
   return (
 
