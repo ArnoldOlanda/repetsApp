@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { ToastAndroid } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from './useForm';
@@ -16,6 +17,12 @@ const initialState = {
     caracteristicasMascota:[]
 }
 
+const formValidations = {
+    nombre: [value => value.length >= 1, 'Este campo es obligatorio'],
+    raza: [value => value.length >= 1, 'Este campo es obligatorio'],
+    edad: [value => value.length >= 1, 'Este campo es obligatorio'],
+    descripcion: [value => value.length >= 1, 'Este campo es obligatorio'],
+}
 
 export const useRegisterPet = () => {
 
@@ -24,12 +31,15 @@ export const useRegisterPet = () => {
     const { uid } = useSelector( state => state.auth );
     const dispatch = useDispatch();
 
-    const { formState, onInputTextChange, onResetForm } = useForm( initialState );
+    const { formState, onInputTextChange, onResetForm, formValidation, isFormValid } = useForm( initialState, formValidations );
 
     const { caracteristicasMascota } = formState
 
     const [tipoMascotaModalVisible, setTipoMascotaModalVisible] = useState(false);
     const [caracteristicasModalVisible, setCaracteristicasModalVisible] = useState(false);
+
+    const [formSubmitted, setFormSubmitted] = useState(false)
+    const [isLoading, setIsLoading] = useState( false )
 
     const onCloseModalTipoMascota = () => {
         setTipoMascotaModalVisible(false);
@@ -52,10 +62,20 @@ export const useRegisterPet = () => {
     }
 
     const onPressRegisterButton = async () => {
+
+        setFormSubmitted( true )
+
+        if(!isFormValid){
+            return ToastAndroid.show('Revise los datos ingresados',ToastAndroid.SHORT)
+        };
+        
+        setIsLoading( true );
         await registerPet( formState, uid );
+        setIsLoading( false );
+
         onResetForm();
         navigation.navigate('MyPets');
-        dispatch( obtenerMascotasUsuario() )
+        dispatch( obtenerMascotasUsuario() );
     }
 
   return {
@@ -69,6 +89,10 @@ export const useRegisterPet = () => {
     onCloseModalCaracteristicaMascota,
     onSelectOptionTipoMascota,
     onSelectOptionCaracteristicaMascota,
-    onPressRegisterButton
+    onPressRegisterButton,
+    formValidation,
+    isFormValid,
+    formSubmitted,
+    isLoading,
   }
 }

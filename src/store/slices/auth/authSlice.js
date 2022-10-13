@@ -5,13 +5,19 @@ export const authSlice = createSlice({
     initialState: {
         status: 'no-authenticated', // 'authenticated'
         user: null, //string
+        apellido: null,
         uid: null,
         email: null, //string
+        phone:null,
         image: null, //string
         isLoading: false, //boolean,
         location:{
-            latitude:null,
-            logintude:null
+            latitude:0,
+            longitude:0
+        },
+        currentLocation:{
+            latitude:0,
+            longitude:0
         },
         verifyCode: '',
         token: '',
@@ -27,10 +33,15 @@ export const authSlice = createSlice({
         setLocation:(state, { payload })=>{
             state.location = payload;
         },
+        setCurrentLocation:(state,{payload}) => {
+            state.currentLocation = payload
+        },
         login: (state, { payload }) => {
             state.isLoading = false
             state.status = "authenticated"
-            state.user = payload.usuario.nombre + " " + payload.usuario.apellido
+            state.user = payload.usuario.nombre
+            state.apellido = payload.usuario.apellido
+            state.phone = payload.usuario.celular
             state.uid = payload.usuario.uid
             state.email= payload.usuario.correo
             state.image = payload.usuario.img
@@ -40,6 +51,7 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.status = "authenticated"
             state.user = payload.usuario.nombre
+            state.apellido = payload.usuario.apellido
             state.uid = payload.usuario.uid
             state.email = payload.usuario.correo
             state.image = payload.usuario.img
@@ -51,6 +63,7 @@ export const authSlice = createSlice({
             state.isLoading= false; 
             state.status='no-authenticated'; 
             state.user= null;
+            state.apellido = null;
             state.email = null; 
             state.uid = null;
             state.image = null;
@@ -62,7 +75,8 @@ export const authSlice = createSlice({
         verifyCode: (state, { payload }) => {
             state.isLoading = false;
             state.verifyCode = payload.verifyCode;
-            state.user = payload.usuario.nombre + " " + payload.usuario.apellido
+            state.user = payload.usuario.nombre
+            state.apellido = payload.usuario.apellido
             state.uid = payload.usuario.uid
             state.email= payload.usuario.correo
             state.image = payload.usuario.img
@@ -92,9 +106,12 @@ export const authSlice = createSlice({
 export const { 
     startLoading,
     setLocation,
-    login,loginWithGoogle,
+    setCurrentLocation,
+    login,
+    loginWithGoogle,
     logout,
-    verifyCode,verifyNewUser,
+    verifyCode,
+    verifyNewUser,
     loginNewUser,
     setErrorMessage,
     updateProfilePhoto 

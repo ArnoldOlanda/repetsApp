@@ -59,6 +59,7 @@ export const startLoginWithGoogle = () => {
 
             if (hasPlayService) {
                 const userInfo = await GoogleSignin.signIn();
+                console.log(JSON.stringify(userInfo,null,4));
                 const { data } = await repetsAPI.post('/auth/google', {
                     id_token: userInfo.idToken
                 });

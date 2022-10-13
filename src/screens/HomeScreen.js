@@ -1,23 +1,29 @@
-import React, { useEffect } from 'react'
-import { Button, Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import React, { useState } from 'react'
+import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
+import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import profileDefault from '../assets/profile_default.jpg'
 import img1 from './../assets/image1.png'
 import img2 from './../assets/image2.png'
-import { logout } from '../store/slices/auth';
 
-import { Avatar } from '../components/Avatar'
 import { PetHouseItem } from '../components/HomeScreen/PetHouseItem'
-import { resetStorePets } from '../store/slices/pets';
+
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
+const categories = ['Perros', 'Gatos', 'Pajaros', 'Peces'];
+
 export const HomeScreen = ({ navigation }) => {
 
     const { image } = useSelector( state => state.auth );
+
+    const [category, setCategory] = useState('Perros');
+
+    const onSelectCategory = (option) => {
+        setCategory(option);
+    }
 
     return (
         <View style={styles.container}>
@@ -32,7 +38,11 @@ export const HomeScreen = ({ navigation }) => {
                     <Text style={styles.ciudadText}> AQP</Text>
                 </View>
                 <View>
-                    <Image source={{uri:image}} style={{ width:42, height: 42, borderRadius:50 }} />
+                    {
+                        image
+                        ? <Image source={{ uri:image }} style={{ width:42, height: 42, borderRadius:50 }} />
+                        : <Image source={profileDefault} style={{ width:42, height: 42, borderRadius:50 }} />
+                    }
                 </View>
             </View>
             <View style={styles.categoryContainer}>
@@ -47,22 +57,26 @@ export const HomeScreen = ({ navigation }) => {
                     <Icon name='options-outline' size={30} color='#000' />
                 </TouchableOpacity>
                 {
-                    ['Perros', 'Gatos', 'Pajaros', 'Peces'].map(e => (
+                    categories.map(e => (
                         <TouchableOpacity
+                            activeOpacity={0.8}
                             key={e}
+                            onPress={() => onSelectCategory(e) }
                             style={{
                                 ...styles.buttonCategory,
-                                backgroundColor: e === 'Perros' ? '#2782CA' : '#ECF2F0',
+                                backgroundColor: category === e ? '#2782CA' : '#ECF2F0',
                             }}>
                             <Text style={{
                                 ...styles.categoryText,
-                                color: e === 'Perros' ? '#fff' : '#000',
+                                color: category === e ? '#fff' : '#000',
                             }} >{e}</Text>
                         </TouchableOpacity>
                     ))
                 }
             </View>
             <ScrollView style={styles.petHousesListContainer} contentContainerStyle={{ alignItems: 'center' }}>
+                <PetHouseItem imgSource={img1} />
+                <PetHouseItem imgSource={img2} />
                 <PetHouseItem imgSource={img1} />
                 <PetHouseItem imgSource={img2} />
                 <PetHouseItem imgSource={img1} />
@@ -118,7 +132,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ECF2F0',
         borderRadius: 5,
         height: 44,
-        paddingHorizontal: 4,
+        paddingHorizontal: 10,
         justifyContent: 'center'
     },
     categoryText: {

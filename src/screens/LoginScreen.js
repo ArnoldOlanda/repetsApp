@@ -1,13 +1,14 @@
-import React from 'react'
-import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View, Button as RNButton, ScrollView } from 'react-native'
+import React,{ useState } from 'react'
+import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View, Button as RNButton, ScrollView, ToastAndroid } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
 
 import { Button } from '../components/Button'
 import { GoogleIcon } from '../components/GoogleIcon'
+import { InputText } from '../components/InputText'
 import { Title } from '../components/Title'
 import { useForm } from '../hooks'
-import { getAuth, setLogin, startLoginWithGoogle } from '../store/slices/auth'
+import { getAuth, startLoginWithGoogle } from '../store/slices/auth'
 
 
 const windowWidth = Dimensions.get('screen').width
@@ -17,26 +18,42 @@ const initialState = {
     usuario: '',
     password: ''
 }
+const formValidations = {
+    usuario: [value => value.includes('@') && value.includes('.'), 'No es un correo valido'],
+    password: [value => value.length >= 8, 'El password debe ser de almenos 8 caracteres']
+}
 
 
 export const LoginScreen = ({ navigation }) => {
 
     const { isLoading } = useSelector(state => state.auth)
     const dispatch = useDispatch();
+    const [formSubmitted, setFormSubmitted] = useState(false)
 
-    const { onInputTextChange, formState, onResetForm } = useForm(initialState);
+    const { onInputTextChange, formState, onResetForm, formValidation, isFormValid } = useForm(initialState, formValidations);
     const { usuario, password } = formState;
+    const { usuarioValid, passwordValid } = formValidation;
 
     const onPressForgotPasswordLink = () => {
         navigation.navigate('ResetPasswordScreen')
     }
 
     const onPressLoginButton = () => {
-        dispatch(getAuth(formState));
+
+        setFormSubmitted(true);
+
+        if (!isFormValid) {
+            return ToastAndroid.show('Revise la informacion ingresada', ToastAndroid.SHORT)
+        } else {
+            dispatch(getAuth(formState));
+            setFormSubmitted(false);
+        }
+
+        onResetForm();
     }
 
     const onPressGoogleLogin = () => {
-        dispatch( startLoginWithGoogle() )   
+        dispatch(startLoginWithGoogle())
     }
 
     const onPressRegisterLink = () => {
@@ -49,15 +66,36 @@ export const LoginScreen = ({ navigation }) => {
                 <Title text='Bienvenido de nuevo' icon='👋' />
                 <Text style={styles.text}>Acceda a su cuenta</Text>
             </View>
-            <View style={styles.inputContainer}>
+
+            <InputText
+                label='Email'
+                value={usuario}
+                onChangeText={onInputTextChange}
+                changeTextKey='usuario'
+                placeholder='Tu email'
+                error={!!usuarioValid && formSubmitted}
+                errorMessage={usuarioValid}
+            />
+            {/* <View style={styles.inputContainer}>
                 <Text style={styles.textInput}>Email</Text>
                 <TextInput
                     style={styles.input}
                     value={usuario}
                     onChangeText={value => onInputTextChange('usuario', value)}
                     placeholder='Tu email' />
-            </View>
-            <View style={styles.inputContainer}>
+            </View> */}
+
+            <InputText
+                label='Password'
+                value={password}
+                onChangeText={onInputTextChange}
+                changeTextKey='password'
+                placeholder='Tu password'
+                error={!!passwordValid && formSubmitted}
+                errorMessage={passwordValid}
+                typePassword
+            />
+            {/* <View style={styles.inputContainer}>
                 <Text style={styles.textInput}>Password</Text>
                 <TextInput
                     style={styles.input}
@@ -65,7 +103,8 @@ export const LoginScreen = ({ navigation }) => {
                     value={password}
                     onChangeText={value => onInputTextChange('password', value)}
                     placeholder='Tu password' />
-            </View>
+            </View> */}
+
             <View style={{ width: windowWidth * 0.90, alignItems: 'flex-start', marginVertical: 10 }}>
                 <Text
                     style={styles.link}

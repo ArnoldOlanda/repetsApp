@@ -1,56 +1,68 @@
-//@ts-check
 
-import React, { useState } from 'react'
-import { Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React from 'react';
+import {
+    ActivityIndicator,
+    Dimensions,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native'
 
-import { useForm } from '../hooks'
 import { Button } from '../components/Button'
 import { Modal } from '../components/RegisterPetScreen/Modal'
 import { Title } from '../components/Title'
-import { useRegisterPet } from '../hooks/useRegisterPet'
+import { useRegisterPet } from '../hooks'
+import { InputText } from '../components/InputText'
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
-
-
 export const RegisterPetScreen = () => {
 
-    const { 
+    const {
+        isLoading,
         formState,
-        onInputTextChange, 
-        tipoMascotaModalVisible, 
-        caracteristicasModalVisible, 
+        formValidation,
+        formSubmitted,
+        onInputTextChange,
+        tipoMascotaModalVisible,
+        caracteristicasModalVisible,
         setTipoMascotaModalVisible,
         setCaracteristicasModalVisible,
-        onCloseModalTipoMascota, 
-        onCloseModalCaracteristicaMascota, 
-        onSelectOptionTipoMascota, 
-        onSelectOptionCaracteristicaMascota, 
-        onPressRegisterButton } = useRegisterPet();
+        onCloseModalTipoMascota,
+        onCloseModalCaracteristicaMascota,
+        onSelectOptionTipoMascota,
+        onSelectOptionCaracteristicaMascota,
+        onPressRegisterButton,
+    } = useRegisterPet();
 
 
     const { nombre, tipoMascota, raza, edad, descripcion, caracteristicasMascota } = formState
+    const { nombreValid, razaValid, edadValid, descripcionValid } = formValidation
 
     return (
         <View style={styles.container}>
 
             <View style={styles.titleContainer}>
                 <Title text='Registra a tu mascota' icon='🐶' />
-                <Text style={{ color: '#B7B7B7', fontWeight: '400', lineHeight: 19 }}> Agrega a tu nueva mascota </Text>
+                <Text style={{ color: '#B7B7B7', fontWeight: '400', lineHeight: 19 }}>
+                    Agrega a tu nueva mascota
+                </Text>
             </View>
 
             <ScrollView style={styles.formContainer}>
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Nombre</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='Su nombre'
-                        value={nombre}
-                        onChangeText={value => onInputTextChange('nombre', value)}
-                    />
-                </View>
+                <InputText
+                    label='Nombre'
+                    value={nombre}
+                    onChangeText={onInputTextChange}
+                    changeTextKey='nombre'
+                    placeholder='Nombre de la mascota'
+                    error={!!nombreValid && formSubmitted}
+                    errorMessage={nombreValid}
+                />
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.labelText}>Tipo de mascota</Text>
@@ -66,35 +78,35 @@ export const RegisterPetScreen = () => {
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Raza</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='Raza de su mascota'
-                        value={raza}
-                        onChangeText={value => onInputTextChange('raza', value)}
-                    />
-                </View>
+                <InputText
+                    label='Raza'
+                    value={raza}
+                    onChangeText={onInputTextChange}
+                    changeTextKey='raza'
+                    placeholder='Raza de la mascota'
+                    error={!!razaValid && formSubmitted}
+                    errorMessage={razaValid}
+                />
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Años</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='Edad de su mascota'
-                        value={edad}
-                        onChangeText={value => onInputTextChange('edad', value)}
-                    />
-                </View>
+                <InputText
+                    label='Años'
+                    value={edad}
+                    onChangeText={onInputTextChange}
+                    changeTextKey='edad'
+                    placeholder='Edad de la mascota'
+                    error={!!edadValid && formSubmitted}
+                    errorMessage={edadValid}
+                />
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Descripcion de la mascota</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='Descripcion corta de su mascota'
-                        value={descripcion}
-                        onChangeText={value => onInputTextChange('descripcion', value)}
-                    />
-                </View>
+                <InputText
+                    label='Descripcion de la mascota'
+                    value={descripcion}
+                    onChangeText={onInputTextChange}
+                    changeTextKey='descripcion'
+                    placeholder='Breve descripcion de la mascota'
+                    error={!!descripcionValid && formSubmitted}
+                    errorMessage={descripcionValid}
+                />
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.labelText}>Caracteristicas</Text>
@@ -107,9 +119,7 @@ export const RegisterPetScreen = () => {
                                 ? <Text>Presione para seleccionar</Text>
                                 : <Text>
                                     {
-                                        caracteristicasMascota.map(e => (
-                                            e + ' '
-                                        ))
+                                        caracteristicasMascota.map(e => (e + ' '))
                                     }
                                 </Text>
                         }
@@ -119,7 +129,7 @@ export const RegisterPetScreen = () => {
                 <Button
                     text='Registrar'
                     onPress={onPressRegisterButton}
-                    isLoading={false}
+                    isLoading={isLoading}
                     stylesProps={{ marginTop: 51, width: windowWidth * 0.85 }} />
 
                 <View style={{ height: 10 }} />

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Dimensions, StyleSheet, Text, ScrollView, ToastAndroid } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { Dimensions, StyleSheet, Text, ScrollView, ToastAndroid, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { registerUser } from '../store/slices/auth'
 import { useForm } from '../hooks'
@@ -11,49 +11,52 @@ import { useState } from 'react'
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
-const initialForm = {
-    nombre: '',
-    apellido: '',
-    celular: '',
-    correo: '',
-    password: '',
-}
+
 
 const formValidations = {
-    nombre: [value => value.length >= 1, 'Este campo es obligatorio'],
-    apellido: [value => value.length >= 1, 'Este campo es obligatorio'],
+    nombre: [value => value.length >= 1, 'Este campo no puede estar vacio'],
+    apellido: [value => value.length >= 1, 'Este campo no puede estar vacio'],
     celular: [value => value.length === 9, 'El celular debe ser de 9 digitos'],
     correo: [value => value.includes('@'), 'No es un correo valido'],
-    password: [value => value.length >= 8, 'El password debe ser de almenos 8 caracteres']
+    //password: [value => value.length >= 8, 'El password debe ser de almenos 8 caracteres']
 }
 
-export const RegisterScreen = ({ navigation }) => {
+export const UpdateUserInfo = ({ navigation }) => {
+
+    const { user, apellido: ape, email, phone, loginWithGoogle } = useSelector(state => state.auth)
+    const initialForm = {
+        nombre: user,
+        apellido: ape,
+        celular: phone,
+        correo: email,
+        // password: '',
+    }
+
 
     const dispatch = useDispatch();
-    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [formSubmitted, setFormSubmitted] = useState(true);
 
     const { formState, onInputTextChange, onResetForm, formValidation, isFormValid } = useForm(initialForm, formValidations);
 
     const { nombre, apellido, celular, correo, password } = formState;
     const { nombreValid, apellidoValid, celularValid, correoValid, passwordValid } = formValidation;
 
-    const onPressRegisterButton = () => {
+    const onPressUpdateInfoButton = () => {
         setFormSubmitted(true);
         if (!isFormValid) {
             return ToastAndroid.show('Revise la informacion ingresada', ToastAndroid.SHORT)
         }
 
-        dispatch(registerUser(formState));
+        dispatch(updateInfoUser(formState));
         onResetForm();
-        navigation.navigate('ConfirmEmailScreen');
+        navigation.navigate('MainProfile');
     }
 
     const onPressLoginLink = () => { navigation.navigate('LoginScreen') }
 
     return (
         <ScrollView contentContainerStyle={{ alignItems: 'center', padding: 5, }} >
-            <Text style={styles.title}>Registrate</Text>
-            <Text style={styles.text}>Create una cuenta</Text>
+            <Text style={styles.title}>Informacion Personal </Text>
 
             <InputText
                 label='Nombre'
@@ -71,7 +74,7 @@ export const RegisterScreen = ({ navigation }) => {
                 onChangeText={onInputTextChange}
                 changeTextKey='apellido'
                 placeholder='Su apellido'
-                error={!!apellidoValid && formSubmitted }
+                error={!!apellidoValid && formSubmitted}
                 errorMessage={apellidoValid}
             />
 
@@ -81,7 +84,7 @@ export const RegisterScreen = ({ navigation }) => {
                 onChangeText={onInputTextChange}
                 changeTextKey='celular'
                 placeholder='Su celular'
-                error={!!celularValid && formSubmitted }
+                error={!!celularValid && formSubmitted}
                 errorMessage={celularValid}
             />
 
@@ -91,11 +94,11 @@ export const RegisterScreen = ({ navigation }) => {
                 onChangeText={onInputTextChange}
                 changeTextKey='correo'
                 placeholder='Tu email'
-                error={!!correoValid && formSubmitted }
+                error={!!correoValid && formSubmitted}
                 errorMessage={correoValid}
             />
 
-            <InputText
+            {/* <InputText
                 label='Password'
                 value={password}
                 onChangeText={onInputTextChange}
@@ -104,7 +107,7 @@ export const RegisterScreen = ({ navigation }) => {
                 error={!!passwordValid && formSubmitted }
                 errorMessage={passwordValid}
                 typePassword
-            />
+            /> */}
 
             {/* <View style={styles.inputContainer}>
                 <Text style={styles.textInput}> Password </Text>
@@ -118,25 +121,8 @@ export const RegisterScreen = ({ navigation }) => {
                     {/* <Icon size={20} name='eye-outline' /> 
                 </View>
             </View> */}
-
-            <Button text={'Aceptar'} onPress={onPressRegisterButton} />
-            <Text style={{ fontWeight: '500', color: '#B7B7B7', marginTop: 18 }}>
-                ¿Tienes una cuenta?
-                <Text style={styles.link} onPress={onPressLoginLink} >
-                    Iniciar Sesión
-                </Text>
-            </Text>
-
-            <Text style={{
-                fontWeight: '500',
-                color: '#B7B7B7',
-                marginTop: 18
-            }}
-            >
-                Al hacer click en Registrar, estas aceptando nuestros
-            </Text>
-            <Text style={styles.link}> Terminos y Condiciones. </Text>
-
+            <View style={{ marginBottom: 30 }} />
+            <Button text={'Guardar'} onPress={onPressUpdateInfoButton} />
         </ScrollView>
     )
 }
@@ -157,6 +143,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: '800',
         color: 'black',
+        marginBottom: 10
 
     },
     text: {

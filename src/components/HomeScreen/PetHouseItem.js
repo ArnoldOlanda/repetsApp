@@ -18,18 +18,19 @@ export const PetHouseItem = ({ imgSource, favorite }) => {
     return (
         <View style={styles.container}>
             <Image source={imgSource} style={{width:250,height:170}} />
-            {/* Favorite icon */}
+            
             <TouchableOpacity 
             style={styles.favoriteIconButton}
             onPress={onPressFavoriteButton}
             >
                 {
-                    !isFavorite 
+                    (!isFavorite) 
                     ?(<HearthIcon  color={'#ADADAD'}/>)
                     :(<HearthIcon  color={'#FF4646'}/>)
                 }
                 
             </TouchableOpacity>
+
             <View style={styles.bottomTextContainer}>
                 {/* Bottom texts */}
                 <View>
@@ -47,7 +48,7 @@ export const PetHouseItem = ({ imgSource, favorite }) => {
 const styles = StyleSheet.create({
     container: {
         position: 'relative',
-        width: windowWidth * 0.7,
+        width: 250,
         marginBottom: 10
     },
     favoriteIconButton:{

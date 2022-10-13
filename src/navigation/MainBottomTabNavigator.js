@@ -3,15 +3,34 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { FavoriteScreen, HomeScreen, LocationScreen, MessagesScreen, ProfileScreen } from '../screens';
-import { MyPetsScreen } from '../screens/MyPetsScreen';
+import { FavoriteScreen, HomeScreen, LocationScreen } from '../screens';
 import { ProfileUserStack } from './ProfileUserStack';
 import { ChatStack } from './ChatStack';
+import { useEffect } from 'react';
+import { io } from 'socket.io-client';
 
+
+let socket = io('https://repetsapi-production.up.railway.app')
 
 const Tab = createBottomTabNavigator();
 
 export const MainBottomTabNavigator = () => {
+
+    useEffect(() => {
+      
+        socket.on('connect',()=>{
+            console.log("socket conectado")
+        })
+
+        socket.on('disconnect',()=>{
+            console.log("socket desconectado");
+        })
+    
+        return () =>{
+            
+        }
+    }, [])
+    
 
     return (
         <Tab.Navigator

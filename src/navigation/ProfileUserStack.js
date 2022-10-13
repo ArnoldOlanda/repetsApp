@@ -4,6 +4,8 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import { ProfileScreen, MyPetsScreen } from '../screens';
 import { RegisterPetScreen } from '../screens/RegisterPetScreen';
 import { DetailPetScreen } from '../screens/DetailPetScreen';
+import { UpdateUserInfo } from '../screens/UpdateUserInfo';
+import { RegisterPetHouseScreen } from '../screens/RegisterPetHouseScreen';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +26,8 @@ export const ProfileUserStack = () => {
             }}
         >
             <Stack.Screen name='MainProfile' options={{ headerShown: false }} component={ ProfileScreen } />
+            <Stack.Screen name='UpdateUserInfo' options={{ title:'' }} component={ UpdateUserInfo } />
+            <Stack.Screen name='RegisterPethouse' options={{ title:'' }} component={ RegisterPetHouseScreen } />
             <Stack.Screen name='MyPets' options={{ title:'' }} component={ MyPetsScreen } />
             <Stack.Screen name='RegisterPet' options={{ title:'' }} component={ RegisterPetScreen } />
             <Stack.Screen name='DetailPet' options={{ title:'' }} component={ DetailPetScreen } />

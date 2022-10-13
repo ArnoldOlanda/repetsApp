@@ -20,7 +20,7 @@ export const Huella = (props) => (
 )
 
 
-export const Comportamiento = (props) => (
+export const ComportamientoIcon = (props) => (
   <Svg
     width={27}
     height={27}

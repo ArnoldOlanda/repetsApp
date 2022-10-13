@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         width: windowWidth * 0.8,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
     },
     button: {
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 23,
+        marginHorizontal: 10
     },
     buttonText: {
         fontSize: 16,
@@ -111,6 +112,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 23,
-        backgroundColor: '#ECF2F0'
+        backgroundColor: '#ECF2F0',
+        marginHorizontal: 10
     }
 })

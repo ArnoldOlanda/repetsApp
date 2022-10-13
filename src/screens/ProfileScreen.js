@@ -2,28 +2,33 @@ import React, { useState } from 'react'
 import {
   Dimensions, Image, ScrollView,
   StyleSheet, Text, TouchableOpacity, View, Button, ActivityIndicator
-} from 'react-native'
+} from 'react-native';
+
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from "react-native-modal";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+import { logout, startUpdateProfilePicture } from '../store/slices/auth';
 import { Arrow, Edit, EditPhoto, History, Hosp, Language, Learn, Notification, Pay, Pet } from '../components/ProfileScreen/Icons';
 import { Rectangule } from '../components/ProfileScreen/Rectangule';
-import { startUpdateProfilePicture } from '../store/slices/auth';
+
+import profileDefault from '../assets/profile_default.jpg';
+
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
 export const ProfileScreen = ({ navigation }) => {
 
-  const { image, user, email,isLoading } = useSelector(state => state.auth);
+  const { image, user, apellido, phone, email, isLoading, loginWithGoogle } = useSelector(state => state.auth);
   const dispatch = useDispatch()
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [preloadImage, setPreloadImage] = useState({
-    uri:image,
-    type:'',
-    name:''
+    uri: image,
+    type: '',
+    name: ''
   });
 
   const toggleModal = () => {
@@ -32,7 +37,7 @@ export const ProfileScreen = ({ navigation }) => {
 
   const onPressOpenMediaLibrary = async () => {
     try {
-      const {assets} = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 })
+      const { assets } = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 })
       const [image] = assets
       setPreloadImage({
         uri: image.uri,
@@ -46,7 +51,7 @@ export const ProfileScreen = ({ navigation }) => {
 
   const onPressOpenCamera = async () => {
     try {
-      const { assets } = await launchCamera({ saveToPhotos:true })
+      const { assets } = await launchCamera({ saveToPhotos: true })
       const [photo] = assets
       setPreloadImage({
         uri: photo.uri,
@@ -70,18 +75,21 @@ export const ProfileScreen = ({ navigation }) => {
 
       <View style={styles.header}>
         <View style={styles.photoContainer}>
-          {
-            (isLoading) 
-            ? (
-              <View style={{ 
-                ...styles.photo, 
-                justifyContent:'center', 
-                alignItems:'center' }} 
-              >
-                <ActivityIndicator size='small' color='#fff' />
-              </View>
-            )
-            : <Image source={{ uri: image }} style={styles.photo} />
+          { //TODO: Arreglar esta vaina se ve feo xd
+            (image)
+              ? (isLoading)
+                  ? (
+                    <View style={{
+                      ...styles.photo,
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                    >
+                      <ActivityIndicator size='small' color='#fff' />
+                    </View>
+                  )
+                  : <Image source={{ uri: image }} style={styles.photo} />
+              : ( <Image source={ profileDefault } style={styles.photo} /> )
           }
           <TouchableOpacity
             onPress={() => setModalVisible(true)}
@@ -91,8 +99,8 @@ export const ProfileScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={{ fontSize: 22, color: "black", fontWeight: "bold" }}>{ user }</Text>
-        <Text>{ email } | numero</Text>
+        <Text style={{ fontSize: 22, color: "black", fontWeight: "bold" }}>{user} {apellido}</Text>
+        <Text>{email} {!loginWithGoogle ? `| ${phone}` : ''}</Text>
       </View>
 
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
@@ -120,13 +128,20 @@ export const ProfileScreen = ({ navigation }) => {
 
         <View style={styles.boxChatListContainer}>
           <Text style={styles.title}>Configuracion de la cuenta</Text>
-          <View style={styles.subtitle}>
-            <View style={{ flexDirection: "row" }}>
-              <Edit />
-              <Text style={{ marginLeft: 5 }}>Editar informacion del personal</Text>
-            </View>
-            <Arrow />
-          </View>
+          {
+            !loginWithGoogle
+            && (
+              <View style={styles.subtitle}>
+                <TouchableOpacity
+                  style={{ flexDirection: "row" }}
+                  onPress={() => navigation.navigate('UpdateUserInfo')}
+                >
+                  <Edit />
+                  <Text style={{ marginLeft: 5 }}>Editar informacion del personal</Text>
+                </TouchableOpacity>
+                <Arrow />
+              </View>
+            )}
           <View style={styles.subtitle}>
             <View style={{ flexDirection: "row" }}>
               <Notification />
@@ -153,10 +168,13 @@ export const ProfileScreen = ({ navigation }) => {
         <View style={styles.boxChatListContainer}>
           <Text style={styles.title}>Hosting</Text>
           <View style={styles.subtitle}>
-            <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity 
+            style={{ flexDirection: "row" }}
+            onPress={ ()=> navigation.navigate('RegisterPethouse') }
+            >
               <Hosp />
               <Text style={{ marginLeft: 5 }}>Hospedar</Text>
-            </View>
+            </TouchableOpacity>
             <Arrow />
           </View>
 
@@ -168,33 +186,33 @@ export const ProfileScreen = ({ navigation }) => {
             <Arrow />
           </View>
         </View>
-        
-       <View style={styles.boxChatListContainer}>
-        <TouchableOpacity onPress={async () => {
-                try {
-                    await GoogleSignin.signOut();
-                    dispatch( logout({error:''}) )
-                    //sthis.setState({ user: null }); // Remember to remove the user from your app's state as well
-                } catch (error) {
-                    console.error(error);
-                }
-        }}>
-          <View style={{flexDirection: "row"}}>
-            <Learn/>
-            <Text style={{marginLeft:5}}>Cerrar Sesion</Text>
-          </View>
-        </TouchableOpacity>
-        
-       </View>
-       
+
+        <View style={styles.boxChatListContainer}>
+          <TouchableOpacity onPress={async () => {
+            try {
+              await GoogleSignin.signOut();
+              dispatch(logout({ error: '' }))
+              //sthis.setState({ user: null }); // Remember to remove the user from your app's state as well
+            } catch (error) {
+              console.error(error);
+            }
+          }}>
+            <View style={{ flexDirection: "row" }}>
+              <Learn />
+              <Text style={{ marginLeft: 5 }}>Cerrar Sesion</Text>
+            </View>
+          </TouchableOpacity>
+
+        </View>
+
 
       </ScrollView>
 
-      <Modal 
-      isVisible={isModalVisible}
-      onBackButtonPress={()=>setModalVisible(false)}
-      animationIn='fadeIn'
-      animationOut='fadeOut'
+      <Modal
+        isVisible={isModalVisible}
+        onBackButtonPress={() => setModalVisible(false)}
+        animationIn='fadeIn'
+        animationOut='fadeOut'
       >
         <View style={styles.modalContainer}>
           <Text>Actualizar foto de perfil</Text>
@@ -203,13 +221,13 @@ export const ProfileScreen = ({ navigation }) => {
             <Button title="Take a photo" onPress={onPressOpenCamera} />
           </View>
           <Image source={{ uri: preloadImage.uri }} resizeMode='cover' style={styles.preloadImageStyle} />
-          <Button title='Actualizar foto' onPress={()=>{
-            dispatch( startUpdateProfilePicture( preloadImage ) )
+          <Button title='Actualizar foto' onPress={() => {
+            dispatch(startUpdateProfilePicture(preloadImage))
             setModalVisible(false)
           }} />
         </View>
       </Modal>
-      
+
 
     </View>
   )
@@ -237,8 +255,8 @@ const styles = StyleSheet.create({
   },
   shadowProp: {
     // shadowColor: '#2782CA',
-    shadowColor:'#000',
-    elevation: 20,  
+    shadowColor: '#000',
+    elevation: 20,
   },
   boxChatListContainer: {
     paddingVertical: 11,
@@ -257,7 +275,7 @@ const styles = StyleSheet.create({
     height: 200,
     backgroundColor: "#EBF0F0",
     position: "absolute",
-    borderBottomLeftRadius:360,
+    borderBottomLeftRadius: 360,
     borderBottomRightRadius: 360,
     top: -100
 
@@ -272,22 +290,22 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     backgroundColor: "black",
   },
-  photo:{ 
-    width: 120, 
-    height: 120, 
-    borderRadius: 100 
+  photo: {
+    width: 120,
+    height: 120,
+    borderRadius: 100
   },
   modalContainer: {
-    alignItems:'center',
+    alignItems: 'center',
     height: windowHeight * 0.6,
     backgroundColor: 'white',
     padding: 10,
     margin: 0
   },
-  preloadImageStyle:{ 
-    width: 232, 
-    height: 232, 
+  preloadImageStyle: {
+    width: 232,
+    height: 232,
     borderRadius: 150,
-    marginVertical:10 
+    marginVertical: 10
   }
 })

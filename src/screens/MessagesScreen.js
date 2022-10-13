@@ -1,11 +1,14 @@
 import React from 'react'
 import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { useSelector } from 'react-redux';
+
+import profileDefault from '../assets/profile_default.jpg'
+
 import { Chat } from '../components/ChatScreen/Chat';
 import { SubTitle1 } from '../components/ChatScreen/SubTitle1';
 import { SubTitle2 } from '../components/ChatScreen/SubTitle2';
 import { Title } from '../components/ChatScreen/Title';
 import { Avatar } from '../components/Avatar';
-import { useSelector } from 'react-redux';
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
@@ -39,7 +42,11 @@ export const MessagesScreen = () => {
     <View style={styles.container}>
        <View style={styles.titleContainer}>
         <Title/> 
-        <Image source={{ uri:image }} style={{ width:42, height:42, borderRadius: 50 }} />
+        {
+          (image)
+          ? <Image source={{ uri:image }} style={{ width:42, height:42, borderRadius: 50 }} />
+          : <Image source={ profileDefault } style={{ width:42, height:42, borderRadius: 50 }} />
+        }
        </View>
 
        <View style={styles.boxChatListContainer}>

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-
+import { AppState, Platform } from 'react-native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
-import { MainBottomTabNavigator } from './MainBottomTabNavigator';
-
 import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
+import { check, openSettings, PERMISSIONS, request } from 'react-native-permissions';
 import { useSelector } from 'react-redux';
 
+import { MainBottomTabNavigator } from './MainBottomTabNavigator';
 import {
     ConfirmEmailScreen,
     LoginScreen,
@@ -36,6 +36,34 @@ const Stack = createStackNavigator();
 export const MainStackNavigator = () => {
 
     const { status } = useSelector(state => state.auth);
+
+    const checkLocationPermision = async () => {
+
+        let permissionStatus;
+
+        if(Platform.OS === 'ios'){
+            permissionStatus = await request( PERMISSIONS.IOS.LOCATION_WHEN_IN_USE );
+        } else {
+            permissionStatus = await request( PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION );
+        }
+
+        if( permissionStatus === 'denied' ) return;
+        console.log(permissionStatus);
+        if( permissionStatus === 'blocked' ){
+            openSettings()
+        }
+    }
+
+    useEffect(() => {
+      
+        AppState.addEventListener('change', state =>{
+            if(state !== 'active') return;
+
+            checkLocationPermision()
+        })
+
+    }, [])
+    
 
     useEffect(() => {
 
