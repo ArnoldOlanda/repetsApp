@@ -1,14 +1,15 @@
-import React,{ useState } from 'react'
-import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View, Button as RNButton, ScrollView, ToastAndroid } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View, Button as RNButton, ScrollView, ToastAndroid } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import messaging from '@react-native-firebase/messaging';
 
-
+import { repetsAPI } from '../api'
+import { getAuth, startLoginWithGoogle } from '../store/slices/auth'
+import { useForm } from '../hooks'
 import { Button } from '../components/Button'
 import { GoogleIcon } from '../components/GoogleIcon'
 import { InputText } from '../components/InputText'
 import { Title } from '../components/Title'
-import { useForm } from '../hooks'
-import { getAuth, startLoginWithGoogle } from '../store/slices/auth'
 
 
 const windowWidth = Dimensions.get('screen').width
@@ -26,7 +27,7 @@ const formValidations = {
 
 export const LoginScreen = ({ navigation }) => {
 
-    const { isLoading } = useSelector(state => state.auth)
+    const { isLoading, uid } = useSelector(state => state.auth)
     const dispatch = useDispatch();
     const [formSubmitted, setFormSubmitted] = useState(false)
 
@@ -60,6 +61,44 @@ export const LoginScreen = ({ navigation }) => {
         navigation.navigate('RegisterScreen')
     }
 
+    const saveTokenToDatabase = async (token) => {
+
+        try {
+            if (uid !== null) {
+                const { data } = await repetsAPI.put(`/usuarios/notification_token/${uid}`, {
+                    token
+                })
+
+                console.log(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        messaging().registerDeviceForRemoteMessages();
+        messaging().getToken().then(token => {
+            return saveTokenToDatabase( token );
+          })
+      
+          // Listen to whether the token changes
+          return messaging().onTokenRefresh(token => {
+            saveTokenToDatabase(token);
+          });
+
+    }, [ uid ])
+    
+    useEffect(() => {
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+          console.log("Notificacion recibida", remoteMessage);
+        });
+    
+        return ()=>{
+          unsubscribe();
+        };
+    }, []);
+
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', }}>
             <View style={{ alignItems: 'flex-start', width: windowWidth * 0.90 }}>
@@ -76,14 +115,6 @@ export const LoginScreen = ({ navigation }) => {
                 error={!!usuarioValid && formSubmitted}
                 errorMessage={usuarioValid}
             />
-            {/* <View style={styles.inputContainer}>
-                <Text style={styles.textInput}>Email</Text>
-                <TextInput
-                    style={styles.input}
-                    value={usuario}
-                    onChangeText={value => onInputTextChange('usuario', value)}
-                    placeholder='Tu email' />
-            </View> */}
 
             <InputText
                 label='Password'
@@ -95,15 +126,6 @@ export const LoginScreen = ({ navigation }) => {
                 errorMessage={passwordValid}
                 typePassword
             />
-            {/* <View style={styles.inputContainer}>
-                <Text style={styles.textInput}>Password</Text>
-                <TextInput
-                    style={styles.input}
-                    secureTextEntry
-                    value={password}
-                    onChangeText={value => onInputTextChange('password', value)}
-                    placeholder='Tu password' />
-            </View> */}
 
             <View style={{ width: windowWidth * 0.90, alignItems: 'flex-start', marginVertical: 10 }}>
                 <Text

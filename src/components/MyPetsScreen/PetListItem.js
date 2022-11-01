@@ -9,7 +9,7 @@ import petListItem from '../../assets/petListItemNone.png'
 export const PetListItem = ({ pet }) => {
 
     const navigation = useNavigation();
-    const {nombre, raza, edad} = pet;
+    const {nombre, raza, edad, img} = pet;
     const dispatch = useDispatch();
 
     const onPressPetListItem = () => {
@@ -26,7 +26,7 @@ export const PetListItem = ({ pet }) => {
         style={[styles.container, styles.shadowProp]}
         onPress={ onPressPetListItem }
         >
-            <Image source={petListItem} style={{ flex: 1, width:244 }} />
+            <Image source={img ? {uri: img}: petListItem} style={{ flex: 1, width:244 }} />
             <View style={styles.cardFooter}>
                 <Text style={{ 
                     fontSize: 16, 

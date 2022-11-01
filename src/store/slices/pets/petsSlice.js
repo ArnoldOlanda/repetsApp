@@ -9,7 +9,7 @@ export const petsSlice = createSlice({
         selectedPet: {}
     },
     reducers: {
-        loadingPets:(state) => {
+        startLoadingPets:(state) => {
             state.isLoading = true
         },
         setPets: (state, { payload } ) => {
@@ -30,4 +30,4 @@ export const petsSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { loadingPets, setPets, setCurrentPet, resetStorePets } = petsSlice.actions;
+export const { startLoadingPets, setPets, setCurrentPet, resetStorePets } = petsSlice.actions;

@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet, Text, TextInput, View } from 'react-native'
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
-export const InputText = ({ label, value, onChangeText, changeTextKey , placeholder, error, errorMessage, typePassword= false }) => {
+export const InputText = ({ label, value, onChangeText, changeTextKey , placeholder, error, errorMessage, typePassword= false, keyboardType }) => {
     return (
         <View style={styles.inputContainer}>
             <Text style={styles.textInput}> { label } </Text>
@@ -14,6 +14,7 @@ export const InputText = ({ label, value, onChangeText, changeTextKey , placehol
                 onChangeText={value => onChangeText(changeTextKey , value)}
                 placeholder={ placeholder } 
                 secureTextEntry={ typePassword }
+                keyboardType={keyboardType ? keyboardType : ''}
             />
             {
                 error && <Text style={styles.textError}>{ errorMessage }</Text>
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
         marginBottom: 3
     },
     input: {
-        width: windowWidth * 0.87,
+        width: windowWidth * 0.85,
         height: 38,
         paddingLeft: 13,
         backgroundColor: '#ECF2F0',

@@ -1,8 +1,11 @@
 import axios from 'axios'
 
+export const repetsApiUrl = 'http://192.168.1.34:8000/api'
+// export const repetsApiUrl = 'https://repetsapi-production.up.railway.app/api'
+
+
 export const repetsAPI = axios.create({
-    baseURL:'https://repetsapi-production.up.railway.app/api',
-    // baseURL:'http://192.168.1.100:8000/api',
+    baseURL: repetsApiUrl,
     headers: {
         'Content-Type': 'application/json'
     }

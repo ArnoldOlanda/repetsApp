@@ -1,18 +1,30 @@
-import React from 'react'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ComportamientoIcon, Huella, Sentimiento } from '../components/DetailPetScreen/Icons'
+import Icon from 'react-native-vector-icons/Ionicons'
 
+import { UploadImageModal } from '../components/UploadImageModal'
+
+import placeholder from '../assets/pet_placeholder.png'
+import { startUpdatePetImage } from '../store/slices/pets/thunks'
 
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
-export const DetailPetScreen = () => {
+export const DetailPetScreen = ({ navigation }) => {
 
-  const { selectedPet } = useSelector(state => state.pets);
+  const { selectedPet, isLoading } = useSelector(state => state.pets);
+  const dispatch = useDispatch();
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const toggleModal = (visible) => setIsModalVisible(visible);
+  const onPressUpdatePetImage = (image) => {
+    dispatch( startUpdatePetImage(image) )
+  }
 
   const CaracteristicaItem = ({ titulo, desc }) => (
     <View style={styles.caracteristicaItem}>
@@ -28,13 +40,44 @@ export const DetailPetScreen = () => {
       </View>))
   }
 
-
+  console.log(selectedPet);
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
+        
+          { //TODO: Arreglar esta vaina se ve feo xd
+            (selectedPet.img)
+              ? (isLoading)
+                  ? (
+                    <View style={{
+                      ...styles.imageContainer,
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                    >
+                      <ActivityIndicator size='small' color='#000' />
+                    </View>
+                  )
+                  : <Image source={{ uri: selectedPet.img }} style={styles.imageContainer} />
+              : ( <Image source={placeholder} style={styles.imageContainer} /> )
+          }
         <View style={styles.title}>
           <Text style={{ fontWeight: "bold", fontSize: 22, color: "black" }}>{selectedPet.nombre}</Text>
           <Text>{selectedPet.raza}</Text>
+        </View>
+        <View style={styles.topButtonsContainer}>
+          <TouchableOpacity
+          onPress={()=> navigation.pop()}
+          >
+            <Icon name='arrow-back' size={30} color='black' />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.editBtn}
+            onPress={()=> setIsModalVisible(true)}
+          >
+            <Icon name='pencil' size={20} color='black' />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -58,7 +101,7 @@ export const DetailPetScreen = () => {
 
           <View style={{ flexDirection: "row", alignItems: "center", width: "100%", marginBottom: 10 }}>
             <ComportamientoIcon />
-            <Text style={ styles.subtitle }> Comportamiento de {selectedPet.nombre}</Text>
+            <Text style={styles.subtitle}> Comportamiento de {selectedPet.nombre}</Text>
           </View>
 
           <View style={styles.comportamientoContainer}>
@@ -67,6 +110,15 @@ export const DetailPetScreen = () => {
         </View>
       </ScrollView>
 
+      <UploadImageModal
+      title='Actualizar imagen de mascota'
+      currentImage={ selectedPet.img }
+      isModalVisible={ isModalVisible }
+      onChangeVisible={ toggleModal }
+      onPressUpdate={ onPressUpdatePetImage }
+      imageStyles={{ width: 280, height: 220, borderRadius: 5 }}
+      placeholderImage={placeholder}
+      />
     </View>
   )
 }
@@ -82,8 +134,24 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: windowWidth,
     height: 300,
-    backgroundColor: "yellow",
     marginBottom: 40
+  },
+  editBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  topButtonsContainer: {
+    position: 'absolute',
+    width: windowWidth,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    top: 20,
+    paddingHorizontal: 20
   },
   title: {
     height: 70,

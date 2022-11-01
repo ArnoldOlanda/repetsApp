@@ -8,10 +8,12 @@ import { setCurrentLocation, setLocation } from '../store/slices/auth';
 import { Title } from '../components/LocationScreen/Title';
 import { Fab } from '../components/LocationScreen/Fab';
 import { Modal } from '../components/LocationScreen/Modal'
+import { setCurrentPethouse } from '../store/slices/pethouses/pethousesSlice';
 //import {GOOGLE_MAPS_KEY} from '@env'
 export const LocationScreen = () => {
 
     const { location, currentLocation } = useSelector(state => state.auth);
+    const { pethouses, selectedPethouse } = useSelector(state => state.pethouses);
     const dispatch = useDispatch();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -66,7 +68,7 @@ export const LocationScreen = () => {
                 dispatch(setCurrentLocation(location))
             },
             err => console.log(err),
-            { enableHighAccuracy: true, distanceFilter: 10, maximumAge:0 }
+            { enableHighAccuracy: true, distanceFilter: 10, maximumAge: 0 }
         )
     }
 
@@ -113,7 +115,7 @@ export const LocationScreen = () => {
         }
     }, [])
 
-    //image={{uri: 'custom_pin'}}
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>
@@ -136,14 +138,22 @@ export const LocationScreen = () => {
                         showsMyLocationButton={false}
                     >
 
-                        <Marker
-                            image={require('../assets/images/marker3.png')}
-                            coordinate={{
-                                latitude: -16.416955248690588,
-                                longitude: -71.50859011767815
-                            }}
-                            onPress={() => (setIsOpen(true))}
-                        />
+                        {
+                            pethouses.map((e) => (
+                                <Marker
+                                    key={e.uid}
+                                    image={require('../assets/images/marker3.png')}
+                                    coordinate={{
+                                        latitude: Number(e.coordenadas.latitud),
+                                        longitude: Number(e.coordenadas.longitud)
+                                    }}
+                                    onPress={() => {
+                                        dispatch(setCurrentPethouse(e))
+                                        setIsOpen(true)
+                                    }}
+                                />
+                            ))
+                        }
 
                     </MapView>
                     <Fab
@@ -157,11 +167,17 @@ export const LocationScreen = () => {
                     />
                 </View>
             </View>
-            <Modal
-                onCloseModal={closeModal}
-                visible={isOpen}
-                modalHeight={230}
-            />
+            {
+                (selectedPethouse && Object.keys(selectedPethouse).length > 0)
+                && (
+                    <Modal
+                        data={selectedPethouse}
+                        onCloseModal={closeModal}
+                        visible={isOpen}
+                        modalHeight={230}
+                    />
+                )
+            }
         </View>
     )
 }

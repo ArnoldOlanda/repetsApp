@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
-import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react'
+import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import profileDefault from '../assets/profile_default.jpg'
-import img1 from './../assets/image1.png'
-import img2 from './../assets/image2.png'
 
 import { PetHouseItem } from '../components/HomeScreen/PetHouseItem'
+import { startLoadPethouses } from '../store/slices/pethouses/thunks';
 
 
 const windowWidth = Dimensions.get('screen').width
@@ -15,15 +14,25 @@ const windowHeight = Dimensions.get('screen').height
 
 const categories = ['Perros', 'Gatos', 'Pajaros', 'Peces'];
 
-export const HomeScreen = ({ navigation }) => {
+export const HomeScreen = () => {
 
     const { image } = useSelector( state => state.auth );
+    const { pethouses, isLoading } = useSelector( state => state.pethouses );
+
+    const dispatch = useDispatch();
 
     const [category, setCategory] = useState('Perros');
 
     const onSelectCategory = (option) => {
         setCategory(option);
     }
+
+    useEffect(() => {
+      
+        dispatch( startLoadPethouses() )
+        
+    }, [])
+    
 
     return (
         <View style={styles.container}>
@@ -75,12 +84,14 @@ export const HomeScreen = ({ navigation }) => {
                 }
             </View>
             <ScrollView style={styles.petHousesListContainer} contentContainerStyle={{ alignItems: 'center' }}>
-                <PetHouseItem imgSource={img1} />
-                <PetHouseItem imgSource={img2} />
-                <PetHouseItem imgSource={img1} />
-                <PetHouseItem imgSource={img2} />
-                <PetHouseItem imgSource={img1} />
-                <PetHouseItem imgSource={img2} />
+                {
+                    isLoading ? <ActivityIndicator size='large' color='black' />
+                    :(
+                        pethouses.map(e=>(
+                            <PetHouseItem key={ e.uid } data={e} />
+                        ))
+                    )
+                }
             </ScrollView>
         </View>
     )

@@ -48,7 +48,7 @@ export const MainStackNavigator = () => {
         }
 
         if( permissionStatus === 'denied' ) return;
-        console.log(permissionStatus);
+
         if( permissionStatus === 'blocked' ){
             openSettings()
         }

@@ -1,15 +1,18 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Dimensions, StyleSheet, Text, View, Image } from "react-native";
 import ReacNativeModal from "react-native-modal";
 import { Button } from "../Button";
 import { Heart } from "./Icon";
-import { optionsCaracteristicasMascota, optionsTipoMascota } from "./modalOptions";
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
 
-export const Modal = ({ visible, onCloseModal, modalHeight }) => {
+export const Modal = ({ visible, onCloseModal, modalHeight,data }) => {
+
+    const { nombre, distrito, provincia, tarifa_dia, galeria } = data
+
+    // const [image] = galeria
 
     return (
         <View style={{ flex: 1 }}>
@@ -26,16 +29,17 @@ export const Modal = ({ visible, onCloseModal, modalHeight }) => {
             >
                 <View style={{ ...styles.modalContainer, height: modalHeight }}>
                     <View style={{ width: 35, height: 0, borderWidth: 4, borderColor: '#2782CA', borderRadius: 10, marginVertical: 5 }} />
+
                     <View style={styles.optionsContainer}>
-                        <View style={{backgroundColor:"yellow", borderRadius:6, height:72,width:72}}></View>
+                        <Image source={{ uri:galeria[0] }} style={{ height:72,width:72, borderRadius:6 }}/>
                         <View style={{flex:1, paddingHorizontal:5}}>
-                            <Text style={{color:"black", fontWeight:"bold"}}> Nombre hospedaje</Text>
-                            <Text> direccion</Text>
-                            <Text><Text style={{color:"#2782CA", fontWeight:"bold"}}> x.x</Text> (reviews)</Text>
+                            <Text style={{color:"black", fontWeight:"bold"}}>{ nombre }</Text>
+                            <Text>{ distrito } { provincia }</Text>
+                            <Text><Text style={{color:"#2782CA", fontWeight:"bold"}}> 4.5</Text> (reviews)</Text>
                         </View>
                         
                         <View>
-                            <Text style={{color:"#2782CA", fontWeight:"bold"}}> S/.XX</Text>
+                            <Text style={{color:"#2782CA", fontWeight:"bold"}}> S/.{ tarifa_dia }</Text>
                             <Text>/noche</Text>
                             <Heart/>
                         </View>

@@ -5,15 +5,15 @@ import {
 } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import Modal from "react-native-modal";
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
 import { logout, startUpdateProfilePicture } from '../store/slices/auth';
 import { Arrow, Edit, EditPhoto, History, Hosp, Language, Learn, Notification, Pay, Pet } from '../components/ProfileScreen/Icons';
-import { Rectangule } from '../components/ProfileScreen/Rectangule';
+
 
 import profileDefault from '../assets/profile_default.jpg';
+import { clearMessages } from '../store/slices/messages/messagesSlice';
+import { UploadImageModal } from '../components/UploadImageModal';
+import { resetStorePethouses } from '../store/slices/pethouses/pethousesSlice';
 
 
 const windowWidth = Dimensions.get('screen').width
@@ -25,45 +25,12 @@ export const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch()
 
   const [isModalVisible, setModalVisible] = useState(false);
-  const [preloadImage, setPreloadImage] = useState({
-    uri: image,
-    type: '',
-    name: ''
-  });
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-
-  const onPressOpenMediaLibrary = async () => {
-    try {
-      const { assets } = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 })
-      const [image] = assets
-      setPreloadImage({
-        uri: image.uri,
-        name: image.fileName,
-        type: image.type
-      })
-    } catch (error) {
-      console.log(error);
-    }
+  const toggleModal = (visible) => setModalVisible(visible);
+  const onPressUpdateUserImage = (image) => {
+    dispatch( startUpdateProfilePicture(image) )
   }
 
-  const onPressOpenCamera = async () => {
-    try {
-      const { assets } = await launchCamera({ saveToPhotos: true })
-      const [photo] = assets
-      setPreloadImage({
-        uri: photo.uri,
-        name: photo.fileName,
-        type: photo.type
-      })
-
-      console.log(photo);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const Rectangle = () => {
     return <View style={[styles.rectangle, styles.shadowProp]} />;
@@ -188,11 +155,12 @@ export const ProfileScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.boxChatListContainer}>
-          <TouchableOpacity onPress={async () => {
+          <TouchableOpacity onPress={ async () => {
             try {
               await GoogleSignin.signOut();
-              dispatch(logout({ error: '' }))
-              //sthis.setState({ user: null }); // Remember to remove the user from your app's state as well
+              dispatch( logout({ error: '' }) )
+              dispatch( clearMessages() )
+              dispatch( resetStorePethouses() )
             } catch (error) {
               console.error(error);
             }
@@ -208,26 +176,14 @@ export const ProfileScreen = ({ navigation }) => {
 
       </ScrollView>
 
-      <Modal
-        isVisible={isModalVisible}
-        onBackButtonPress={() => setModalVisible(false)}
-        animationIn='fadeIn'
-        animationOut='fadeOut'
-      >
-        <View style={styles.modalContainer}>
-          <Text>Actualizar foto de perfil</Text>
-          <View>
-            <Button title="Choose a picture" onPress={onPressOpenMediaLibrary} />
-            <Button title="Take a photo" onPress={onPressOpenCamera} />
-          </View>
-          <Image source={{ uri: preloadImage.uri }} resizeMode='cover' style={styles.preloadImageStyle} />
-          <Button title='Actualizar foto' onPress={() => {
-            dispatch(startUpdateProfilePicture(preloadImage))
-            setModalVisible(false)
-          }} />
-        </View>
-      </Modal>
-
+      <UploadImageModal 
+      currentImage={image}
+      title="Actualizar foto de perfil" 
+      isModalVisible={isModalVisible}
+      onChangeVisible={toggleModal}
+      onPressUpdate={onPressUpdateUserImage}
+      imageStyles={{ borderRadius:120 }}
+      />
 
     </View>
   )
@@ -295,17 +251,4 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 100
   },
-  modalContainer: {
-    alignItems: 'center',
-    height: windowHeight * 0.6,
-    backgroundColor: 'white',
-    padding: 10,
-    margin: 0
-  },
-  preloadImageStyle: {
-    width: 232,
-    height: 232,
-    borderRadius: 150,
-    marginVertical: 10
-  }
 })

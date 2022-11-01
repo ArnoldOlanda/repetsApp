@@ -1,5 +1,6 @@
 import React from 'react'
-import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native' 
+import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { useSelector } from 'react-redux';
 import { PetHouseItem } from '../components/HomeScreen/PetHouseItem';
 import { Title } from '../components/Title';
 
@@ -11,19 +12,25 @@ const windowHeight = Dimensions.get('screen').height
 
 export const FavoriteScreen = () => {
 
+  const { pethouses, isLoading } = useSelector(state => state.pethouses)
+
   return (
     <View style={styles.container}>
-       <View style={styles.titleContainer}>
+      <View style={styles.titleContainer}>
         <Title text='Favoritos' icon='🖤' />
-       </View>
+      </View>
       <ScrollView
         style={styles.petHousesListContainer}
         contentContainerStyle={{ alignItems: 'center' }}
       >
-        <PetHouseItem imgSource={img1} favorite />
-        <PetHouseItem imgSource={img2} favorite />
-        <PetHouseItem imgSource={img1} favorite />
-        <PetHouseItem imgSource={img2} favorite />
+        {
+          isLoading ? <ActivityIndicator size='large' color='black' />
+            : (
+              pethouses.map(e => (
+                <PetHouseItem key={e.uid} data={e} />
+              ))
+            )
+        }
       </ScrollView>
     </View>
   )
@@ -35,10 +42,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 39,
   },
-  titleContainer:{
+  titleContainer: {
     width: windowWidth,
-    paddingHorizontal:27
-  },  
+    paddingHorizontal: 27
+  },
   petHousesListContainer: {
     marginTop: 16,
     width: windowWidth

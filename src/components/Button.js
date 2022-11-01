@@ -3,10 +3,11 @@ import { ActivityIndicator, Dimensions, StyleSheet, Text, TouchableOpacity } fro
 
 const windowWidth = Dimensions.get('screen').width
 
-export const Button = ({ text, onPress, isLoading, stylesProps = {} }) => {
+export const Button = ({ text, onPress, isLoading, stylesProps = {}, colorText='white' }) => {
 
     return (
         <TouchableOpacity 
+        activeOpacity={0.6}
         style={{ ...styles.btn, ...stylesProps }}
         onPress={ onPress }
         disabled={isLoading}
@@ -14,7 +15,7 @@ export const Button = ({ text, onPress, isLoading, stylesProps = {} }) => {
             {
                 (isLoading)
                 ? (<ActivityIndicator size='small' color='#fff' />)
-                : (<Text style={styles.btnText}>{ text }</Text>)
+                : (<Text style={{fontSize: 16, color: colorText}}>{ text }</Text>)
             }
         </TouchableOpacity>
     )
@@ -29,8 +30,4 @@ const styles =StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    btnText: {
-        color: 'white',
-        fontSize: 16
-    }
 })

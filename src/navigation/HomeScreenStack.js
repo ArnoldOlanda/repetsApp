@@ -1,13 +1,15 @@
 import React from 'react';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
-import { MessagesScreen, ChatScreen } from '../screens';
+import { HomeScreen } from '../screens';
+import { DetailPehouseScreen } from '../screens/DetailPehouseScreen';
+
+
 
 const Stack = createStackNavigator();
 
 
-export const ChatStack = () => {
-   
+export const HomeScreenStack = () => {
 
     return (
         <Stack.Navigator
@@ -19,14 +21,13 @@ export const ChatStack = () => {
                     backgroundColor: '#ffffff',
                 },
                 ...TransitionPresets.SlideFromRightIOS,
-                // headerShown: false
                 
             }}
-            initialRouteName='Message'
-            
         >
-            <Stack.Screen name='Message' options={{ headerShown: false }}   component={ MessagesScreen } />
-            <Stack.Screen name="ChatScreen"  options={{ headerShown: false }} component={ ChatScreen } />
+            <Stack.Screen name='HomeScreen' options={{ headerShown: false }} component={ HomeScreen } />
+            <Stack.Screen name='DetailPethouse' options={{ headerShown: false }} component={ DetailPehouseScreen } />
+
+
             
         </Stack.Navigator>
     );

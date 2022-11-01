@@ -1,7 +1,7 @@
 import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
 
 import { login, logout, verifyCode, startLoading, loginNewUser, setErrorMessage, verifyNewUser, loginWithGoogle, updateProfilePhoto } from "./authSlice"
-import { repetsAPI } from "../../../api";
+import { repetsAPI, repetsApiUrl } from "../../../api";
 import { checkVerifyCode } from "../../../helpers/checkVerifyCode";
 import axios from 'axios';
 
@@ -20,8 +20,9 @@ export const getAuth = (data) => {
             dispatch(login(data));
 
         } catch (error) {
-            const { msg } = error.response.data;
-            dispatch(logout({ error: msg }));
+            //const { msg } = error.response.data;
+            console.log(error);
+            dispatch(logout({ error: 'msg' }));
         }
     }
 }
@@ -59,7 +60,6 @@ export const startLoginWithGoogle = () => {
 
             if (hasPlayService) {
                 const userInfo = await GoogleSignin.signIn();
-                console.log(JSON.stringify(userInfo,null,4));
                 const { data } = await repetsAPI.post('/auth/google', {
                     id_token: userInfo.idToken
                 });
@@ -100,7 +100,7 @@ export const startUpdateProfilePicture = (image) => {
 
             const formData = new FormData();
             formData.append('image', image);
-            const { data } = await axios.put(`https://repetsapi-production.up.railway.app/api/usuarios/photo/${uid}`, formData,{
+            const { data } = await axios.put(`${ repetsApiUrl }/usuarios/photo/${uid}`, formData,{
                 headers:{
                     'Content-Type':'multipart/form-data'
                 }
