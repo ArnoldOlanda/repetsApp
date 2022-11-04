@@ -1,9 +1,15 @@
 import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
+import axios from 'axios';
 
-import { login, logout, verifyCode, startLoading, loginNewUser, setErrorMessage, verifyNewUser, loginWithGoogle, updateProfilePhoto } from "./authSlice"
+import { 
+    login, logout, verifyCode, 
+    startLoading, loginNewUser, setErrorMessage, 
+    verifyNewUser, loginWithGoogle, updateProfilePhoto 
+} from "./authSlice";
+
 import { repetsAPI, repetsApiUrl } from "../../../api";
 import { checkVerifyCode } from "../../../helpers/checkVerifyCode";
-import axios from 'axios';
+import { storeData } from '../../../helpers/storeData';
 
 export const getAuth = (data) => {
 
@@ -18,6 +24,7 @@ export const getAuth = (data) => {
             const { data } = await repetsAPI.post('/auth/login', body);
 
             dispatch(login(data));
+
 
         } catch (error) {
             //const { msg } = error.response.data;
@@ -46,8 +53,11 @@ export const registerUser = (data) => {
             console.log(data);
 
         } catch (error) {
-            console.log(error);
-            throw error
+            const { data } = error.response
+
+            // console.log(JSON.stringify(error.response,null,4));
+            console.log(data.err.errors[0].msg);
+            dispatch(setErrorMessage(data.err.errors[0].msg));
         }
 
     }

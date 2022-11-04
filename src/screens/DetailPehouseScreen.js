@@ -18,6 +18,8 @@ export const DetailPehouseScreen = ({ navigation }) => {
 
     const { nombre, apellido } = selectedPethouse.propietario
 
+    console.log({ selectedPethouse });
+
     const onPressJoinChat = () => {
         
         dispatch(setCurrentRecipient({
@@ -98,6 +100,7 @@ export const DetailPehouseScreen = ({ navigation }) => {
                     </View>
                     <Button 
                     text='Reservar' 
+                    onPress={()=> navigation.navigate('ReservationPethouse') }
                     stylesProps={{
                         ...styles.button,
                         backgroundColor:'#2782CA',

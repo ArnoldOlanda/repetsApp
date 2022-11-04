@@ -1,6 +1,6 @@
-import React from 'react'
-import { Dimensions, StyleSheet, Text, ScrollView, ToastAndroid } from 'react-native'
-import { useDispatch } from 'react-redux'
+import React,{ useEffect } from 'react'
+import { Dimensions, StyleSheet, Text, ScrollView, ToastAndroid, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { registerUser } from '../store/slices/auth'
 import { useForm } from '../hooks'
@@ -29,6 +29,8 @@ const formValidations = {
 
 export const RegisterScreen = ({ navigation }) => {
 
+
+    const { uid, errorMessage, isLoading } = useSelector( state => state.auth )
     const dispatch = useDispatch();
     const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -43,12 +45,25 @@ export const RegisterScreen = ({ navigation }) => {
             return ToastAndroid.show('Revise la informacion ingresada', ToastAndroid.SHORT)
         }
 
-        dispatch(registerUser(formState));
+        dispatch( registerUser(formState) );
+        setFormSubmitted(false);
+
         onResetForm();
-        navigation.navigate('ConfirmEmailScreen');
     }
 
     const onPressLoginLink = () => { navigation.navigate('LoginScreen') }
+
+    useEffect(() => {
+
+        if(uid) navigation.navigate('ConfirmEmailScreen');
+
+    }, [uid])
+    
+    useEffect(()=>{
+
+        if(errorMessage.length > 1) ToastAndroid.show(errorMessage, ToastAndroid.LONG)
+
+    },[errorMessage])
 
     return (
         <ScrollView contentContainerStyle={{ alignItems: 'center', padding: 5, }} >
@@ -81,6 +96,7 @@ export const RegisterScreen = ({ navigation }) => {
                 onChangeText={onInputTextChange}
                 changeTextKey='celular'
                 placeholder='Su celular'
+                keyboardType='numeric'
                 error={!!celularValid && formSubmitted }
                 errorMessage={celularValid}
             />
@@ -106,20 +122,12 @@ export const RegisterScreen = ({ navigation }) => {
                 typePassword
             />
 
-            {/* <View style={styles.inputContainer}>
-                <Text style={styles.textInput}> Password </Text>
-                <View style={styles.input}>
-                    <TextInput
-                        //style={styles.input}
-                        value={password}
-                        onChangeText={value => onInputTextChange('password', value)}
-                        placeholder='Tu password'
-                        secureTextEntry />
-                    {/* <Icon size={20} name='eye-outline' /> 
-                </View>
-            </View> */}
+            <Button 
+            text={'Aceptar'} 
+            onPress={onPressRegisterButton} 
+            isLoading={isLoading} 
+            />
 
-            <Button text={'Aceptar'} onPress={onPressRegisterButton} />
             <Text style={{ fontWeight: '500', color: '#B7B7B7', marginTop: 18 }}>
                 ¿Tienes una cuenta?
                 <Text style={styles.link} onPress={onPressLoginLink} >

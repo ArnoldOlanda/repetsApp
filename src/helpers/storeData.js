@@ -8,3 +8,15 @@ export const storeData = async (key = '', value) => {
     console.log(e);
   }
 }
+
+export const getStoreData = async(key = '') => {
+  try {
+    
+    const value = await AsyncStorage.getItem(key)
+
+    return value
+
+  } catch (error) {
+    console.log(error);    
+  }
+}

@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         marginBottom: 3
     },
     input: {
-        width: windowWidth * 0.85,
+        width: windowWidth * 0.90,
         height: 38,
         paddingLeft: 13,
         backgroundColor: '#ECF2F0',

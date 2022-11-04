@@ -36,6 +36,19 @@ export const ProfileScreen = ({ navigation }) => {
     return <View style={[styles.rectangle, styles.shadowProp]} />;
   };
 
+  const onPressLogout = async () => {
+    try {
+
+      await GoogleSignin.signOut();
+      dispatch( clearMessages() )
+      //dispatch( resetStorePethouses() )
+      dispatch( logout({ error: '' }) )
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Rectangle />
@@ -155,16 +168,7 @@ export const ProfileScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.boxChatListContainer}>
-          <TouchableOpacity onPress={ async () => {
-            try {
-              await GoogleSignin.signOut();
-              dispatch( logout({ error: '' }) )
-              dispatch( clearMessages() )
-              dispatch( resetStorePethouses() )
-            } catch (error) {
-              console.error(error);
-            }
-          }}>
+          <TouchableOpacity onPress={onPressLogout}>
             <View style={{ flexDirection: "row" }}>
               <Learn />
               <Text style={{ marginLeft: 5 }}>Cerrar Sesion</Text>

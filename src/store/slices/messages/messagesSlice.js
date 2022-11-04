@@ -6,7 +6,7 @@ export const messagesSlice = createSlice({
         mensajes: [], //[]
         chats: null, //[]
         activeChat: null, //{}
-        currentRecipient: null, //{ uid, pethouse, user }
+        currentRecipient: {}, //{ uid, pethouse, user, avatar }
         isLoading: false
     },
     reducers: {

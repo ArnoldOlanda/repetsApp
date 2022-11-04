@@ -5,7 +5,7 @@ export const pethousesSlice = createSlice({
     initialState: {
         pethouses:[],
         isLoading: false,
-        selectedPethouse: null
+        selectedPethouse: {}
 
     },
     reducers: {
@@ -26,7 +26,7 @@ export const pethousesSlice = createSlice({
         resetStorePethouses: ( state ) => {
             state.isLoading = false;
             state.pethouses = [];
-            state.selectedPethouse = [];
+            state.selectedPethouse = {};
         } 
     }
 });

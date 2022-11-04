@@ -102,7 +102,7 @@ export const ChatScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center", paddingHorizontal: 10 }}>
-          <Image style={styles.avatarImage} source={{uri: currentRecipient.avatar}} />
+          <Image style={styles.avatarImage} source={{uri: currentRecipient?.avatar}} />
           <View>
             <Text style={{ fontWeight: "bold", color: "black" }}>
               { 
