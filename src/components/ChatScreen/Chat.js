@@ -3,12 +3,13 @@ import { Image, StyleSheet, Text, View } from "react-native"
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Avatar } from "../Avatar"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { obtenerMensajes, setCurrentRecipient } from "../../store/slices/messages/messagesSlice";
 import { ChatContext } from "../../context/ChatContext";
 
 export const Chat = ({ data }) => {
 
+  const { colors } = useSelector(state => state.theme)
   const { usuario_recipient } = data
 
   const { socket } = useContext(ChatContext)
@@ -40,17 +41,17 @@ export const Chat = ({ data }) => {
       <Image source={{ uri }} style={styles.avatarImage} />
       <View style={{flex:1}}>
         <View style={{ flexGrow: 1, flexDirection: 'row', justifyContent:'space-between' }}>
-          <Text style={{ fontWeight: 'bold', color: "black" }}>
+          <Text style={{ fontWeight: 'bold', color: colors.text }}>
             {usuario_recipient.pethouse
               ? usuario_recipient.pethouse.nombre
               : `${usuario_recipient.nombre} ${usuario_recipient.apellido}`
             }
           </Text>
-          <Text>{new Date(data.ultimo_mensaje.fecha).toLocaleDateString('en-US', { year: 'numeric' })}</Text>
+          <Text style={{color:colors.text2}}>{new Date(data.ultimo_mensaje.fecha).toLocaleDateString('en-US', { year: 'numeric' })}</Text>
         </View>
         <View style={{ flexDirection: "row", justifyContent:'space-between' }}>
 
-          <Text>
+          <Text style={{color:colors.text2}}>
             {
               data.ultimo_mensaje.mensaje.length>26
               ? data.ultimo_mensaje.mensaje.substring(0,26) + '...'

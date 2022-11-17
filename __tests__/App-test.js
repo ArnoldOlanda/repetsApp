@@ -5,10 +5,18 @@
 import 'react-native';
 import React from 'react';
 import App from '../App';
+import { render } from '@testing-library/react-native'
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
+let component;
 
-it('renders correctly', () => {
-  renderer.create(<App />);
-});
+
+describe('Pruebas en <App/>', () => {
+
+  beforeEach(()=>{
+    component = render(<App />)
+  })
+
+  test('renderizar componente', () => {
+    console.log(component);
+  })
+})

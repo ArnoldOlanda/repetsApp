@@ -1,18 +1,27 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 
-import { ActivityIndicator, SafeAreaView, StatusBar, View, } from 'react-native';
+import { ActivityIndicator, SafeAreaView, StatusBar, StyleSheet, View, } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { Provider } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen'
 
 import { MainStackNavigator } from './src/navigation';
-import { store, persistor } from './src/store/store';
+import { persistor } from './src/store/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import { AppState } from 'react-native';
+import { Appearance } from 'react-native';
+import { setDarkTheme, setLightTheme } from './src/store/slices/theme/themeSlice';
+import { useColorScheme } from 'react-native';
 
 
 const App = () => {
+
   const backgroundStyle = { flex: 1 };
+  const colorScheme = useColorScheme()
+
+  const theme = useSelector(state => state.theme)
+  const dispatch = useDispatch()
 
   const LoadingMarkup = () => (
     <View
@@ -20,7 +29,7 @@ const App = () => {
         flex: 1,
         justifyContent: 'center',
       }}>
-      <ActivityIndicator size="large" color="#0000ff" />
+      <ActivityIndicator size="large" color="#000000" />
     </View>
   );
 
@@ -31,34 +40,47 @@ const App = () => {
 
   }, [])
 
+  useEffect(() => {
+
+    (colorScheme === 'light')
+      ? dispatch(setLightTheme())
+      : dispatch(setDarkTheme())
+
+  }, [colorScheme])
+
+
+
 
   return (
+    <PersistGate loading={<LoadingMarkup />} persistor={persistor}>
 
-    <Provider store={store}>
+      <NavigationContainer theme={theme} >
 
-      <PersistGate loading={<LoadingMarkup />} persistor={persistor}>
+        <SafeAreaView style={backgroundStyle}>
 
-        <NavigationContainer>
+          <StatusBar />
 
-          <SafeAreaView style={backgroundStyle}>
-            <StatusBar />
-            <View
-              style={{
-                backgroundColor: '#fff',
-                flex: 1,
-                justifyContent: 'center'
-              }}>
+          <View style={styles.mainContainer}>
 
-              <MainStackNavigator />
-            </View>
-          </SafeAreaView>
+            <MainStackNavigator />
 
-        </NavigationContainer>
+          </View>
 
-      </PersistGate>
+        </SafeAreaView>
 
-    </Provider>
+      </NavigationContainer>
+
+    </PersistGate>
   );
 };
 
+
 export default App;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: '#fff',
+    flex: 1,
+    justifyContent: 'center'
+  }
+})

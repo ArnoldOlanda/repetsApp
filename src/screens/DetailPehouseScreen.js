@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import {Button} from '../components/Button'
 import { Reviews } from '../components/DetailPethouseScreen/Reviews';
 import { setCurrentRecipient } from '../store/slices/messages/messagesSlice'
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -17,8 +18,6 @@ export const DetailPehouseScreen = ({ navigation }) => {
     const { selectedPethouse } = useSelector(state => state.pethouses)
 
     const { nombre, apellido } = selectedPethouse.propietario
-
-    console.log({ selectedPethouse });
 
     const onPressJoinChat = () => {
         
@@ -59,18 +58,21 @@ export const DetailPehouseScreen = ({ navigation }) => {
                     Un espacio con áreas verdes donde las mascotas podran divertirse al aire libre.
                 </Text>
                 <View style={styles.line} />
-                <View style={{flexDirection:'row'}}>
-                    <View style={{flex:1}}>
+                {/* <View style={{flexDirection:'row'}}>
+                    <TouchableOpacity 
+                    style={{flex:1}}
+                    onPress={()=> navigation.navigate('SelectDateScreen')}
+                    >
                         <Text style={styles.textBold}>Fechas</Text>
-                        <Text>Nov 8-15</Text>
-                    </View>
+                        <Text>Seleccione una fecha</Text>
+                    </TouchableOpacity>
                     <Icon name='chevron-forward' size={20} />
-                </View>
-                <View style={styles.line} />
+                </View> */}
+                {/* <View style={styles.line} /> */}
                 <View style={{flexDirection:'row'}}>
                     <View style={{flex:1}}>
                         <Text style={styles.textBold}>Reglas</Text>
-                        <Text>Nov 8-15</Text>
+                        <Text>Ver reglas</Text>
                     </View>
                     <Icon name='chevron-forward' size={20} />
                 </View>
@@ -100,7 +102,7 @@ export const DetailPehouseScreen = ({ navigation }) => {
                     </View>
                     <Button 
                     text='Reservar' 
-                    onPress={()=> navigation.navigate('ReservationPethouse') }
+                    onPress={()=> navigation.navigate('ReservationStepsScreen') }
                     stylesProps={{
                         ...styles.button,
                         backgroundColor:'#2782CA',

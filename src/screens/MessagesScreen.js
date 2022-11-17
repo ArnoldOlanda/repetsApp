@@ -7,7 +7,7 @@ import profileDefault from '../assets/profile_default.jpg'
 import { Chat } from '../components/ChatScreen/Chat';
 import { SubTitle1 } from '../components/ChatScreen/SubTitle1';
 import { SubTitle2 } from '../components/ChatScreen/SubTitle2';
-import { Title } from '../components/ChatScreen/Title';
+import { Title } from '../components/Title';
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
@@ -16,6 +16,7 @@ export const MessagesScreen = () => {
 
   const { image } = useSelector(state => state.auth)
   const { chats } = useSelector(state => state.messages)
+  const { colors } = useSelector(state => state.theme)
 
   const ChatsUser = () => (
     chats.map((e, i) => (
@@ -44,7 +45,7 @@ export const MessagesScreen = () => {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
 
-        <Title />
+        <Title text='Mensajes'/>
 
         <Image
           source={image ? { uri: image } : profileDefault}
@@ -54,11 +55,11 @@ export const MessagesScreen = () => {
       </View>
 
       <View style={styles.boxChatListContainer}>
-        <SubTitle1 style={{ marginBottom: 5 }} />
+        <Title text='Hospedajes' fontSize={20} />
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
           {
             (!chats || chats.length < 1)
-            ? <Text style={{fontSize:18, color:'gray'}}>No hay chats</Text>
+            ? <Text style={{fontSize:18, color:colors.text2}}>No hay chats</Text>
             : <ChatsUser />
           }
         </ScrollView>

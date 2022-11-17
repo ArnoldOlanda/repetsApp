@@ -19,12 +19,21 @@ export const ChatScreen = ({ navigation }) => {
 
   const { mensajes, currentRecipient } = useSelector(state => state.messages) //mensajes del chat y  destinatario actual
 
-  const { socket } = useContext( ChatContext ) //context con la conexion via socket
+  const { socket } = useContext(ChatContext) //context con la conexion via socket
 
   const [textoMensaje, setTextoMensaje] = useState('');
+  const [canSendMessage, setCanSendMessage] = useState(false);
+
   const viewChatScrollRef = useRef(null)
   const layoutRef = useRef(null)
 
+  const onChangeMessageText = (value) =>{
+    
+    if(value.length > 0) setCanSendMessage(true)
+    else setCanSendMessage(false)
+    
+    setTextoMensaje(value)
+  }
 
   const sendMessage = () => {
 
@@ -35,12 +44,14 @@ export const ChatScreen = ({ navigation }) => {
     }
 
     socket.emit('enviar-mensaje', bodyMensaje)
-    
+
+
     setTextoMensaje('')
+    setCanSendMessage(false)
   }
 
   const Message = ({ data }) => {
-    
+
     const { emisor, mensaje, fecha } = data
 
     const hora = new Date(fecha).getHours()
@@ -49,12 +60,12 @@ export const ChatScreen = ({ navigation }) => {
     return (
       <View style={{
         ...styles.message,
-        backgroundColor: emisor === uid ? '#BFBFBF9E': '#F8CF5087',
-        alignSelf: emisor === uid ? 'flex-end': 'flex-start',
+        backgroundColor: emisor === uid ? '#BFBFBF9E' : '#F8CF5087',
+        alignSelf: emisor === uid ? 'flex-end' : 'flex-start',
       }}>
-        <Text>{ mensaje }</Text>
-        <Text style={{ fontSize:10, alignSelf:'flex-end' }}>
-          { `${ hora > 12 ? hora - 12 : hora }:${ minuto } ${hora > 12 ? 'pm':'am'}` }
+        <Text>{mensaje}</Text>
+        <Text style={{ fontSize: 10, alignSelf: 'flex-end' }}>
+          {`${hora > 12 ? hora - 12 : hora}:${minuto < 10 ? '0' + minuto : minuto} ${hora > 12 ? 'pm' : 'am'}`}
         </Text>
       </View>
 
@@ -62,7 +73,7 @@ export const ChatScreen = ({ navigation }) => {
   }
 
   const BuildMessages = () => (
-    mensajes.map((e,i) => (
+    mensajes.map((e, i) => (
       <View key={i} style={{ padding: 5 }}>
         <Message data={e} />
       </View>
@@ -102,16 +113,16 @@ export const ChatScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center", paddingHorizontal: 10 }}>
-          <Image style={styles.avatarImage} source={{uri: currentRecipient?.avatar}} />
+          <Image style={styles.avatarImage} source={{ uri: currentRecipient?.avatar }} />
           <View>
             <Text style={{ fontWeight: "bold", color: "black" }}>
-              { 
+              {
                 currentRecipient.pethouse
-                ? currentRecipient.pethouse.nombre 
-                : `${currentRecipient.user.nombre} ${ currentRecipient.user.apellido }` 
+                  ? currentRecipient.pethouse.nombre
+                  : `${currentRecipient.user.nombre} ${currentRecipient.user.apellido}`
               }
             </Text>
-            <Text>{ currentRecipient.pethouse ? 'Tu hosting' : 'Cliente' }</Text>
+            <Text>{currentRecipient.pethouse ? 'Tu hosting' : 'Cliente'}</Text>
           </View>
         </View>
 
@@ -124,9 +135,9 @@ export const ChatScreen = ({ navigation }) => {
       </View>
 
       <ScrollView style={styles.bodyChat} ref={viewChatScrollRef}>
-        { 
-          (mensajes) 
-            ? <BuildMessages /> 
+        {
+          (mensajes)
+            ? <BuildMessages />
             : <Text>no hay mensajes</Text>
         }
         <View onLayout={event => layoutRef.current = event.nativeEvent.layout} />
@@ -134,18 +145,21 @@ export const ChatScreen = ({ navigation }) => {
 
       <View style={styles.footerChat}>
         <TextInput
+          style={styles.messageInput}
           placeholder='Escribe un mensaje aqui'
           value={textoMensaje}
-          onChangeText={setTextoMensaje}
+          onChangeText={(value)=>onChangeMessageText(value)}
+          // onChange={()=> onChangeMessageText() }
         />
-        <View style={{ width: 80, flexDirection: "row", alignItems: "center", justifyContent: "space-between", }}>
+        <View style={{ width: "25%", flexDirection: "row", alignItems: "center", justifyContent: "space-around", }}>
           <Camera />
           <Audio />
           <TouchableOpacity
-            activeOpacity={0.8}
+            activeOpacity={0.4}
             onPress={sendMessage}
+            disabled={!canSendMessage}
           >
-            <Icon name='send-outline' size={25} color='#2782CA' />
+            <Icon name='send-outline' size={25} color={canSendMessage ? '#2782CA' : '#d1d1d1'} />
           </TouchableOpacity>
         </View>
       </View>
@@ -170,11 +184,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#B7B7B76B"
   },
-  avatarImage:{
-    width:38,
+  avatarImage: {
+    width: 38,
     height: 38,
-    marginRight:5,
-    borderRadius:30
+    marginRight: 5,
+    borderRadius: 30
   },
   bodyChat: {
     flex: 1,
@@ -189,9 +203,9 @@ const styles = StyleSheet.create({
     width: "100%",
     borderTopWidth: 1,
     borderTopColor: "#00000073",
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
     flexDirection: "row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     alignItems: "center",
     marginTop: 10
   },
@@ -202,5 +216,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 5,
     padding: 10,
+  },
+  messageInput: {
+    paddingLeft: 10,
+    width: "75%"
   }
 })

@@ -8,7 +8,7 @@ const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
 
-export const Modal = ({ visible, onCloseModal, modalHeight,data }) => {
+export const Modal = ({ visible, onCloseModal, modalHeight, data, buttonCloseText='Hecho' }) => {
 
     const { nombre, distrito, provincia, tarifa_dia, galeria } = data
 
@@ -46,7 +46,7 @@ export const Modal = ({ visible, onCloseModal, modalHeight,data }) => {
                     </View>
 
                     <Button
-                        text='Hecho'
+                        text={ buttonCloseText }
                         stylesProps={{ width: windowWidth * 0.8, }}
                         onPress={onCloseModal}
                     />

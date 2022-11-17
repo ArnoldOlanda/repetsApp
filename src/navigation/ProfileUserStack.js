@@ -63,9 +63,6 @@ export const ProfileUserStack = () => {
                 headerStyle: {
                     elevation: 0
                 },
-                cardStyle: {
-                    backgroundColor: '#ffffff',
-                },
                 ...TransitionPresets.SlideFromRightIOS,
                 
             }}

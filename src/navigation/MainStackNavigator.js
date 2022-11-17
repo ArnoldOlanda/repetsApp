@@ -16,7 +16,6 @@ import {
 } from '../screens';
 
 
-
 const config = {
     animation: 'spring',
     config: {
@@ -32,9 +31,7 @@ const config = {
 
 const Stack = createStackNavigator();
 
-// TransitionPresets para importar los diferentes tipos de transiciones para el stack
 
-let lastAuthStatusStored;
 
 export const MainStackNavigator = () => {
 
@@ -85,9 +82,6 @@ export const MainStackNavigator = () => {
             screenOptions={{
                 headerStyle: {
                     elevation: 0
-                },
-                cardStyle: {
-                    backgroundColor: '#ffffff',
                 },
 
             }}

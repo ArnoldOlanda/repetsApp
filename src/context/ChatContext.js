@@ -17,8 +17,8 @@ export const ChatProvider = ({ children }) => {
 
     useEffect(() => {
 
-        let socket = io('https://repetsapi-production.up.railway.app',{
-        // let socket = io('http://192.168.1.34:8000',{
+        // let socket = io('https://repetsapi-production.up.railway.app',{
+        let socket = io('http://192.168.1.34:8000',{
             'extraHeaders':{ 'usuario-uid': uid }
         })
         setSocket(socket)

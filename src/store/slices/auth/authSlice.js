@@ -11,6 +11,7 @@ export const authSlice = createSlice({
         phone:null,
         image: null, //string
         isLoading: false, //boolean,
+        favoritesPethouses: [],
         location:{
             latitude:0,
             longitude:0
@@ -46,6 +47,7 @@ export const authSlice = createSlice({
             state.email= payload.usuario.correo
             state.image = payload.usuario.img
             state.token= payload.token
+            state.favoritesPethouses = []
         },
         loginWithGoogle:(state, { payload }) => {
             state.isLoading = false
@@ -57,6 +59,7 @@ export const authSlice = createSlice({
             state.image = payload.usuario.img
             state.token = payload.token
             state.loginWithGoogle = true
+            state.favoritesPethouses = []
 
         },
         logout: (state,{ payload })=>{
@@ -70,6 +73,7 @@ export const authSlice = createSlice({
             state.verifyCode= '';
             state.token= '';
             state.loginWithGoogle = false;
+            state.favoritesPethouses = [];
             state.errorMessage= payload.error;
         },
         verifyCode: (state, { payload }) => {
@@ -97,6 +101,12 @@ export const authSlice = createSlice({
         updateProfilePhoto: (state,{ payload }) => {
             state.isLoading = false;
             state.image = payload
+        },
+        setFavoritePethouse: (state,{payload}) => {
+            state.favoritesPethouses = [...state.favoritesPethouses,payload]
+        },
+        updateFavoritesPethouses : (state, {payload}) => {
+            state.favoritesPethouses = payload
         }
     }
 });
@@ -114,5 +124,7 @@ export const {
     verifyNewUser,
     loginNewUser,
     setErrorMessage,
-    updateProfilePhoto 
+    updateProfilePhoto,
+    setFavoritePethouse,
+    updateFavoritesPethouses 
 } = authSlice.actions;

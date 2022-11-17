@@ -5,12 +5,13 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentLocation, setLocation } from '../store/slices/auth';
 
-import { Title } from '../components/LocationScreen/Title';
 import { Fab } from '../components/LocationScreen/Fab';
 import { Modal } from '../components/LocationScreen/Modal'
+import { Title } from '../components/Title'
+
 import { setCurrentPethouse } from '../store/slices/pethouses/pethousesSlice';
 //import {GOOGLE_MAPS_KEY} from '@env'
-export const LocationScreen = () => {
+export const LocationScreen = ({ navigation }) => {
 
     const { location, currentLocation } = useSelector(state => state.auth);
     const { pethouses, selectedPethouse } = useSelector(state => state.pethouses);
@@ -20,6 +21,7 @@ export const LocationScreen = () => {
 
     const closeModal = () => {
         setIsOpen(false)
+        navigation.navigate("DetailPethouse")
     }
     const mapViewRef = useRef(null);
     const following = useRef(true);
@@ -119,7 +121,7 @@ export const LocationScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>
-                <Title />
+                <Title text='Mapa' icon='🗺️'/>
             </Text>
             <View style={styles.containerMap}>
                 <View>
@@ -142,7 +144,7 @@ export const LocationScreen = () => {
                             pethouses.map((e) => (
                                 <Marker
                                     key={e.uid}
-                                    image={require('../assets/images/marker3.png')}
+                                    image={{uri: 'custom_pin' }}
                                     coordinate={{
                                         latitude: Number(e.coordenadas.latitud),
                                         longitude: Number(e.coordenadas.longitud)
@@ -175,6 +177,7 @@ export const LocationScreen = () => {
                         onCloseModal={closeModal}
                         visible={isOpen}
                         modalHeight={230}
+                        buttonCloseText='Ir a pethouse'
                     />
                 )
             }

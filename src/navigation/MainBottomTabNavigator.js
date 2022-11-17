@@ -8,26 +8,27 @@ import { ProfileUserStack } from './ProfileUserStack';
 import { ChatStack } from './ChatStack';
 import { HomeScreenStack } from './HomeScreenStack';
 import { ChatProvider } from '../context/ChatContext';
+import { useSelector } from 'react-redux';
 
 
 const Tab = createBottomTabNavigator();
 
 export const MainBottomTabNavigator = () => {
 
+    const { colors } = useSelector( state => state.theme )
 
     return (
         <ChatProvider>
             <Tab.Navigator
-                sceneContainerStyle={{
-                    backgroundColor: 'white'
-                }}
                 screenOptions={({ route }) => ({
                     headerShown: false,
                     tabBarStyle: {
                         elevation: 0,
                         borderTopWidth: 0
                     },
+                    tabBarActiveTintColor:colors.blue,
                     tabBarIcon: ({ color, focused, size }) => {
+                       
                         let iconName = '';
                         switch (route.name) {
                             case 'Home':
@@ -48,7 +49,8 @@ export const MainBottomTabNavigator = () => {
                                 break;
                         }
                         return <Icon name={iconName} size={25} color={color} />
-                    }
+                    },
+                    
 
                 })}>
                 <Tab.Screen name="Home" options={{ title: 'Explorar' }} component={HomeScreenStack} />

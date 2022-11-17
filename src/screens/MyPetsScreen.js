@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
-import { Dimensions, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity, FlatList, Image } from 'react-native'
+import { Dimensions, StyleSheet, TextInput, View, TouchableOpacity, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Avatar } from '../components/Avatar'
-import { PetListItem } from '../components/MyPetsScreen/PetListItem';
+import { Petlist } from '../components/MyPetsScreen/Petlist';
 import { Title } from '../components/Title';
 import { obtenerMascotasUsuario } from '../store/slices/pets/thunks';
 
@@ -16,16 +15,13 @@ const windowHeight = Dimensions.get('screen').height
 export const MyPetsScreen = ({ navigation }) => {
 
     const { image } = useSelector(state => state.auth)
-    const { pets, selectedPet } = useSelector(state => state.pets);
+    
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(obtenerMascotasUsuario())
     }, [])
 
-    useEffect(() => {
-        dispatch(obtenerMascotasUsuario())
-    }, [ selectedPet ])
 
     return (
         <View style={styles.container}>
@@ -49,19 +45,7 @@ export const MyPetsScreen = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            {
-                (pets.length < 1)
-                    ? <View style={{ marginTop: 20 }}><Text>Aun no tienes mascotas</Text></View>
-                    : (
-                        <FlatList
-                            style={styles.petListContainer}
-                            contentContainerStyle={{ alignItems: 'center', paddingTop: 10, }}
-                            data={pets}
-                            renderItem={({ item }) => <PetListItem pet={item} />}
-                            keyExtractor={(item) => item.uid}
-                        />
-                    )
-            }
+            <Petlist />
         </View>
     )
 }
@@ -107,10 +91,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginLeft: 10
     },
-    petListContainer: {
-        marginTop: 15,
-        flex: 1,
-        width: windowWidth,
-        paddingHorizontal: 27,
-    }
+    
 })

@@ -1,13 +1,17 @@
 import React from 'react'
 import { Text } from 'react-native'
+import { useSelector } from 'react-redux'
 
-export const Title = ({ text, icon }) => {
+export const Title = ({ text, icon, fontSize = 22 }) => {
+
+  const { colors } = useSelector( state => state.theme )
+
   return (
     <Text style={{ 
-        fontSize: 22, 
+        fontSize, 
         fontWeight: '800', 
         lineHeight: 26, 
-        color:'#000' 
+        color:colors.text 
     }}> 
         { text } { icon } 
     </Text>

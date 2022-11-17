@@ -33,14 +33,14 @@ export const WelcomeScreen = ({ navigation }) => {
         style={{ ...styles.btn, backgroundColor: '#2782CA', }}
         onPress={onPressGetStartedButton}
       >
-        <Text style={styles.btnText}> Get Started </Text>
+        <Text style={styles.btnText}> Registrate </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={{ ...styles.btn, backgroundColor: '#ECF2F0', }}
         onPress={onPressSignInButton}
       >
-        <Text style={{ ...styles.btnText, color: '#2782CA' }}> Sign in </Text>
+        <Text style={{ ...styles.btnText, color: '#2782CA' }}> Iniciar sesion </Text>
       </TouchableOpacity>
     </View>
   )

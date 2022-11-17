@@ -15,9 +15,6 @@ export const ChatStack = () => {
                 headerStyle: {
                     elevation: 0
                 },
-                cardStyle: {
-                    backgroundColor: '#ffffff',
-                },
                 ...TransitionPresets.SlideFromRightIOS,
                 // headerShown: false
                 

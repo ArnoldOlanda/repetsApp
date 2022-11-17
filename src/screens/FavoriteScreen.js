@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux';
 import { PetHouseItem } from '../components/HomeScreen/PetHouseItem';
 import { Title } from '../components/Title';
@@ -12,23 +12,26 @@ const windowHeight = Dimensions.get('screen').height
 
 export const FavoriteScreen = () => {
 
-  const { pethouses, isLoading } = useSelector(state => state.pethouses)
+  const { isLoading } = useSelector(state => state.pethouses)
+  const {favoritesPethouses} = useSelector( state => state.auth )
+  const { colors } = useSelector( state => state.theme )
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Title text='Favoritos' icon='🖤' />
+        <Title text='Favoritos' icon='❤️' />
       </View>
       <ScrollView
         style={styles.petHousesListContainer}
         contentContainerStyle={{ alignItems: 'center' }}
       >
         {
-          isLoading ? <ActivityIndicator size='large' color='black' />
+          isLoading 
+            ? <ActivityIndicator size='large' color='black' />
             : (
-              pethouses.map(e => (
-                <PetHouseItem key={e.uid} data={e} />
-              ))
+              favoritesPethouses.length < 1
+                ? ( <Text style={{ color: colors.text2 }}>Aun no tienes favoritos</Text> )
+                : ( favoritesPethouses.map(e => (<PetHouseItem key={e.uid} data={e} favoriteScreen />)))
             )
         }
       </ScrollView>

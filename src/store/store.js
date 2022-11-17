@@ -17,20 +17,22 @@ import { authSlice } from './slices/auth';
 import { messagesSlice } from './slices/messages/messagesSlice';
 import { pethousesSlice } from './slices/pethouses/pethousesSlice';
 import { petsSlice } from './slices/pets';
+import { themeSlice } from './slices/theme/themeSlice';
 
 
 const rootReducer = combineReducers({
   auth: authSlice.reducer,
   pets: petsSlice.reducer,
   messages: messagesSlice.reducer,
-  pethouses: pethousesSlice.reducer
+  pethouses: pethousesSlice.reducer,
+  theme: themeSlice.reducer
 });
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  blacklist: ['pets','messages','pethouses'], //blacklisting a store attribute name, will not persist that store attribute.
+  blacklist: ['pets','messages','pethouses','theme'], //blacklisting a store attribute name, will not persist that store attribute.
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

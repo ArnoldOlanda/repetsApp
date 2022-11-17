@@ -4,7 +4,7 @@ import axios from 'axios';
 import { 
     login, logout, verifyCode, 
     startLoading, loginNewUser, setErrorMessage, 
-    verifyNewUser, loginWithGoogle, updateProfilePhoto 
+    verifyNewUser, loginWithGoogle, updateProfilePhoto, setFavoritePethouse 
 } from "./authSlice";
 
 import { repetsAPI, repetsApiUrl } from "../../../api";
@@ -122,5 +122,22 @@ export const startUpdateProfilePicture = (image) => {
             console.log(error);
         }
 
+    }
+}
+
+export const startUpdateFavoritesPethouses = (data) => {
+    return async (dispatch, getState) => {
+
+        try {
+            const { uid } = getState().auth
+            const { uid:pethouseId } = data
+            const response = await repetsAPI.put(`/usuarios/favorites/${ uid }`,{ pethouseId })
+
+            console.log(response.data);
+
+            dispatch(setFavoritePethouse( data ))
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

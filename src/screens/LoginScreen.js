@@ -101,7 +101,7 @@ export const LoginScreen = ({ navigation }) => {
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', }}>
-            <View style={{ alignItems: 'flex-start', width: windowWidth * 0.90 }}>
+            <View style={{ alignItems: 'flex-start', width: windowWidth * 0.90, marginBottom:20 }}>
                 <Title text='Bienvenido de nuevo' icon='👋' />
                 <Text style={styles.text}>Acceda a su cuenta</Text>
             </View>
