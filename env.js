@@ -1,0 +1,12 @@
+export const dialogflowConfig = {
+    type: "service_account",
+    project_id: "repetsbot-frck",
+    private_key_id: "788bd308803ba04866462bc9d22c0b9be5ab398c",
+    private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCiRIfKFSg2pKOH\nU0ZTAFuOHHb0Is5YBTzGCN2xFxVLb/nXuDWcTgQME57EdPQIUqCej1E7qjpM3WsV\nRATmZhKaV2OiSU2APeF2Clov4n5D1faasaw5US/gK5yFq+kNXexEqH2VCKOpdhHR\nmlO14Df3knFrYi+6650BUfNDsWN1raIqgpKeUqtSpIvHMamr1LeA7ZnM6mexNX4r\nqXOyV2BO0TXa8xhXORxHdX4vTM2VuQ6V+SKZyiZYm6lE3D6hVnGkLrK0BBLDmJ0J\nxDf9WqG6rT5MzBcxoU6BhFbUKbs9sgAomvTWtt80u5nP8r8X6nBc7yEghkj2fYLm\nKWtApIkXAgMBAAECggEAItHPzZZSpb8YdB5zdbYa71i+Uc7yNkMRcnFOmQSaBjEG\nDLszjdHT3n+LTx7Fis+oNb4NMV9q2TmeE9cfsgzvKv1bnORb5AvjSIAaMDJK4+WS\n4EkF6tq4CkNxd+GWxc6Et4rsP8G11NRIKJEUK2/ssoxTGDbehR6v9yuNptX2wLZk\n3kATuC8raWSOORp1jqATGw+9wYUam2N/ICsNsW5AQ9z/G9acp6nWcApGqn52y0di\ndbASN2Z2Za6zJGmR5OgdJehGi68KiA/Mpl0JJU1QLr6vQFUszrkCF3LU/8Y7JGm8\n8feug7G4nCqXHjHJx/6V17oCp5MM2ZY+pLFKb3PsWQKBgQDcGB87wH8/+XbBTKgn\nejFofzfEl2RvmK6V7IcP9bJWF8IEybA8EsnkLVYrD2649YzkTzlgvfYHXY8pP+oe\n1/JmIqyAHezjzajmbGjSlzyZ6lEoIAWcqL5LzEKSpYMuWAJib6hnu9e0nLnaEOQ8\nuYgA9ymCD1PjD6c/GfCSYXYHqwKBgQC8vWCXUkcOpPY9bHQEHORtsiBGFgiGQizl\n9YPRn9jodpFQG5/MzqpFOq0L7wGSnmv0vNh60aPryfg5Z52ZLdt/TMO0b0mfS2EE\n3q2PCwRkCIVWJIoYFycdRvrMvsQPbMdPmNxoFv1zs8g88BAhPLgRmxycQM4fsj6W\nK8sOxyVoRQKBgAtkNDmjfPKSttLKZOmmKWh/LSO/sjMUc/TOiS8KSHCsSh51UenK\nDykAL7WK1vA7xU8Lyqx3KIS5Eu/Pnw55ntIqeUMoSVqBCnzin4pGyZwtxIWPIrs5\nAKBrsgZlCqUbaQQvQ0gbMM7oTbY7qZR7Bc8G+97/bBgUd1OMxCbPZIyBAoGAeB7X\nELeuvaVDiogxtkRlJWOOosx3FGudg6WkBZAETr7XcPKD26dUOsdDRysQBy6IarSd\n2lz+RJzAPFiztr+2yOgkTfveEWG6F41ZTIaofrnlkpOix/5ESJ/aEuD+iwqiNwiE\njkLDgBXVxOLMgTrRs3LS3KdqCEY7CvxIOdmI9zkCgYAyTjr51BLjT6J3iv/54C/9\n6H3LoM/ltuuvE/o0jTu3vliGBVt+wihv1h8SSASIxO3yWmqSbdqW/hI9fDT31lGP\nRHpU6k2BN2Jg6yCAOMy6lYaPHibdHY85uU5RxUZzxENTukcV7efZfai4H5bEgWlj\nppRamja2TLrS+Fw4DLMVAA==\n-----END PRIVATE KEY-----\n",
+    client_email: "repetsbot@repetsbot-frck.iam.gserviceaccount.com",
+    client_id: "110893871098551012708",
+    auth_uri: "https://accounts.google.com/o/oauth2/auth",
+    token_uri: "https://oauth2.googleapis.com/token",
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+    client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/repetsbot%40repetsbot-frck.iam.gserviceaccount.com"
+  }

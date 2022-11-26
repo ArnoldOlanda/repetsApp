@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 
 export const HomeScreenStack = () => {
 
-    console.log(windowHeight);
+    // console.log(windowHeight);
 
     return (
         <Stack.Navigator

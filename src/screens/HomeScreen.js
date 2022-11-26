@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, RefreshControl } from 'react-native'
+import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, RefreshControl, Button } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-
 import Icon from 'react-native-vector-icons/Ionicons';
+import Animated, { useSharedValue, useAnimatedStyle, Easing, withTiming } from 'react-native-reanimated'
 
 import profileDefault from '../assets/profile_default.jpg'
 import { startLoadPethouses } from '../store/slices/pethouses/thunks';
@@ -10,6 +10,8 @@ import { startLoadPethouses } from '../store/slices/pethouses/thunks';
 import { PetHouseItem } from '../components/HomeScreen/PetHouseItem'
 import { SkeletonPethousesList } from '../components/HomeScreen/SkeletonPethousesList';
 
+
+import { ChatBot } from '../components/HomeScreen/ChatBot';
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
@@ -20,7 +22,7 @@ export const HomeScreen = () => {
 
     const dispatch = useDispatch();
     const { image } = useSelector(state => state.auth);
-    const { colors } = useSelector( state => state.theme );
+    const { colors } = useSelector(state => state.theme);
 
     const { pethouses, isLoading } = useSelector(state => state.pethouses);
     const [category, setCategory] = useState('Perros');
@@ -32,10 +34,10 @@ export const HomeScreen = () => {
         setCategory(option);
     }
 
-    const onRefreshPethouses = ()=>{
-        setRefreshPethouses( true )
-        dispatch( startLoadPethouses())
-        setRefreshPethouses( false )
+    const onRefreshPethouses = () => {
+        setRefreshPethouses(true)
+        dispatch(startLoadPethouses())
+        setRefreshPethouses(false)
     }
 
     useEffect(() => {
@@ -49,14 +51,14 @@ export const HomeScreen = () => {
         <View style={styles.container}>
 
             <View style={styles.locationContainer} >
-                <Text style={{ color:colors.text2 }}>Ubicacion <Icon name='chevron-down-outline' size={15} color='#2782CA' /> </Text></View>
+                <Text style={{ color: colors.text2 }}>Ubicacion <Icon name='chevron-down-outline' size={15} color='#2782CA' /> </Text></View>
             <View style={styles.titleWithAvatarContainer}>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center'
                 }}>
-                    <Text style={{...styles.distritoText, color:colors.text}}>Sachaca,</Text>
-                    <Text style={{...styles.ciudadText, color:colors.text}}> AQP</Text>
+                    <Text style={{ ...styles.distritoText, color: colors.text }}>Sachaca,</Text>
+                    <Text style={{ ...styles.ciudadText, color: colors.text }}> AQP</Text>
                 </View>
                 <View>
                     {
@@ -67,7 +69,7 @@ export const HomeScreen = () => {
                 </View>
             </View>
             <View style={styles.categoryContainer}>
-                <Text style={{...styles.categoryText, color:colors.text}}>Categorias</Text>
+                <Text style={{ ...styles.categoryText, color: colors.text }}>Categorias</Text>
                 <Text style={{ color: '#F8CF50' }}>Ver todos <Icon name='chevron-forward-circle' size={15} /> </Text>
             </View>
             <View style={styles.buttonCategoriesContainer}>
@@ -96,21 +98,22 @@ export const HomeScreen = () => {
                 }
             </View>
 
-            <ScrollView 
-                style={styles.petHousesListContainer} 
+            <ScrollView
+                style={styles.petHousesListContainer}
                 contentContainerStyle={{ alignItems: 'center' }}
                 refreshControl={
-                    <RefreshControl 
-                    refreshing={ refreshPethouses } 
-                    onRefresh={ onRefreshPethouses } 
+                    <RefreshControl
+                        refreshing={refreshPethouses}
+                        onRefresh={onRefreshPethouses}
                     />
-            }>
+                }>
                 {
                     isLoading
-                        ? ( <SkeletonPethousesList /> )
-                        : ( pethouses.map(e => (<PetHouseItem key={e.uid} data={e} />)))
+                        ? (<SkeletonPethousesList />)
+                        : (pethouses.map(e => (<PetHouseItem key={e.uid} data={e} />)))
                 }
             </ScrollView>
+            <ChatBot />
         </View>
     )
 }
@@ -173,5 +176,5 @@ const styles = StyleSheet.create({
     petHousesListContainer: {
         marginTop: 16,
         width: windowWidth
-    }
+    },
 })

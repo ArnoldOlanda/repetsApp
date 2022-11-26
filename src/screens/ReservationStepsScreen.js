@@ -1,5 +1,5 @@
 import React,{ useEffect, useState } from 'react'
-import { Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -108,6 +108,7 @@ export const ReservationStepsScreen = () => {
                 previousBtnStyle={{right:30, top: 20}}
                 previousBtnText='Anterior'
                 previousBtnTextStyle={{ color:colors.blue }}
+                onNext={()=> updateReservationData('fecha_solicitud', new Date()) }
                 >
                     <ChoosePaymentMethodStep onUpdate={ updateReservationData }/>
                 </ProgressStep>
@@ -125,9 +126,15 @@ export const ReservationStepsScreen = () => {
                     registerReservation(reservationData)
                 }}
                 >
-                    <View style={{ alignItems: 'center' }}>
-                        <Text>Resumen de tu reserva</Text>
-                        <Text>{ JSON.stringify(reservationData,null,4) }</Text>
+                    <View style={{ alignItems: 'flex-start',marginTop:10 }}>
+                        <Text style={{...styles.title, color:colors.primary}}>Resumen de tu reserva</Text>
+                        <Text>Fecha: { reservationData.fecha_reserva.toLocaleString() }</Text>
+                        <Text>Hora: { reservationData.horaReserva }</Text>
+                        <Text>Duracion de reserva (dias): {reservationData.duracion_dias}</Text>
+                        <Text>Alojamiento: {selectedPethouse.nombre}</Text>
+                        <Text>Mascota: { reservationData.mascota }</Text>
+                        <Text>Precio por dia: S/.{selectedPethouse.tarifa_dia}</Text>
+                        <Text>Total a pagar: S/.{ reservationData.costo_total }</Text>
                     </View>
                 </ProgressStep>
 
@@ -135,3 +142,9 @@ export const ReservationStepsScreen = () => {
         </View>
     )
 }
+
+const styles=StyleSheet.create({
+    title:{
+        fontSize:20
+    }
+})
