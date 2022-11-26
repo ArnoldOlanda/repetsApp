@@ -51,4 +51,17 @@ allprojects {
         google()
         maven { url 'https://www.jitpack.io' }
     }
+    subprojects { project ->
+    afterEvaluate {
+            if (project.name.contains('react-native-dialogflow')) {
+                android {
+                    compileSdkVersion rootProject.ext.compileSdkVersion
+                    buildToolsVersion rootProject.ext.buildToolsVersion
+                    defaultConfig {
+                        targetSdkVersion rootProject.ext.targetSdkVersion
+                    }
+                }
+            }
+        }
+    }
 }
