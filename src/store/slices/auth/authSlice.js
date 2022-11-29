@@ -11,6 +11,7 @@ export const authSlice = createSlice({
         phone:null,
         image: null, //string
         isLoading: false, //boolean,
+        isLoadingGoogle: false,
         favoritesPethouses: [],
         location:{
             latitude:0,
@@ -27,8 +28,12 @@ export const authSlice = createSlice({
         errorMessage: '',
     },
     reducers: {
-        startLoading: (state, /* action */ ) => {
+        startLoading: (state) => {
             state.isLoading = true
+            state.errorMessage = ''
+        },
+        startLoadingGoogle: (state ) => {
+            state.isLoadingGoogle = true
             state.errorMessage = ''
         },
         setLocation:(state, { payload })=>{
@@ -50,7 +55,7 @@ export const authSlice = createSlice({
             state.favoritesPethouses = []
         },
         loginWithGoogle:(state, { payload }) => {
-            state.isLoading = false
+            state.isLoadingGoogle = false
             state.status = "authenticated"
             state.user = payload.usuario.nombre
             state.apellido = payload.usuario.apellido
@@ -67,10 +72,12 @@ export const authSlice = createSlice({
             state.status='no-authenticated'; 
             state.user= null;
             state.apellido = null;
+            state.phone = null;
             state.email = null; 
             state.uid = null;
             state.image = null;
             state.verifyCode= '';
+            state.verifiedNewUser=false;
             state.token= '';
             state.loginWithGoogle = false;
             state.favoritesPethouses = [];
@@ -81,6 +88,7 @@ export const authSlice = createSlice({
             state.verifyCode = payload.verifyCode;
             state.user = payload.usuario.nombre
             state.apellido = payload.usuario.apellido
+            state.phone = payload.usuario.celular
             state.uid = payload.usuario.uid
             state.email= payload.usuario.correo
             state.image = payload.usuario.img
@@ -107,6 +115,12 @@ export const authSlice = createSlice({
         },
         updateFavoritesPethouses : (state, {payload}) => {
             state.favoritesPethouses = payload
+        },
+        updateUserInfo: (state, { payload }) => {
+            state.isLoading = false
+            state.user = payload.nombre
+            state.apellido = payload.apellido
+            state.phone = payload.celular
         }
     }
 });
@@ -115,6 +129,7 @@ export const authSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { 
     startLoading,
+    startLoadingGoogle,
     setLocation,
     setCurrentLocation,
     login,
@@ -126,5 +141,6 @@ export const {
     setErrorMessage,
     updateProfilePhoto,
     setFavoritePethouse,
-    updateFavoritesPethouses 
+    updateFavoritesPethouses,
+    updateUserInfo
 } = authSlice.actions;

@@ -2,7 +2,7 @@ import React from 'react'
 import { Dimensions, StyleSheet, Text, ScrollView, ToastAndroid, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { registerUser } from '../store/slices/auth'
+import {  startUpdateInfoUser } from '../store/slices/auth'
 import { useForm } from '../hooks'
 import { Button } from '../components/Button'
 import { InputText } from '../components/InputText';
@@ -12,23 +12,22 @@ const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
 
-
 const formValidations = {
     nombre: [value => value.length >= 1, 'Este campo no puede estar vacio'],
     apellido: [value => value.length >= 1, 'Este campo no puede estar vacio'],
     celular: [value => value.length === 9, 'El celular debe ser de 9 digitos'],
-    correo: [value => value.includes('@'), 'No es un correo valido'],
+    // correo: [value => value.includes('@'), 'No es un correo valido'],
     //password: [value => value.length >= 8, 'El password debe ser de almenos 8 caracteres']
 }
 
 export const UpdateUserInfo = ({ navigation }) => {
 
-    const { user, apellido: ape, email, phone, loginWithGoogle } = useSelector(state => state.auth)
+    const { user, apellido: ape, phone, isLoading } = useSelector(state => state.auth)
     const initialForm = {
         nombre: user,
         apellido: ape,
         celular: phone,
-        correo: email,
+        // correo: email,
         // password: '',
     }
 
@@ -38,8 +37,8 @@ export const UpdateUserInfo = ({ navigation }) => {
 
     const { formState, onInputTextChange, onResetForm, formValidation, isFormValid } = useForm(initialForm, formValidations);
 
-    const { nombre, apellido, celular, correo, password } = formState;
-    const { nombreValid, apellidoValid, celularValid, correoValid, passwordValid } = formValidation;
+    const { nombre, apellido, celular } = formState;
+    const { nombreValid, apellidoValid, celularValid } = formValidation;
 
     const onPressUpdateInfoButton = () => {
         setFormSubmitted(true);
@@ -47,7 +46,7 @@ export const UpdateUserInfo = ({ navigation }) => {
             return ToastAndroid.show('Revise la informacion ingresada', ToastAndroid.SHORT)
         }
 
-        dispatch(updateInfoUser(formState));
+        dispatch(startUpdateInfoUser(formState));
         onResetForm();
         navigation.navigate('MainProfile');
     }
@@ -88,7 +87,7 @@ export const UpdateUserInfo = ({ navigation }) => {
                 errorMessage={celularValid}
             />
 
-            <InputText
+            {/* <InputText
                 label='Email'
                 value={correo}
                 onChangeText={onInputTextChange}
@@ -96,7 +95,7 @@ export const UpdateUserInfo = ({ navigation }) => {
                 placeholder='Tu email'
                 error={!!correoValid && formSubmitted}
                 errorMessage={correoValid}
-            />
+            /> */}
 
             {/* <InputText
                 label='Password'
@@ -122,7 +121,7 @@ export const UpdateUserInfo = ({ navigation }) => {
                 </View>
             </View> */}
             <View style={{ marginBottom: 30 }} />
-            <Button text={'Guardar'} onPress={onPressUpdateInfoButton} />
+            <Button text={'Guardar'} onPress={onPressUpdateInfoButton} isLoading={isLoading} />
         </ScrollView>
     )
 }

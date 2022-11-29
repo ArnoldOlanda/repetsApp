@@ -11,7 +11,7 @@ import { registerReservation } from '../helpers/registerReservation';
 import { obtenerMascotasUsuario } from '../store/slices/pets';
 
 
-export const ReservationStepsScreen = () => {
+export const ReservationStepsScreen = ({navigation}) => {
 
     const { colors } = useSelector( state => state.theme )
     const { selectedPethouse } = useSelector( state => state.pethouses )
@@ -122,8 +122,9 @@ export const ReservationStepsScreen = () => {
                 previousBtnText='Anterior'
                 previousBtnTextStyle={{ color:colors.blue }}
                 finishBtnText='Reservar'
-                onSubmit={()=>{
-                    registerReservation(reservationData)
+                onSubmit={ async ()=>{
+                    await registerReservation(reservationData)
+                    navigation.navigate('HomeScreen')
                 }}
                 >
                     <View style={{ alignItems: 'flex-start',marginTop:10 }}>

@@ -213,7 +213,7 @@ export const ProfileScreen = ({ navigation }) => {
         <View style={styles.boxChatListContainer}>
           <TouchableOpacity onPress={onPressLogout}>
             <View style={{ flexDirection: "row" }}>
-              <Learn />
+              <Icon name='log-out-outline' size={18} color='#6B6A6Fd' />
               <Text style={{ marginLeft: 5, color:colors.text2 }}>Cerrar Sesion</Text>
             </View>
           </TouchableOpacity>

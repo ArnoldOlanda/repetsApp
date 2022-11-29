@@ -9,12 +9,12 @@ import { registerPet } from '../helpers/registerPet';
 import { obtenerMascotasUsuario } from '../store/slices/pets/thunks';
 
 const initialState = {
-    nombre:'',
-    tipoMascota:'',
-    raza:'',
-    edad:'',
-    descripcion:'',
-    caracteristicasMascota:[]
+    nombre: '',
+    tipoMascota: '',
+    raza: '',
+    edad: '',
+    descripcion: '',
+    caracteristicasMascota: []
 }
 
 const formValidations = {
@@ -28,10 +28,10 @@ export const useRegisterPet = () => {
 
     const navigation = useNavigation()
 
-    const { uid } = useSelector( state => state.auth );
+    const { uid } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
-    const { formState, onInputTextChange, onResetForm, formValidation, isFormValid } = useForm( initialState, formValidations );
+    const { formState, onInputTextChange, onResetForm, formValidation, isFormValid } = useForm(initialState, formValidations);
 
     const { caracteristicasMascota } = formState
 
@@ -39,7 +39,7 @@ export const useRegisterPet = () => {
     const [caracteristicasModalVisible, setCaracteristicasModalVisible] = useState(false);
 
     const [formSubmitted, setFormSubmitted] = useState(false)
-    const [isLoading, setIsLoading] = useState( false )
+    const [isLoading, setIsLoading] = useState(false)
 
     const onCloseModalTipoMascota = () => {
         setTipoMascotaModalVisible(false);
@@ -50,52 +50,57 @@ export const useRegisterPet = () => {
     }
 
     const onSelectOptionTipoMascota = (option) => {
-        onInputTextChange('tipoMascota', option )
+        onInputTextChange('tipoMascota', option)
     }
 
     const onSelectOptionCaracteristicaMascota = (option) => {
-        const mascota = caracteristicasMascota.find( e => e === option ); //Buscar si el elemento ya esta en el array
-        if(!mascota) onInputTextChange('caracteristicasMascota',[...caracteristicasMascota, option]);
+        const mascota = caracteristicasMascota.find(e => e === option); //Buscar si el elemento ya esta en el array
+        if (!mascota) onInputTextChange('caracteristicasMascota', [...caracteristicasMascota, option]);
         else {
-            onInputTextChange('caracteristicasMascota', caracteristicasMascota.filter( e => e !== option ) )
+            onInputTextChange('caracteristicasMascota', caracteristicasMascota.filter(e => e !== option))
         }
     }
 
-    
+
 
 
     const onPressRegisterButton = async () => {
 
-        setFormSubmitted( true )
+        try {
+            setFormSubmitted(true)
 
-        if(!isFormValid){
-            return ToastAndroid.show('Revise los datos ingresados',ToastAndroid.SHORT)
-        };
-        
-        setIsLoading( true );
-        await registerPet( formState, uid );
-        setIsLoading( false );
+            if (!isFormValid) {
+                return ToastAndroid.show('Revise los datos ingresados', ToastAndroid.SHORT)
+            };
 
-        onResetForm();
-        navigation.navigate('MyPets');
-        dispatch( obtenerMascotasUsuario() );
+            setIsLoading(true);
+            await registerPet(formState, uid);
+            setIsLoading(false);
+
+            onResetForm();
+            navigation.navigate('MyPets');
+            dispatch(obtenerMascotasUsuario());
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-  return {
-    formState,
-    onInputTextChange,
-    tipoMascotaModalVisible,
-    setTipoMascotaModalVisible,
-    setCaracteristicasModalVisible,
-    caracteristicasModalVisible,
-    onCloseModalTipoMascota,
-    onCloseModalCaracteristicaMascota,
-    onSelectOptionTipoMascota,
-    onSelectOptionCaracteristicaMascota,
-    onPressRegisterButton,
-    formValidation,
-    isFormValid,
-    formSubmitted,
-    isLoading,
-  }
+    return {
+        formState,
+        onInputTextChange,
+        tipoMascotaModalVisible,
+        setTipoMascotaModalVisible,
+        setCaracteristicasModalVisible,
+        caracteristicasModalVisible,
+        onCloseModalTipoMascota,
+        onCloseModalCaracteristicaMascota,
+        onSelectOptionTipoMascota,
+        onSelectOptionCaracteristicaMascota,
+        onPressRegisterButton,
+        formValidation,
+        isFormValid,
+        formSubmitted,
+        isLoading,
+    }
 }

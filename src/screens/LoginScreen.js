@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View, Button as RNButton, ScrollView, ToastAndroid } from 'react-native'
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View, Button as RNButton, ScrollView, ToastAndroid, ActivityIndicator } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import messaging from '@react-native-firebase/messaging';
 
@@ -27,7 +27,7 @@ const formValidations = {
 
 export const LoginScreen = ({ navigation }) => {
 
-    const { isLoading, uid } = useSelector(state => state.auth)
+    const { isLoading, isLoadingGoogle, uid, errorMessage } = useSelector(state => state.auth)
     const dispatch = useDispatch();
     const [formSubmitted, setFormSubmitted] = useState(false)
 
@@ -41,6 +41,7 @@ export const LoginScreen = ({ navigation }) => {
 
     const onPressLoginButton = () => {
 
+
         setFormSubmitted(true);
 
         if (!isFormValid) {
@@ -50,7 +51,7 @@ export const LoginScreen = ({ navigation }) => {
             setFormSubmitted(false);
         }
 
-        onResetForm();
+        // onResetForm();
     }
 
     const onPressGoogleLogin = () => {
@@ -79,29 +80,37 @@ export const LoginScreen = ({ navigation }) => {
     useEffect(() => {
         messaging().registerDeviceForRemoteMessages();
         messaging().getToken().then(token => {
-            return saveTokenToDatabase( token );
-          })
-      
-          // Listen to whether the token changes
-          return messaging().onTokenRefresh(token => {
-            saveTokenToDatabase(token);
-          });
+            return saveTokenToDatabase(token);
+        })
 
-    }, [ uid ])
-    
+        // Listen to whether the token changes
+        return messaging().onTokenRefresh(token => {
+            saveTokenToDatabase(token);
+        });
+
+    }, [uid])
+
     useEffect(() => {
         const unsubscribe = messaging().onMessage(async remoteMessage => {
-          console.log("Notificacion recibida", remoteMessage);
+            console.log("Notificacion recibida", remoteMessage);
         });
-    
-        return ()=>{
-          unsubscribe();
+
+        return () => {
+            unsubscribe();
         };
     }, []);
 
+    useEffect(() => {
+
+        if (errorMessage !== '') {
+            ToastAndroid.show(errorMessage, ToastAndroid.LONG)
+        }
+
+    }, [errorMessage])
+
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', }}>
-            <View style={{ alignItems: 'flex-start', width: windowWidth * 0.90, marginBottom:20 }}>
+            <View style={{ alignItems: 'flex-start', width: windowWidth * 0.90, marginBottom: 20 }}>
                 <Title text='Bienvenido de nuevo' icon='👋' />
                 <Text style={styles.text}>Acceda a su cuenta</Text>
             </View>
@@ -167,8 +176,14 @@ export const LoginScreen = ({ navigation }) => {
                 style={styles.btnGoogle}
                 onPress={onPressGoogleLogin}
             >
-                <GoogleIcon />
-                <Text style={styles.btnGoogleText}>Continuar con Google</Text>
+
+                <Text style={styles.btnGoogleText}>
+                    {
+                        isLoadingGoogle
+                            ? (<ActivityIndicator color="#000" size={"small"} />)
+                            : (<> <GoogleIcon /> Continuar con Google </>)
+                    }
+                </Text>
             </TouchableOpacity>
             <Text />
         </ScrollView>

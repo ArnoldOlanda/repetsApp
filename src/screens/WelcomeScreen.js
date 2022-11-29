@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, Text, TouchableOpacity, View, Image, Permission
 import { useDispatch } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
 
-import logoW from './../assets/images/logoW.png'
+import logoW from './../assets/images/logoWelcome.png'
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height

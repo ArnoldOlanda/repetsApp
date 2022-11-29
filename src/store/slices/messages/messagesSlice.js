@@ -33,7 +33,7 @@ export const messagesSlice = createSlice({
             state.mensajes= []
             state.chats=null
             state.activeChat=null
-            state.currentRecipient=null
+            state.currentRecipient={}
         }
     }
 });

@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, RefreshControl, Button } from 'react-native'
+import { Dimensions, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image, RefreshControl } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Animated, { useSharedValue, useAnimatedStyle, Easing, withTiming } from 'react-native-reanimated'
 
 import profileDefault from '../assets/profile_default.jpg'
 import { startLoadPethouses } from '../store/slices/pethouses/thunks';
 
 import { PetHouseItem } from '../components/HomeScreen/PetHouseItem'
 import { SkeletonPethousesList } from '../components/HomeScreen/SkeletonPethousesList';
-
 
 import { ChatBot } from '../components/HomeScreen/ChatBot';
 
@@ -21,13 +19,12 @@ const categories = ['Perros', 'Gatos', 'Pajaros', 'Peces'];
 export const HomeScreen = () => {
 
     const dispatch = useDispatch();
-    const { image } = useSelector(state => state.auth);
+    const { image, uid } = useSelector(state => state.auth);
     const { colors } = useSelector(state => state.theme);
-
     const { pethouses, isLoading } = useSelector(state => state.pethouses);
-    const [category, setCategory] = useState('Perros');
 
-    const [refreshPethouses, setRefreshPethouses] = useState(false)
+    const [category, setCategory] = useState('Perros');
+    const [refreshPethouses, setRefreshPethouses] = useState(false);
 
 
     const onSelectCategory = (option) => {
@@ -40,10 +37,9 @@ export const HomeScreen = () => {
         setRefreshPethouses(false)
     }
 
+
     useEffect(() => {
-
         dispatch(startLoadPethouses())
-
     }, [])
 
 
@@ -61,11 +57,10 @@ export const HomeScreen = () => {
                     <Text style={{ ...styles.ciudadText, color: colors.text }}> AQP</Text>
                 </View>
                 <View>
-                    {
-                        image
-                            ? <Image source={{ uri: image }} style={{ width: 42, height: 42, borderRadius: 50 }} />
-                            : <Image source={profileDefault} style={{ width: 42, height: 42, borderRadius: 50 }} />
-                    }
+                    <Image 
+                    source={image ? { uri: image } : profileDefault} 
+                    style={{ width: 42, height: 42, borderRadius: 50 }} 
+                    />
                 </View>
             </View>
             <View style={styles.categoryContainer}>
@@ -106,11 +101,13 @@ export const HomeScreen = () => {
                         refreshing={refreshPethouses}
                         onRefresh={onRefreshPethouses}
                     />
-                }>
+            }>
                 {
                     isLoading
                         ? (<SkeletonPethousesList />)
-                        : (pethouses.map(e => (<PetHouseItem key={e.uid} data={e} />)))
+                        : (pethouses.filter(ele => (ele.propietario._id != uid))
+                            .map(e => (<PetHouseItem key={e.uid} data={e} />))
+                        )
                 }
             </ScrollView>
             <ChatBot />

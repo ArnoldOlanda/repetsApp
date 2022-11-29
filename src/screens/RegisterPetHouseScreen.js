@@ -57,7 +57,9 @@ export const RegisterPetHouseScreen = ({ navigation }) => {
     const [formSubmited, setFormSubmited] = useState(false)
 
     const onCloseModalTipoMascota = () => { setTipoMascotaModalVisible(false) }
+
     const onSelectOptionTipoMascota = (option) => { onInputTextChange('tipoMascota', option) }
+    
     const onSetNewImageToArray = (image) => { setGalleryImages(prev => [...prev, image]) }
 
     const onRemoveImageFromArray = (image) => { setGalleryImages(prev => prev.filter(e => e.name !== image.name)) }

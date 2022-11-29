@@ -23,7 +23,7 @@ export const StartScreen = ({ navigation }) => {
         <WelcomeText />
 
         <View style={{height:10}} />
-        <Text style={styles.subtitle} >Se cuenta esta completa, encuentre el mejor hospedaje para su mascota</Text>
+        <Text style={styles.subtitle} >Su cuenta esta verificada, encuentre el mejor hospedaje para su mascota</Text>
         <Button text='Empezar' onPress={onPressStartButton} />
 
     </View>

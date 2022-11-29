@@ -1,10 +1,10 @@
 import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
 import axios from 'axios';
 
-import { 
-    login, logout, verifyCode, 
-    startLoading, loginNewUser, setErrorMessage, 
-    verifyNewUser, loginWithGoogle, updateProfilePhoto, setFavoritePethouse 
+import {
+    login, logout, verifyCode,
+    startLoading, loginNewUser, setErrorMessage,
+    verifyNewUser, loginWithGoogle, updateProfilePhoto, setFavoritePethouse, startLoadingGoogle, updateUserInfo
 } from "./authSlice";
 
 import { repetsAPI, repetsApiUrl } from "../../../api";
@@ -21,15 +21,16 @@ export const getAuth = (data) => {
 
             dispatch(startLoading());
 
-            const { data } = await repetsAPI.post('/auth/login', body);
+            const response = await repetsAPI.post('/auth/login', body);
 
-            dispatch(login(data));
+            console.log(response.data);
+            dispatch(login(response.data));
 
 
         } catch (error) {
-            //const { msg } = error.response.data;
-            console.log(error);
-            dispatch(logout({ error: 'msg' }));
+            const { msg } = error.response.data;
+            dispatch(logout({ error:  msg}));
+            // throw error;
         }
     }
 }
@@ -69,6 +70,7 @@ export const startLoginWithGoogle = () => {
             const hasPlayService = await GoogleSignin.hasPlayServices();
 
             if (hasPlayService) {
+                dispatch(startLoadingGoogle())
                 const userInfo = await GoogleSignin.signIn();
                 const { data } = await repetsAPI.post('/auth/google', {
                     id_token: userInfo.idToken
@@ -110,9 +112,9 @@ export const startUpdateProfilePicture = (image) => {
 
             const formData = new FormData();
             formData.append('image', image);
-            const { data } = await axios.put(`${ repetsApiUrl }/usuarios/photo/${uid}`, formData,{
-                headers:{
-                    'Content-Type':'multipart/form-data'
+            const { data } = await axios.put(`${repetsApiUrl}/usuarios/photo/${uid}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
                 }
             })
             console.log(data);
@@ -130,12 +132,31 @@ export const startUpdateFavoritesPethouses = (data) => {
 
         try {
             const { uid } = getState().auth
-            const { uid:pethouseId } = data
-            const response = await repetsAPI.put(`/usuarios/favorites/${ uid }`,{ pethouseId })
+            const { uid: pethouseId } = data
+            const response = await repetsAPI.put(`/usuarios/favorites/${uid}`, { pethouseId })
 
             console.log(response.data);
 
-            dispatch(setFavoritePethouse( data ))
+            dispatch(setFavoritePethouse(data))
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const startUpdateInfoUser = (data) => {
+    return async (dispatch, getState) => {
+        try {
+
+            dispatch(startLoading())
+            const { uid } = getState().auth
+
+            const response = await repetsAPI.patch(`/usuarios/${uid}`, data)
+
+            console.log(response.data);
+
+            dispatch(updateUserInfo(response.data.usuario))
+
         } catch (error) {
             console.log(error);
         }
