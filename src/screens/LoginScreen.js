@@ -102,7 +102,7 @@ export const LoginScreen = ({ navigation }) => {
 
     useEffect(() => {
 
-        if (errorMessage !== '') {
+        if (errorMessage.length > 1) {
             ToastAndroid.show(errorMessage, ToastAndroid.LONG)
         }
 

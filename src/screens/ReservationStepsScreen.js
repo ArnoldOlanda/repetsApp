@@ -129,13 +129,15 @@ export const ReservationStepsScreen = ({navigation}) => {
                 >
                     <View style={{ alignItems: 'flex-start',marginTop:10 }}>
                         <Text style={{...styles.title, color:colors.primary}}>Resumen de tu reserva</Text>
-                        <Text>Fecha: { reservationData.fecha_reserva.toLocaleString() }</Text>
+                        <Text>Fecha:    { reservationData.fecha_reserva.toLocaleDateString() }</Text>
                         <Text>Hora: { reservationData.horaReserva }</Text>
-                        <Text>Duracion de reserva (dias): {reservationData.duracion_dias}</Text>
-                        <Text>Alojamiento: {selectedPethouse.nombre}</Text>
-                        <Text>Mascota: { reservationData.mascota }</Text>
-                        <Text>Precio por dia: S/.{selectedPethouse.tarifa_dia}</Text>
-                        <Text>Total a pagar: S/.{ reservationData.costo_total }</Text>
+                        <Text>Alojamiento:  {selectedPethouse.nombre}</Text>
+                        <Text>Duracion de reserva (dias):   {reservationData.duracion_dias}</Text>
+                        {/* <Text>Mascota: { reservationData.mascota }</Text> */}
+                        <Text>Precio por dia:   S/.{selectedPethouse.tarifa_dia}</Text>
+                        <Text>Subtotal: S/.{reservationData.costo_total * 0.85}</Text>
+                        <Text>Comision (15%):   S/.{reservationData.costo_total * 0.15}</Text>
+                        <Text style={{ fontSize:18, color: colors.primary, marginTop:20 }}>Total a pagar: S/.{ reservationData.costo_total }</Text>
                     </View>
                 </ProgressStep>
 

@@ -66,7 +66,7 @@ export const ChatBot = () => {
 
     const onOpenView = () => {
         widthView.value = windowWidth * 0.95
-        heightView.value = windowHeight < 530 ? windowHeight * 0.80 : windowHeight * 0.95
+        heightView.value = windowHeight < 530 ? windowHeight * 0.80 : windowHeight * 0.90
         opacity.value = 1
     }
 
