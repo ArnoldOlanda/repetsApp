@@ -14,9 +14,9 @@ import { ChatBot } from '../components/HomeScreen/ChatBot';
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
 
-const categories = ['Perros', 'Gatos', 'Pajaros', 'Peces'];
+const categories = ['Perros', 'Gatos', 'Pajaros', 'Otros'];
 
-export const HomeScreen = () => {
+export const HomeScreen = ({ navigation }) => {
 
     const dispatch = useDispatch();
     const { image, uid } = useSelector(state => state.auth);
@@ -56,12 +56,15 @@ export const HomeScreen = () => {
                     <Text style={{ ...styles.distritoText, color: colors.text }}>Sachaca,</Text>
                     <Text style={{ ...styles.ciudadText, color: colors.text }}> AQP</Text>
                 </View>
-                <View>
+                <TouchableOpacity 
+                activeOpacity={0.7}
+                onPress={()=> navigation.navigate('Profile') }
+                >
                     <Image 
                     source={image ? { uri: image } : profileDefault} 
                     style={{ width: 42, height: 42, borderRadius: 50 }} 
                     />
-                </View>
+                </TouchableOpacity>
             </View>
             <View style={styles.categoryContainer}>
                 <Text style={{ ...styles.categoryText, color: colors.text }}>Categorias</Text>

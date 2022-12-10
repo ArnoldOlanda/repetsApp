@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import {Button} from '../components/Button'
 import { Reviews } from '../components/DetailPethouseScreen/Reviews';
 import { setCurrentRecipient } from '../store/slices/messages/messagesSlice'
+import { ChatContext } from '../context/ChatContext'
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -14,13 +15,17 @@ const windowHeight = Dimensions.get('window').height;
 export const DetailPehouseScreen = ({ navigation }) => {
     
     const dispatch = useDispatch();
+    const { socket } = useContext(ChatContext);
 
     const { selectedPethouse } = useSelector(state => state.pethouses)
+    const { uid } = useSelector(state => state.auth)
 
     const { nombre, apellido } = selectedPethouse.propietario
 
     const onPressJoinChat = () => {
-        
+
+        socket.emit('solicitar-mensajes',{ owner: uid, recipient: selectedPethouse.propietario._id })
+
         dispatch(setCurrentRecipient({
             uid: selectedPethouse.propietario._id,
             pethouse: selectedPethouse,

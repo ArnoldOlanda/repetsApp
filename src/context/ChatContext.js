@@ -18,7 +18,7 @@ export const ChatProvider = ({ children }) => {
     useEffect(() => {
 
         let socket = io('https://repetsapi-production.up.railway.app',{
-        // let socket = io('http://192.168.1.30:8000',{
+        // let socket = io('http://192.168.1.34:8000',{
             'extraHeaders':{ 'usuario-uid': uid }
         })
         setSocket(socket)
@@ -35,16 +35,22 @@ export const ChatProvider = ({ children }) => {
 
         socket.on("chat-privado", (data)=> {
 
-            console.log('socket-event: chat-privado');
+            console.log('socket-event: chat-privado',);
             
             dispatch( agregarUltimoMensaje(data.mensaje) );
 
+        })
+
+        //TODO: evento que recibe los mensajes de un chat
+        socket.on("obtener-mensajes",(data) => {
+            dispatch( obtenerMensajes(data?.mensajes || []) )
         })
 
         return () => {
 
             socket.off("obtener-chats");
             socket.off("chat-privado");
+            socket.off("obtener-mensajes");
             socket.disconnect();
         }
     }, [])

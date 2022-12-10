@@ -11,13 +11,13 @@ export const Chat = ({ data }) => {
 
   const { colors } = useSelector(state => state.theme)
   const { usuario_recipient } = data
-
+  console.log(data);
   const { socket } = useContext(ChatContext)
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const uri = usuario_recipient?.pethouse ? usuario_recipient.pethouse.galeria[0] : usuario_recipient.img
+  const uri = usuario_recipient.pethouse ? usuario_recipient.pethouse.galeria[0] : usuario_recipient.img
 
   const onPressOpenChat = () => {
 

@@ -20,8 +20,8 @@ export const ReservationStepsScreen = ({navigation}) => {
 
 
     const [reservationData, setReservationData] = useState({
-        fecha_solicitud:'',
-        fecha_reserva:'',
+        fecha_solicitud: new Date(),
+        fecha_reserva: new Date(),
         duracion_dias:0,
         duracion_horas:0,
         usuario:uid,

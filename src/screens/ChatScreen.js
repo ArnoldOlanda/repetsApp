@@ -4,7 +4,6 @@ import { useRef } from 'react'
 import { Dimensions, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useSelector } from 'react-redux'
-import { io } from 'socket.io-client'
 
 import { ArrowBack, Audio, Call, Camera, Configuration, Video } from '../components/ChatScreen/Icons'
 import { ChatContext } from '../context/ChatContext'
@@ -27,27 +26,31 @@ export const ChatScreen = ({ navigation }) => {
   const viewChatScrollRef = useRef(null)
   const layoutRef = useRef(null)
 
-  const onChangeMessageText = (value) =>{
-    
-    if(value.length > 0) setCanSendMessage(true)
+  const onChangeMessageText = (value) => {
+
+    if (value.length > 0) setCanSendMessage(true)
     else setCanSendMessage(false)
-    
+
     setTextoMensaje(value)
   }
 
   const sendMessage = () => {
 
-    const bodyMensaje = {
-      owner: uid,
-      recipient: currentRecipient.uid,
-      mensaje: textoMensaje
+    try {
+      const bodyMensaje = {
+        owner: uid,
+        recipient: currentRecipient.uid,
+        mensaje: textoMensaje
+      }
+
+      socket.emit('enviar-mensaje', bodyMensaje)
+
+
+      setTextoMensaje('')
+      setCanSendMessage(false)
+    } catch (error) {
+      console.log(JSON.stringify(error,null,4));
     }
-
-    socket.emit('enviar-mensaje', bodyMensaje)
-
-
-    setTextoMensaje('')
-    setCanSendMessage(false)
   }
 
   const Message = ({ data }) => {
@@ -74,12 +77,11 @@ export const ChatScreen = ({ navigation }) => {
 
   const BuildMessages = () => (
     mensajes.map((e, i) => (
-      <View key={i} style={{ padding: 5 }}>
+      <View key={i} style={{ padding: 2 }}>
         <Message data={e} />
       </View>
     ))
   )
-
 
 
   useEffect(() => {
@@ -102,13 +104,11 @@ export const ChatScreen = ({ navigation }) => {
   }, [])
 
 
-
-
   return (
     <View style={styles.container}>
       <View style={styles.headerChat}>
 
-        <TouchableOpacity onPress={() => { navigation.navigate('Message') }}>
+        <TouchableOpacity onPress={() => { navigation.goBack() }}>
           <ArrowBack />
         </TouchableOpacity>
 
@@ -126,10 +126,16 @@ export const ChatScreen = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={{ height: "100%", flex: 0.4, flexDirection: "row", alignItems: "center", justifyContent: "space-between", }}>
-          <Video />
-          <Call />
-          <Configuration />
+        <View style={{
+          height: "100%",
+          // flex: 0.4,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}>
+          {/* <Video />
+          <Call /> */}
+          {/* <Configuration /> */}
         </View>
 
       </View>
@@ -148,12 +154,19 @@ export const ChatScreen = ({ navigation }) => {
           style={styles.messageInput}
           placeholder='Escribe un mensaje aqui'
           value={textoMensaje}
-          onChangeText={(value)=>onChangeMessageText(value)}
-          // onChange={()=> onChangeMessageText() }
+          onChangeText={(value) => onChangeMessageText(value)}
+        // onChange={()=> onChangeMessageText() }
         />
-        <View style={{ width: "25%", flexDirection: "row", alignItems: "center", justifyContent: "space-around", }}>
-          <Camera />
-          <Audio />
+        <View style={{
+          // width: "25%",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-around",
+          paddingRight: 10
+          
+        }}>
+          {/* <Camera />
+          <Audio /> */}
           <TouchableOpacity
             activeOpacity={0.4}
             onPress={sendMessage}
@@ -215,10 +228,11 @@ const styles = StyleSheet.create({
     maxWidth: "90%",
     justifyContent: "center",
     borderRadius: 5,
-    padding: 10,
+    padding: 8,
   },
   messageInput: {
     paddingLeft: 10,
-    width: "75%"
+    // width: "75%"
+    flex:1
   }
 })

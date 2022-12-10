@@ -9,8 +9,6 @@ import SplashScreen from 'react-native-splash-screen'
 import { MainStackNavigator } from './src/navigation';
 import { persistor } from './src/store/store';
 import { PersistGate } from 'redux-persist/integration/react';
-import { AppState } from 'react-native';
-import { Appearance } from 'react-native';
 import { setDarkTheme, setLightTheme } from './src/store/slices/theme/themeSlice';
 import { useColorScheme } from 'react-native';
 

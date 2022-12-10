@@ -47,9 +47,9 @@ export const ProfileScreen = ({ navigation }) => {
     try {
 
       await GoogleSignin.signOut();
+      dispatch(logout({ error: '' }))
       dispatch(clearMessages())
       //dispatch( resetStorePethouses() )
-      dispatch(logout({ error: '' }))
 
     } catch (error) {
       console.error(error);

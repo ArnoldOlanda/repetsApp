@@ -1,7 +1,7 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
+import messaging from '@react-native-firebase/messaging';
 
 import { FavoriteScreen, LocationScreen } from '../screens';
 import { ProfileUserStack } from './ProfileUserStack';
@@ -13,9 +13,29 @@ import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
-export const MainBottomTabNavigator = () => {
+export const MainBottomTabNavigator = ({navigation}) => {
 
     const { colors } = useSelector( state => state.theme )
+
+    useEffect(() => {
+      
+        messaging().onNotificationOpenedApp( remoteMessage => {
+            if(remoteMessage.data.type==='chat'){
+                navigation.navigate('Messages')
+            }
+        } )
+
+        messaging().getInitialNotification()
+        .then(remoteMessage => {
+            if (remoteMessage) {
+                if(remoteMessage.data.type==='chat'){
+                    navigation.navigate('Messages')
+                }
+            }
+        });
+      
+    }, [])
+    
 
     return (
         <ChatProvider>
