@@ -96,6 +96,7 @@ export const RegisterPetScreen = () => {
                     placeholder='Edad de la mascota'
                     error={!!edadValid && formSubmitted}
                     errorMessage={edadValid}
+                    keyboardType='numeric'
                 />
 
                 <InputText

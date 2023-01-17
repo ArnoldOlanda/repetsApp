@@ -25,7 +25,7 @@ const windowHeight = Dimensions.get('window').height;
 
 export const Reviews = () => {
   return (
-    <ScrollView style={styles.container} horizontal >
+    <ScrollView style={styles.container} horizontal showsHorizontalScrollIndicator={false}>
         {
             reviewsData.map( e =>(
                 <View key={e.user} style={styles.reviewCardContainer}>

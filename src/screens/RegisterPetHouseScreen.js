@@ -1,94 +1,48 @@
-import React, { useEffect, useState } from 'react'
-import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image, ToastAndroid } from 'react-native'
+import React from 'react'
+import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select';
-import { useForm } from '../hooks'
+import { useSelector } from 'react-redux'
 
 import { Button } from '../components/Button'
 import { InputText } from '../components/InputText'
 import { Modal } from '../components/RegisterPetScreen/Modal'
 import { Title } from '../components/Title'
 import { GalleryImages } from '../components/RegisterPethouseScreen/GalleryImages'
-
-import { useDispatch, useSelector } from 'react-redux'
-import { startRegisterNewPethouse } from '../store/slices/pethouses/thunks'
-
+import { RadioButtonsMultiSelect } from '../components/RegisterPethouseScreen/RadioButtonsMultiSelect';
+import { useRegisterPethouse } from '../hooks/useRegisterPethouse';
 
 
-
-
-const windowWidth = Dimensions.get('window').width
-
-const initialState = {
-    nombre: '',
-    provincia: '',
-    distrito: '',
-    tipoMascota: '',
-    tamanioMascotas: 'Pequeños',
-    tipoAlojamiento: 'Horas',
-    tarifaHora: 'S/. ',
-    tarifaDia: 'S/. '
-}
-
-const formValidations = {
-    nombre: [value => value.length >= 1, 'Este campo es obligatorio'],
-    provincia: [value => value.length >= 1, 'Este campo es obligatorio'],
-    distrito: [value => value.length >= 1, 'Este campo es obligatorio'],
-    tipoMascota: [value => value.length >= 1, 'Este campo es obligatorio'],
-    tarifaHora: [value => value.length >= 1, 'Debe establecer una tarifa por hora'],
-    tarifaDia: [value => value.length >= 1, 'Debe establecer una tarifa por dia'],
-}
 
 const tamanioMascotasOptions = ['Pequeños', 'Medianos', 'Grandes'];
 const tipoAlojamientoOptions = ['Horas', 'Dias', 'Semanas'];
 
-export const RegisterPetHouseScreen = ({ navigation }) => {
+const windowWidth = Dimensions.get('window').width
 
-    const dispatch = useDispatch();
+export const RegisterPetHouseScreen = () => {
+
     const { isLoading } = useSelector(state => state.pethouses)
 
-    const { formState, formValidation, onInputTextChange, onResetForm, isFormValid } = useForm(initialState, formValidations)
+    const {
+        formState,
+        formSubmited,
+        formValidation,
+        galleryImages,
+        onCloseModalTipoMascota,
+        onInputTextChange,
+        onPressRegisterPetHouse,
+        onRemoveImageFromArray,
+        onSelectOptionTipoMascota,
+        onSetNewImageToArray,
+        setTipoMascotaModalVisible,
+        tipoMascotaModalVisible,
+    } = useRegisterPethouse();
 
-    const { nombre, provincia, distrito, tipoMascota, tamanioMascotas, tipoAlojamiento, tarifaHora, tarifaDia } = formState
-    const { nombreValid, provinciaValid, distritoValid, tipoMascotaValid, tarifaHoraValid, tarifaDiaValid } = formValidation
+    const { nombre, descripcion, provincia, 
+        distrito, tipoMascota, tamanioMascotas, 
+        tipoAlojamiento, tarifaHora, tarifaDia } = formState;
 
-    const [tipoMascotaModalVisible, setTipoMascotaModalVisible] = useState(false);
-    const [galleryImages, setGalleryImages] = useState([]);
-
-    const [formSubmited, setFormSubmited] = useState(false)
-
-    const onCloseModalTipoMascota = () => { setTipoMascotaModalVisible(false) }
-
-    const onSelectOptionTipoMascota = (option) => { onInputTextChange('tipoMascota', option) }
-    
-    const onSetNewImageToArray = (image) => { setGalleryImages(prev => [...prev, image]) }
-
-    const onRemoveImageFromArray = (image) => { setGalleryImages(prev => prev.filter(e => e.name !== image.name)) }
-
-    const onPressRegisterPetHouse = () => {
-
-        setFormSubmited(true)
-
-        if (!isFormValid) {
-            return ToastAndroid.show('Revise los datos ingresados', ToastAndroid.SHORT)
-        };
-
-        const data = {
-            nombre,
-            provincia,
-            distrito,
-            tipoMascota,
-            tamanioMascotas,
-            tipoAlojamiento,
-            galleryImages,
-            tarifaHora,
-            tarifaDia
-        }
-
-        dispatch(startRegisterNewPethouse(data))
-        ToastAndroid.show('Pethuse registrada', ToastAndroid.SHORT)
-        navigation.navigate('MainProfile')
-    }
-
+    const { nombreValid, descripcionValid, provinciaValid, 
+        distritoValid, tipoMascotaValid, tarifaHoraValid, tarifaDiaValid } = formValidation;
 
 
     return (
@@ -105,6 +59,17 @@ export const RegisterPetHouseScreen = ({ navigation }) => {
                     value={nombre}
                     error={!!nombreValid && formSubmited}
                     errorMessage={nombreValid}
+                />
+
+                <InputText 
+                    label='Escriba una pequeña descripcion de tu alojamiento'
+                    placeholder='Descripcion breve'
+                    onChangeText={ onInputTextChange }
+                    changeTextKey='descripcion'
+                    value={ descripcion }
+                    error={ !!descripcionValid && formSubmited }
+                    errorMessage={ descripcionValid }
+                    multiline
                 />
 
                 <View style={styles.inputContainer}>
@@ -172,7 +137,10 @@ export const RegisterPetHouseScreen = ({ navigation }) => {
                     <Text style={styles.labelText}>Tipo de mascota que aceptas</Text>
                     <TouchableOpacity
                         activeOpacity={0.6}
-                        style={!!tipoMascotaValid && formSubmited ? { ...styles.input, borderWidth: 1, borderColor: 'red' } : styles.input}
+                        style={ (!!tipoMascotaValid && formSubmited) 
+                            ? { ...styles.input, borderWidth: 1, borderColor: 'red' } 
+                            : styles.input
+                        }
                         onPress={() => setTipoMascotaModalVisible(true)}
                     >
                         {
@@ -187,47 +155,26 @@ export const RegisterPetHouseScreen = ({ navigation }) => {
                 </View>
 
                 <View style={styles.inputContainer} >
-                    <Text style={styles.labelText} >Tamaño de mascotas permitidos</Text>
-                    <View style={styles.buttonOptionsContainer}>
-                        {
-                            tamanioMascotasOptions.map(e => (
-                                <TouchableOpacity
-                                    activeOpacity={0.6}
-                                    key={e}
-                                    style={tamanioMascotas === e ? styles.buttonOptionActive : styles.buttonOption}
-                                    onPress={() => onInputTextChange('tamanioMascotas', e)}
-                                >
-                                    <Text style={tamanioMascotas === e ? styles.buttonOptionTextActive : {}} >{e}</Text>
-                                </TouchableOpacity>
-                            ))
-                        }
-                    </View>
+                    <Text style={styles.labelText} >Tamaño de mascotas que permites</Text>
+
+                    <RadioButtonsMultiSelect 
+                        options={tamanioMascotasOptions}
+                        currentValue={tamanioMascotas}
+                        keyName='tamanioMascotas'
+                        onChange={onInputTextChange}
+                    />
+
                 </View>
 
                 <View style={styles.inputContainer} >
-                    <Text style={styles.labelText} >Tipo de alojamiento que aceptas</Text>
-                    <View style={styles.buttonOptionsContainer}>
-                        {
-                            tipoAlojamientoOptions.map(e => (
-                                <TouchableOpacity
-                                    activeOpacity={0.6}
-                                    key={e}
-                                    style={tipoAlojamiento === e ? styles.buttonOptionActive : styles.buttonOption}
-                                    onPress={() => onInputTextChange('tipoAlojamiento', e)}
-                                >
-                                    <Text style={tipoAlojamiento === e ? styles.buttonOptionTextActive : {}} >{e}</Text>
-                                </TouchableOpacity>
-                            ))
-                        }
-                    </View>
-                </View>
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Seleccione las fotos de su hospedaje <Text style={{ fontSize: 12 }} >(Maximo 3)</Text></Text>
-                    <GalleryImages
-                        onChange={onSetNewImageToArray}
-                        onDelete={onRemoveImageFromArray}
-                        galleryImages={galleryImages}
+                    <Text style={styles.labelText} >Tipo de alojamiento que aceptas</Text>
+ 
+                    <RadioButtonsMultiSelect 
+                        options={tipoAlojamientoOptions}
+                        currentValue={tipoAlojamiento}
+                        keyName='tipoAlojamiento'
+                        onChange={onInputTextChange}
                     />
                 </View>
 
@@ -254,6 +201,18 @@ export const RegisterPetHouseScreen = ({ navigation }) => {
                         error={!!tarifaDiaValid && formSubmited}
                         errorMessage={tarifaDiaValid}
                         keyboardType='numeric'
+                    />
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <Text style={styles.labelText}>
+                        Seleccione las fotos de su hospedaje 
+                        <Text style={{ fontSize: 12 }} >(Maximo 3)</Text>
+                    </Text>
+                    <GalleryImages
+                        onChange={onSetNewImageToArray}
+                        onDelete={onRemoveImageFromArray}
+                        galleryImages={galleryImages}
                     />
                 </View>
 
@@ -297,7 +256,7 @@ const styles = StyleSheet.create({
     },
     labelText: {
         fontSize: 14,
-        fontWeight: '400',
+        fontWeight: '500',
         lineHeight: 19,
         color: '#000'
     },
@@ -333,7 +292,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     textError: {
-        fontSize: 10,
+        fontSize: 12,
         color: 'red'
     }
 })

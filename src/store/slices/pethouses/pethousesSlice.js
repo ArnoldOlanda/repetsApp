@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const pethousesSlice = createSlice({
     name: 'pethouses',
     initialState: {
-        pethouses:[],
+        pethouses: [],
         isLoading: false,
         selectedPethouse: {}
 
@@ -12,25 +12,28 @@ export const pethousesSlice = createSlice({
         loadingPethouses: (state) => {
             state.isLoading = true;
         },
-        setPetHouses: (state,{payload}) => {
+        stopLoading: (state) => {
+            state.isLoading = false;
+        },
+        setPetHouses: (state, { payload }) => {
             state.isLoading = false;
             state.pethouses = payload
         },
-        setCurrentPethouse:(state,{payload}) => {
+        setCurrentPethouse: (state, { payload }) => {
             state.selectedPethouse = payload
         },
-        setNewPethouse:(state,{payload}) => {
+        setNewPethouse: (state, { payload }) => {
             state.isLoading = false;
             state.pethouses = [...state.pethouses, payload]
         },
-        resetStorePethouses: ( state ) => {
+        resetStorePethouses: (state) => {
             state.isLoading = false;
             state.pethouses = [];
             state.selectedPethouse = {};
-        } 
+        }
     }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { loadingPethouses, setCurrentPethouse, setPetHouses, resetStorePethouses,setNewPethouse } = pethousesSlice.actions;
+export const { loadingPethouses, stopLoading, setCurrentPethouse, setPetHouses, resetStorePethouses, setNewPethouse } = pethousesSlice.actions;

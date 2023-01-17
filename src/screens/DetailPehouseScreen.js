@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -37,7 +37,7 @@ export const DetailPehouseScreen = ({ navigation }) => {
     }
 
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <View>
                 <Image style={styles.imageStyle} source={{ uri: selectedPethouse.galeria[0] }} />
                 <TouchableOpacity
@@ -48,50 +48,51 @@ export const DetailPehouseScreen = ({ navigation }) => {
                     <Icon name='arrow-back-outline' size={25} color='black' />
                 </TouchableOpacity>
             </View>
-            <View style={{ paddingHorizontal: 10, marginTop:15 }}>
+            <ScrollView style={{ paddingHorizontal: 10, marginTop:15 }}>
+
                 <Text style={ styles.textBold }>{ selectedPethouse.nombre }</Text>
+
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Icon name='star' size={15} color='black' />
+                        <Icon name='star' size={15} color='black' style={{ marginRight:5 }} />
                         <Text>4.7</Text>
                     </View>
-                    <Text style={styles.textRegular} >{selectedPethouse.provincia} {selectedPethouse.distrito}</Text>
+
+                    <Text style={styles.textRegular} >
+                        {selectedPethouse.provincia} {selectedPethouse.distrito}
+                    </Text>
                 </View>
+
                 <View style={styles.line}/>
-                <Text style={{ ...styles.textRegular,fontSize:14 }}>Lodge para mascotas</Text>
+
+                {/* Descripcion */}
+                {/* <Text style={{ ...styles.textRegular,fontSize:14 }}>Lodge para mascotas</Text> */}
                 <Text style={{ ...styles.textRegular,fontSize:14 }}>
-                    Un espacio con áreas verdes donde las mascotas podran divertirse al aire libre.
+                    { selectedPethouse.descripcion }
                 </Text>
+
                 <View style={styles.line} />
+
                 {/* <View style={{flexDirection:'row'}}>
-                    <TouchableOpacity 
-                    style={{flex:1}}
-                    onPress={()=> navigation.navigate('SelectDateScreen')}
-                    >
-                        <Text style={styles.textBold}>Fechas</Text>
-                        <Text>Seleccione una fecha</Text>
-                    </TouchableOpacity>
-                    <Icon name='chevron-forward' size={20} />
-                </View> */}
-                {/* <View style={styles.line} /> */}
-                <View style={{flexDirection:'row'}}>
                     <View style={{flex:1}}>
                         <Text style={styles.textBold}>Reglas</Text>
                         <Text>Ver reglas</Text>
                     </View>
                     <Icon name='chevron-forward' size={20} />
-                </View>
+                </View> */}
 
-                <View style={styles.line} />
-
+                {/* <View style={styles.line} /> */}
+                <Text style={ styles.textBold }>Comentarios</Text>
                 <Reviews />
 
                 <View style={styles.line} />
 
                 <Text style={styles.textBold}>Hosted by { nombre } { apellido }</Text>
-                <Text style={{...styles.textRegular, fontSize:14}}>
+
+                {/* <Text style={{...styles.textRegular, fontSize:14}}>
                     <Icon name='star' size={15} color='black' /> 22 reviews
-                </Text>
+                </Text> */}
+
                 <View style={{alignItems:'center', marginVertical:10}}>
                     <Button 
                     onPress={onPressJoinChat}
@@ -102,8 +103,9 @@ export const DetailPehouseScreen = ({ navigation }) => {
                 </View>
                 <View style={styles.reserveContainer}>
                     <View style={{ flex: 1 }}>
-                        <Text><Text style={styles.textBold}>S/.{ selectedPethouse.tarifa_dia }</Text> dia</Text>
-                        <Text style={{ ...styles.textBold, fontSize: 15 }}>Nov 8 - 15</Text>
+                        <Text><Text style={styles.textBold}>S/.{ selectedPethouse.tarifa_hora } /</Text> hora</Text>
+                        <Text><Text style={styles.textBold}>S/.{ selectedPethouse.tarifa_dia } /</Text> dia</Text>
+                        {/* <Text style={{ ...styles.textBold, fontSize: 15 }}>Nov 8 - 15</Text> */}
                     </View>
                     <Button 
                     text='Reservar' 
@@ -115,8 +117,8 @@ export const DetailPehouseScreen = ({ navigation }) => {
                         borderRadius:10
                     }}/>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     )
 }
 

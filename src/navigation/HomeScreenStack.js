@@ -21,7 +21,7 @@ export const HomeScreenStack = () => {
         <Stack.Navigator
             screenOptions={{
                 headerStyle: { elevation: 0 },
-                ...TransitionPresets.SlideFromRightIOS,                
+                //...TransitionPresets.SlideFromRightIOS,                
             }}
         >
             <Stack.Screen name='HomeScreen' options={{ headerShown: false }} component={ HomeScreen } />

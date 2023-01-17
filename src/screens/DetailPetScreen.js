@@ -96,7 +96,7 @@ export const DetailPetScreen = ({ navigation }) => {
           </View>
 
           <Text style={{ marginBottom: 10, width: "100%" }}>
-            Loreasdas fasd asfosakias dasjdasl kfasha sjdhask ljhdkas jfhjaskjf as fafas fsa scrollBehavior:
+            { selectedPet.descripcion }
           </Text>
 
           <View style={{ flexDirection: "row", alignItems: "center", width: "100%", marginBottom: 10 }}>

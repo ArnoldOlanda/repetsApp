@@ -123,6 +123,7 @@ export const LoginScreen = ({ navigation }) => {
                 placeholder='Tu email'
                 error={!!usuarioValid && formSubmitted}
                 errorMessage={usuarioValid}
+                keyboardType='email-address'
             />
 
             <InputText

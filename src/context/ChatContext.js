@@ -10,15 +10,13 @@ export const ChatProvider = ({ children }) => {
     const { uid } = useSelector( state => state.auth );
 
     const dispatch = useDispatch();
-
-    const [socketChat, setSocketChat] = useState(null)
-
-    const setSocket = (socket) => { setSocketChat(socket) }
+    const [socketChat, setSocketChat] = useState(null);
+    const setSocket = socket => setSocketChat(socket);
 
     useEffect(() => {
 
-        let socket = io('https://repetsapi-production.up.railway.app',{
-        // let socket = io('http://192.168.1.34:8000',{
+        // let socket = io('https://repetsapi-production.up.railway.app',{
+        let socket = io('http://192.168.1.34:8000',{
             'extraHeaders':{ 'usuario-uid': uid }
         })
         setSocket(socket)
@@ -41,7 +39,7 @@ export const ChatProvider = ({ children }) => {
 
         })
 
-        //TODO: evento que recibe los mensajes de un chat
+        
         socket.on("obtener-mensajes",(data) => {
             dispatch( obtenerMensajes(data?.mensajes || []) )
         })

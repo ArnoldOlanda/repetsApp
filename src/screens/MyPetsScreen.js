@@ -14,7 +14,7 @@ const windowHeight = Dimensions.get('screen').height
 
 export const MyPetsScreen = ({ navigation }) => {
 
-    const { image } = useSelector(state => state.auth)
+    const { image } = useSelector(state => state.auth);
     
     const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ export const MyPetsScreen = ({ navigation }) => {
                     style={styles.searchButton}
                     onPress={() => navigation.navigate('RegisterPet')}
                 >
-                    <Icon name='add-outline' size={30} color='#2782CA' />
+                    <Icon name='add-outline' size={30} color='white' />
                 </TouchableOpacity>
             </View>
 
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
         width: 38,
         height: 38,
         borderColor: '#2782CA',
+        backgroundColor:'#2782CA',
         borderWidth: 1,
         borderRadius: 10,
         justifyContent: 'center',

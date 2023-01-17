@@ -1,6 +1,6 @@
 import axios from "axios"
 import { repetsAPI, repetsApiUrl } from "../../../api"
-import { loadingPethouses, setNewPethouse, setPetHouses } from "./pethousesSlice"
+import { loadingPethouses, setNewPethouse, setPetHouses, stopLoading } from "./pethousesSlice"
 
 
 
@@ -26,12 +26,13 @@ export const startRegisterNewPethouse = (formData) => {
             const { uid, currentLocation } = getState().auth
 
             const { 
-                galleryImages, nombre, distrito, 
+                galleryImages, nombre, descripcion, distrito, 
                 provincia, tamanioMascotas, tipoAlojamiento, 
                 tipoMascota, tarifaHora, tarifaDia } = formData
             
             const body = {
                 nombre,
+                descripcion,
                 distrito,
                 provincia,
                 propietario:      uid,
@@ -69,7 +70,8 @@ export const startRegisterNewPethouse = (formData) => {
             
 
         } catch (error) {
-            console.log(error);        
+            dispatch( stopLoading() )
+            console.log(JSON.stringify(error.response.data,null,4));        
         }
     }
 }
