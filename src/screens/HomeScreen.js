@@ -9,7 +9,7 @@ import { startLoadPethouses } from '../store/slices/pethouses/thunks';
 import { PetHouseItem } from '../components/HomeScreen/PetHouseItem'
 import { SkeletonPethousesList } from '../components/HomeScreen/SkeletonPethousesList';
 
-import { ChatBot } from '../components/HomeScreen/ChatBot';
+// import { ChatBot } from '../components/HomeScreen/ChatBot';
 
 const windowWidth = Dimensions.get('screen').width
 const windowHeight = Dimensions.get('screen').height
@@ -113,7 +113,7 @@ export const HomeScreen = ({ navigation }) => {
                         )
                 }
             </ScrollView>
-            <ChatBot />
+            {/* <ChatBot /> */}
         </View>
     )
 }
