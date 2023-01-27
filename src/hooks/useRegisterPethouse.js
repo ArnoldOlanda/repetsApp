@@ -77,9 +77,8 @@ export const useRegisterPethouse = () => {
             tipoAlojamiento,
             galleryImages,
             tarifaHora,
-            tarifaDia
+            tarifaDia,
         }
-
         dispatch(startRegisterNewPethouse(data))
         ToastAndroid.show('Pethuse registrada', ToastAndroid.SHORT)
         navigation.navigate('MainProfile')

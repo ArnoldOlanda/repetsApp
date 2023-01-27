@@ -44,13 +44,18 @@ export const startRegisterNewPethouse = (formData) => {
                 coordenadas:{
                     latitud:`${ currentLocation.latitude }`,
                     longitud:`${ currentLocation.longitude }`
+                },
+                subscriptionData:{
+                    subscription_date: new Date(),
+                    user: uid,
                 }
             }
+            // console.log(body)
 
             dispatch(loadingPethouses())
             
             const {data} = await repetsAPI.post('/pethouses', body)
-
+            
             if(galleryImages.length === 0) return dispatch(  setNewPethouse( data.pethouse ))
                 
             const formDataImages = new FormData();
@@ -64,7 +69,7 @@ export const startRegisterNewPethouse = (formData) => {
                     'Content-Type':'multipart/form-data'
                 }
             })
-            
+            console.log(data2.pethouse)
             dispatch( setNewPethouse( data2.pethouse ) )
 
             

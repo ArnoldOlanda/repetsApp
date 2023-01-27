@@ -50,6 +50,7 @@ export const ProfileScreen = ({ navigation }) => {
       dispatch(logout({ error: '' }))
       dispatch(clearMessages())
       //dispatch( resetStorePethouses() )
+      
 
     } catch (error) {
       console.error(error);

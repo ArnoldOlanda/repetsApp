@@ -1,44 +1,62 @@
-import React,{ useState } from 'react'
+import React, { useState } from 'react'
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import RadioGroup from 'react-native-radio-buttons-group';
+import { PaymentCheckout } from './PaymentCheckout';
 import { GooglePayIcon, MastercardIcon, PaypalIcon, VisaIcon } from './PaymentMethodsIcons';
 
 const windowWidth = Dimensions.get('window').width
 
-const radioButtonsData = [{
-  id: '1', // acts as primary key, should be unique and non-empty string
-  label: 'Paga en el hospedaje',
-  value: 'efectivo',
-  color:'#2782CA',
-  selected:true
-}, {
-  id: '2',
-  label: 'Pagar con tarjeta',
-  value: 'tarjeta',
-  disabled:true
-}]
+const radioButtonsData = [
+  {
+    id: '1',
+    label: 'Pagar con tarjeta',
+    value: 'tarjeta',
+    color: '#2782CA',
+    selected: true
+  }, {
+    id: '2', // acts as primary key, should be unique and non-empty string
+    label: 'Paga en el hospedaje',
+    value: 'efectivo',
+    color: '#2782CA',
+  }
+]
 
-export const ChoosePaymentMethodStep = () => {
-  const [radioButtons, setRadioButtons] = useState(radioButtonsData)
+export const ChoosePaymentMethodStep = ({ onUpdate, cardData, setCardData }) => {
+
+  const [radioButtons, setRadioButtons] = useState(radioButtonsData);
+  const [showCreditCardForm, setShowCreditCardForm] = useState(radioButtonsData[0].selected);
 
   const onPressRadioButton = (radioButtonsArray) => {
+    setShowCreditCardForm(radioButtonsArray[0].selected);
     setRadioButtons(radioButtonsArray);
+    if (radioButtonsArray[0].selected) {
+      onUpdate('tipo_pago', 'tarjeta')
+    } else {
+      onUpdate('tipo_pago', 'contado')
+    }
   }
 
   return (
     <View>
 
       <View style={styles.sectionContainer}>
-        <View style={{width:'100%'}}>
+        <View style={{ width: '100%' }}>
           <Text style={styles.titleText}>Escoje el metodo de pago</Text>
           <RadioGroup
             radioButtons={radioButtons}
             onPress={onPressRadioButton}
-            containerStyle={{ alignItems:'flex-start' }}
-            
+            containerStyle={{ alignItems: 'flex-start' }}
+
           />
+
+          {
+            showCreditCardForm
+            && <PaymentCheckout setCardData={setCardData} cardData={cardData} />
+          }
+
+          
           <View style={styles.paymentMethodsContainer}>
-            <VisaIcon/>
+            <VisaIcon />
             <MastercardIcon />
             <PaypalIcon />
             <GooglePayIcon />
@@ -100,11 +118,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 20
   },
-  paymentMethodsContainer:{
-    flexDirection:'row',
-    width:'60%',
-    padding:10,
-    justifyContent:'space-between',
-    marginTop:10
+  paymentMethodsContainer: {
+    flexDirection: 'row',
+    width: '60%',
+    padding: 10,
+    justifyContent: 'space-between',
+    marginTop: 10
   },
 })

@@ -18,6 +18,7 @@ import { messagesSlice } from './slices/messages/messagesSlice';
 import { pethousesSlice } from './slices/pethouses/pethousesSlice';
 import { petsSlice } from './slices/pets';
 import { themeSlice } from './slices/theme/themeSlice';
+import { notificactionSlice } from './slices/notifications/notificationSlice';
 
 
 const rootReducer = combineReducers({
@@ -25,14 +26,15 @@ const rootReducer = combineReducers({
   pets: petsSlice.reducer,
   messages: messagesSlice.reducer,
   pethouses: pethousesSlice.reducer,
-  theme: themeSlice.reducer
+  theme: themeSlice.reducer,
+  notification: notificactionSlice.reducer
 });
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  blacklist: ['pets','messages','pethouses','theme'], //blacklisting a store attribute name, will not persist that store attribute.
+  blacklist: ['pets','messages','pethouses','theme','notification'], //blacklisting a store attribute name, will not persist that store attribute.
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

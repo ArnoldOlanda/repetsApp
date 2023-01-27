@@ -56,16 +56,27 @@ export const HomeScreen = ({ navigation }) => {
                     <Text style={{ ...styles.distritoText, color: colors.text }}>Sachaca,</Text>
                     <Text style={{ ...styles.ciudadText, color: colors.text }}> AQP</Text>
                 </View>
-                <TouchableOpacity 
-                activeOpacity={0.7}
-                onPress={()=> navigation.navigate('Profile') }
-                >
-                    <Image 
-                    source={image ? { uri: image } : profileDefault} 
-                    style={{ width: 42, height: 42, borderRadius: 50 }} 
-                    />
-                </TouchableOpacity>
+                <View style={{flexDirection:'row'}}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => navigation.navigate('Profile')}
+                    >
+                        <Image
+                            source={image ? { uri: image } : profileDefault}
+                            style={{ width: 42, height: 42, borderRadius: 50 }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                        activeOpacity={0.5}
+                        style={{ width: 40, justifyContent:'center', alignItems:'flex-end' }}
+                        onPress={()=> navigation.navigate('Notifications') }
+                    >
+                        <Icon name='notifications' size={25} />
+                    </TouchableOpacity>
+                </View>
             </View>
+
+            {/* Categories section */}
             <View style={styles.categoryContainer}>
                 <Text style={{ ...styles.categoryText, color: colors.text }}>Categorias</Text>
                 <Text style={{ color: '#F8CF50' }}>Ver todos <Icon name='chevron-forward-circle' size={15} /> </Text>
@@ -104,7 +115,7 @@ export const HomeScreen = ({ navigation }) => {
                         refreshing={refreshPethouses}
                         onRefresh={onRefreshPethouses}
                     />
-            }>
+                }>
                 {
                     isLoading
                         ? (<SkeletonPethousesList />)

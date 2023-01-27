@@ -1,9 +1,10 @@
+
 import React, { useEffect } from 'react';
-import { AppState, Platform } from 'react-native';
+import { AppState } from 'react-native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
-import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
-import { check, openSettings, PERMISSIONS, request } from 'react-native-permissions';
+import { GoogleSignin, } from '@react-native-google-signin/google-signin';
 import { useSelector } from 'react-redux';
+import { checkLocationPermision } from '../helpers/checkLocationPermision';
 
 import { MainBottomTabNavigator } from './MainBottomTabNavigator';
 import {
@@ -37,30 +38,18 @@ export const MainStackNavigator = () => {
 
     const { status } = useSelector(state => state.auth);
 
-    const checkLocationPermision = async () => {
-
-        let permissionStatus;
-
-        if(Platform.OS === 'ios'){
-            permissionStatus = await request( PERMISSIONS.IOS.LOCATION_WHEN_IN_USE );
-        } else {
-            permissionStatus = await request( PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION );
-        }
-
-        if( permissionStatus === 'denied' ) return;
-
-        if( permissionStatus === 'blocked' ){
-            openSettings()
-        }
-    }
-
     useEffect(() => {
-      
-        AppState.addEventListener('change', state =>{
+        const unsuscribe = AppState.addEventListener('change', state =>{
+            // console.log(state)
             if(state !== 'active') return;
 
-            checkLocationPermision()
-        })
+            checkLocationPermision();
+            
+        });
+        
+        return () => {
+            unsuscribe.remove();
+        }
 
     }, [])
     
@@ -76,14 +65,10 @@ export const MainStackNavigator = () => {
     }, [])
 
     
-
     return (
         <Stack.Navigator
             screenOptions={{
-                headerStyle: {
-                    elevation: 0
-                },
-
+                headerStyle: { elevation: 0 },
             }}
         >
             {

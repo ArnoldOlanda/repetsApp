@@ -129,7 +129,16 @@ export const ChatBot = () => {
                 <Image source={chatbotAvatar} style={styles.chatbotAvatar} />
             </TouchableOpacity>
             <View style={{ position: 'absolute', bottom: 10, right: 10 }} >
-                <Animated.View style={[{ backgroundColor: '#fff', elevation: 3, overflow: 'hidden', borderRadius: 10, padding: 10 }, style]}>
+                <Animated.View style={[
+                    { 
+                        backgroundColor: '#fff', 
+                        elevation: 3, 
+                        overflow: 'hidden', 
+                        borderRadius: 10, 
+                        padding: 10 
+                    }, 
+                    style
+                ]}>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ flex: 1 }} />
                         <TouchableOpacity

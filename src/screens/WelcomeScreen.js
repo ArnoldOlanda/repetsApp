@@ -31,16 +31,16 @@ export const WelcomeScreen = ({ navigation }) => {
       <Text style={styles.text2}>Unete a nosotros y descubre el mejor lugar para hospedar a tu mascota</Text>
       <TouchableOpacity
         style={{ ...styles.btn, backgroundColor: '#2782CA', }}
-        onPress={onPressGetStartedButton}
+        onPress={ onPressSignInButton }
       >
-        <Text style={styles.btnText}> Registrate </Text>
+        <Text style={styles.btnText}> Iniciar sesion </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={{ ...styles.btn, backgroundColor: '#ECF2F0', }}
-        onPress={onPressSignInButton}
+        onPress={onPressGetStartedButton}
       >
-        <Text style={{ ...styles.btnText, color: '#2782CA' }}> Iniciar sesion </Text>
+        <Text style={{ ...styles.btnText, color: '#2782CA' }}> Registrate </Text>
       </TouchableOpacity>
     </View>
   )

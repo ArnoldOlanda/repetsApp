@@ -23,7 +23,7 @@ export const getAuth = (data) => {
 
             const response = await repetsAPI.post('/auth/login', body);
 
-            console.log(response.data);
+            // console.log(response.data);
             dispatch(login(response.data));
 
 
