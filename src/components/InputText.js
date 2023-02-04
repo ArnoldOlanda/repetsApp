@@ -1,4 +1,5 @@
 import React from 'react'
+import { Keyboard } from 'react-native'
 import { Dimensions, StyleSheet, Text, TextInput, View } from 'react-native'
 
 const windowWidth = Dimensions.get('screen').width
@@ -40,7 +41,7 @@ export const InputText = ({
                 keyboardType={ keyboardType ? keyboardType : '' }
                 multiline={ multiline }
                 cursorColor='#2782CA'
-
+                // onBlur={()=> Keyboard.dismiss }
             />
             {
                 error && <Text style={styles.textError}>{ errorMessage }</Text>
@@ -53,17 +54,16 @@ const styles = StyleSheet.create({
     inputContainer: {
         width: windowWidth * 0.90,
         justifyContent: 'center',
-        marginBottom: 6,
+        marginBottom: 15,
     },
     textInput: {
         fontWeight: '500',
-        fontSize: 14,
+        fontSize: 16,
         color: '#000',
-        marginBottom: 3
+        marginBottom: 3,
     },
     input: {
         width: windowWidth * 0.87,
-        height: 38,
         paddingHorizontal: 15,
         backgroundColor: '#ECF2F0',
         borderRadius: 5,

@@ -3,17 +3,18 @@ import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import {Button} from '../components/Button'
+import { Button } from '../components/Button'
 import { Reviews } from '../components/DetailPethouseScreen/Reviews';
 import { setCurrentRecipient } from '../store/slices/messages/messagesSlice'
-import { ChatContext } from '../context/ChatContext'
+import { ChatContext } from '../Messages/context/ChatContext'
+import { repetsAPI } from '../api'
 
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export const DetailPehouseScreen = ({ navigation }) => {
-    
+
     const dispatch = useDispatch();
     const { socket } = useContext(ChatContext);
 
@@ -24,16 +25,22 @@ export const DetailPehouseScreen = ({ navigation }) => {
 
     const onPressJoinChat = () => {
 
-        socket.emit('solicitar-mensajes',{ owner: uid, recipient: selectedPethouse.propietario._id })
+        try {
+            // socket.emit('solicitar-mensajes', { owner: uid, recipient: selectedPethouse.propietario._id })
+            //TODO: peticion GET para los mensajes
+            const {data} = repetsAPI.get(`/mensajes/${uid}/${selectedPethouse.propietario._id}`)
+            console.log(data);
+            dispatch(setCurrentRecipient({
+                uid: selectedPethouse.propietario._id,
+                pethouse: selectedPethouse,
+                user: selectedPethouse.propietario,
+                avatar: selectedPethouse.galeria[0]
+            }))
 
-        dispatch(setCurrentRecipient({
-            uid: selectedPethouse.propietario._id,
-            pethouse: selectedPethouse,
-            user: selectedPethouse.propietario,
-            avatar: selectedPethouse.galeria[0]
-        }))
-        
-        navigation.navigate('ChatScreen')
+            navigation.navigate('ChatScreen')
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -43,18 +50,18 @@ export const DetailPehouseScreen = ({ navigation }) => {
                 <TouchableOpacity
                     activeOpacity={0.5}
                     style={styles.backButton}
-                    onPress={()=> navigation.pop()}
+                    onPress={() => navigation.pop()}
                 >
                     <Icon name='arrow-back-outline' size={25} color='black' />
                 </TouchableOpacity>
             </View>
-            <ScrollView style={{ paddingHorizontal: 10, marginTop:15 }}>
+            <ScrollView style={{ paddingHorizontal: 10, marginTop: 15 }}>
 
-                <Text style={ styles.textBold }>{ selectedPethouse.nombre }</Text>
+                <Text style={styles.textBold}>{selectedPethouse.nombre}</Text>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Icon name='star' size={15} color='black' style={{ marginRight:5 }} />
+                        <Icon name='star' size={15} color='black' style={{ marginRight: 5 }} />
                         <Text>4.7</Text>
                     </View>
 
@@ -63,12 +70,12 @@ export const DetailPehouseScreen = ({ navigation }) => {
                     </Text>
                 </View>
 
-                <View style={styles.line}/>
+                <View style={styles.line} />
 
                 {/* Descripcion */}
                 {/* <Text style={{ ...styles.textRegular,fontSize:14 }}>Lodge para mascotas</Text> */}
-                <Text style={{ ...styles.textRegular,fontSize:14 }}>
-                    { selectedPethouse.descripcion }
+                <Text style={{ ...styles.textRegular, fontSize: 14 }}>
+                    {selectedPethouse.descripcion}
                 </Text>
 
                 <View style={styles.line} />
@@ -82,40 +89,40 @@ export const DetailPehouseScreen = ({ navigation }) => {
                 </View> */}
 
                 {/* <View style={styles.line} /> */}
-                <Text style={ styles.textBold }>Comentarios</Text>
+                <Text style={styles.textBold}>Comentarios</Text>
                 <Reviews />
 
                 <View style={styles.line} />
 
-                <Text style={styles.textBold}>Hosted by { nombre } { apellido }</Text>
+                <Text style={styles.textBold}>Hosted by {nombre} {apellido}</Text>
 
                 {/* <Text style={{...styles.textRegular, fontSize:14}}>
                     <Icon name='star' size={15} color='black' /> 22 reviews
                 </Text> */}
 
-                <View style={{alignItems:'center', marginVertical:10}}>
-                    <Button 
-                    onPress={onPressJoinChat}
-                    text='Contactar al host' 
-                    stylesProps={styles.button} 
-                    colorText='#2782CA' 
+                <View style={{ alignItems: 'center', marginVertical: 10 }}>
+                    <Button
+                        onPress={onPressJoinChat}
+                        text='Contactar al host'
+                        stylesProps={styles.button}
+                        colorText='#2782CA'
                     />
                 </View>
                 <View style={styles.reserveContainer}>
                     <View style={{ flex: 1 }}>
-                        <Text><Text style={styles.textBold}>S/.{ selectedPethouse.tarifa_hora } /</Text> hora</Text>
-                        <Text><Text style={styles.textBold}>S/.{ selectedPethouse.tarifa_dia } /</Text> dia</Text>
+                        <Text><Text style={styles.textBold}>S/.{selectedPethouse.tarifa_hora} /</Text> hora</Text>
+                        <Text><Text style={styles.textBold}>S/.{selectedPethouse.tarifa_dia} /</Text> dia</Text>
                         {/* <Text style={{ ...styles.textBold, fontSize: 15 }}>Nov 8 - 15</Text> */}
                     </View>
-                    <Button 
-                    text='Reservar' 
-                    onPress={()=> navigation.navigate('ReservationStepsScreen') }
-                    stylesProps={{
-                        ...styles.button,
-                        backgroundColor:'#2782CA',
-                        width: windowWidth*0.30,
-                        borderRadius:10
-                    }}/>
+                    <Button
+                        text='Reservar'
+                        onPress={() => navigation.navigate('ReservationStepsScreen')}
+                        stylesProps={{
+                            ...styles.button,
+                            backgroundColor: '#2782CA',
+                            width: windowWidth * 0.30,
+                            borderRadius: 10
+                        }} />
                 </View>
             </ScrollView>
         </View>
@@ -141,37 +148,37 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    line:{
+    line: {
         marginVertical: 10, //70
         borderBottomColor: '#b7b7b7',
         borderBottomWidth: StyleSheet.hairlineWidth,
         alignSelf: 'stretch'
     },
-    textBold:{
-        fontSize:16,
-        fontWeight:'600',
-        lineHeight:20,
-        color:'black'
+    textBold: {
+        fontSize: 16,
+        fontWeight: '600',
+        lineHeight: 20,
+        color: 'black'
     },
-    textRegular:{
-        fontWeight:'300',
-        lineHeight:17,
-        fontSize:16
+    textRegular: {
+        fontWeight: '300',
+        lineHeight: 17,
+        fontSize: 16
     },
-    button:{
-        width:windowWidth * 0.8,
-        backgroundColor:'white',
-        height:45,
-        borderWidth:1,
-        borderColor:'#2782CA',
-    },
-    reserveContainer:{
-        // width:windowWidth,
-        height:65,
-        paddingHorizontal:10,
+    button: {
+        width: windowWidth * 0.8,
+        backgroundColor: 'white',
+        height: 45,
         borderWidth: 1,
-        borderColor:'gray',
-        flexDirection:'row',
-        alignItems:'center',
+        borderColor: '#2782CA',
+    },
+    reserveContainer: {
+        // width:windowWidth,
+        height: 65,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: 'gray',
+        flexDirection: 'row',
+        alignItems: 'center',
     }
 })

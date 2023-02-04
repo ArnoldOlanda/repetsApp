@@ -1,16 +1,15 @@
 import React,{ useEffect } from 'react';
-import { Alert } from 'react-native';
+import { Dimensions } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 import messaging from '@react-native-firebase/messaging';
 
-import { ChatScreen, HomeScreen } from '../screens';
-import { DetailPehouseScreen } from '../screens/DetailPehouseScreen';
-import { ReservationStepsScreen } from '../screens/ReservationStepsScreen';
-import { Dimensions } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { setIncomingNotificationStatus, setNewNotification } from '../store/slices/notifications/notificationSlice';
-import { NotificationsScreen } from '../screens/NotificationsScreen';
 import { checkSubscriptionStatus } from '../helpers/checkSubscriptionStatus';
+import { HomeScreen,DetailPehouseScreen } from '../screens';
+import { ChatScreen } from '../Messages/screens';
+import { NotificationsScreen } from '../screens/NotificationsScreen';
+import { ReservationStepsScreen } from '../Reservations/screens/ReservationStepsScreen';
 
 
 const windowHeight = Dimensions.get('window').height;
@@ -38,12 +37,15 @@ export const HomeScreenStack = () => {
         const unsubscribe = messaging().onMessage(async remoteMessage => {
             const { data, notification } = remoteMessage;
 
-            dispatch(setNewNotification({
-                title:notification.title, 
-                body: notification.body ,
-                data
-            }))
-            dispatch( setIncomingNotificationStatus(true) )
+            if(data.tipo === "notificacion_reserva"){
+                dispatch(setNewNotification({
+                    title:notification.title, 
+                    body: notification.body ,
+                    data
+                }));
+
+                dispatch( setIncomingNotificationStatus(true) );
+            }
         });
     
         return unsubscribe;

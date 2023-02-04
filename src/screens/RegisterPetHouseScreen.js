@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 
 import { Button } from '../components/Button'
 import { InputText } from '../components/InputText'
-import { Modal } from '../components/RegisterPetScreen/Modal'
+import { Modal } from '../Pets/components/Modal'
 import { Title } from '../components/Title'
 import { GalleryImages } from '../components/RegisterPethouseScreen/GalleryImages'
 import { RadioButtonsMultiSelect } from '../components/RegisterPethouseScreen/RadioButtonsMultiSelect';
@@ -50,7 +50,10 @@ export const RegisterPetHouseScreen = () => {
             <View style={{ width: windowWidth, paddingHorizontal: 27 }}><Title text='Registra tu Hospedaje' icon='🏠' /></View>
             <Text style={{ width: windowWidth, paddingHorizontal: 27 }}>Ingresa la informacion para tu hospedaje</Text>
 
-            <ScrollView style={styles.formContainer}>
+            <ScrollView 
+                style={styles.formContainer}
+                keyboardShouldPersistTaps="handled"
+            >
                 <InputText
                     label='Nombre de tu hospedaje'
                     placeholder='Nombre del hospedaje'

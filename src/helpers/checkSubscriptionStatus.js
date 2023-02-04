@@ -13,6 +13,6 @@ export const checkSubscriptionStatus = async (uid) => {
         const { data } = await repetsAPI.get(`/subscription/status/${uid}`)
         console.log(data)
     } catch (error) {
-        console.log(error.response)
+        console.log(error.response.data.err)
     }
 }

@@ -7,14 +7,13 @@ import { useSelector } from 'react-redux';
 import { checkLocationPermision } from '../helpers/checkLocationPermision';
 
 import { MainBottomTabNavigator } from './MainBottomTabNavigator';
-import {
-    ConfirmEmailScreen,
-    LoginScreen,
-    ResetPasswordScreen,
-    StartScreen,
-    WelcomeScreen,
-    RegisterScreen
-} from '../screens';
+import { WelcomeScreen } from '../Auth/screens/WelcomeScreen';
+import { RegisterScreen } from '../Auth/screens/RegisterScreen';
+import { ConfirmEmailScreen } from '../screens';
+import { LoginScreen } from '../Auth/screens/LoginScreen';
+import { ResetPasswordScreen } from '../Auth/screens/ResetPasswordScreen';
+import { StartScreen } from '../Auth/screens/StartScreen';
+
 
 
 const config = {
