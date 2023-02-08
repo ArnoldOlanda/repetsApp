@@ -23,26 +23,26 @@ export const obtenerMascotasUsuario = () => {
     }
 }
 
-export const startUpdatePetImage = (image) => {
-    return async( dispatch, getState ) => {
-        try {
-            dispatch(startLoadingPets());
-            const { pets } = getState();
-            const { selectedPet } = pets
+// export const startUpdatePetImage = (image) => {
+//     return async( dispatch, getState ) => {
+//         try {
+//             dispatch(startLoadingPets());
+//             const { pets } = getState();
+//             const { selectedPet } = pets
 
-            const formData = new FormData();
-            formData.append('image', image);
+//             const formData = new FormData();
+//             formData.append('image', image);
 
-            const { data } = await axios.patch(`${ repetsApiUrl }/pets/updateImage/${selectedPet.uid}`, formData,{
-                headers:{
-                    'Content-Type':'multipart/form-data'
-                }
-            })
+//             const { data } = await axios.patch(`${ repetsApiUrl }/pets/updateImage/${selectedPet.uid}`, formData,{
+//                 headers:{
+//                     'Content-Type':'multipart/form-data'
+//                 }
+//             })
 
-            dispatch(setCurrentPet(data.pet))
+//             dispatch(setCurrentPet(data.pet))
 
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     }
+// }

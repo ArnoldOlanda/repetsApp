@@ -4,6 +4,7 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import { MessagesScreen, ChatScreen } from '../Messages/screens';
 import { useDispatch } from 'react-redux';
 import { resetNewMessagesCount } from '../store/slices/messages/messagesSlice';
+import { ReservationDetailsScreen } from '../Reservations/screens/ReservationDetailsScreen';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,7 @@ export const ChatStack = ({navigation}) => {
         >
             <Stack.Screen name='Message' options={{ headerShown: false }}   component={ MessagesScreen } />
             <Stack.Screen name="ChatScreen"  options={{ headerShown: false }} component={ ChatScreen } />
+            <Stack.Screen name="ReservationDetails"  options={{ headerShown: false }} component={ ReservationDetailsScreen } />
             
         </Stack.Navigator>
     );

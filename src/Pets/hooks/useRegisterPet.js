@@ -6,7 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 
 import { registerPet } from '../../helpers/registerPet';
-import { obtenerMascotasUsuario } from '../../store/slices/pets/thunks';
+// import { obtenerMascotasUsuario } from '../../store/slices/pets/thunks';
+import { setPets, startLoadingPets } from '../../store/slices/pets/petsSlice';
+import { getPets } from '../services/getPetsService';
 
 const initialState = {
     nombre: '',
@@ -77,12 +79,22 @@ export const useRegisterPet = () => {
             await registerPet(formState, uid);
             setIsLoading(false);
 
-            onResetForm();
+            // onResetForm();
+            await fetchPets();
             navigation.navigate('MyPets');
-            dispatch(obtenerMascotasUsuario());
 
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    const fetchPets = async() => {
+        try {
+            dispatch(startLoadingPets());
+            const pets = await getPets(uid);
+            dispatch(setPets(pets));
+        } catch (error) {
+            console.log(error)
         }
     }
 

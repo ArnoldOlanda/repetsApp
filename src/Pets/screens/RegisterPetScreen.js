@@ -72,7 +72,6 @@ export const RegisterPetScreen = () => {
                         <TouchableOpacity
                             style={styles.input}
                             onPress={() => {
-                                // Keyboard.dismiss
                                 setTipoMascotaModalVisible(true);
                             }}
                         >

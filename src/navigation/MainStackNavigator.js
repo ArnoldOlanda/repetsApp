@@ -9,7 +9,7 @@ import { checkLocationPermision } from '../helpers/checkLocationPermision';
 import { MainBottomTabNavigator } from './MainBottomTabNavigator';
 import { WelcomeScreen } from '../Auth/screens/WelcomeScreen';
 import { RegisterScreen } from '../Auth/screens/RegisterScreen';
-import { ConfirmEmailScreen } from '../screens';
+import { ConfirmEmailScreen } from '../Auth/screens/ConfirmEmailScreen';
 import { LoginScreen } from '../Auth/screens/LoginScreen';
 import { ResetPasswordScreen } from '../Auth/screens/ResetPasswordScreen';
 import { StartScreen } from '../Auth/screens/StartScreen';

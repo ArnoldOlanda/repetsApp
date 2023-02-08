@@ -226,9 +226,11 @@ export const ProfileScreen = ({ navigation }) => {
 
       <UploadImageModal
         currentImage={image}
-        title="Actualizar foto de perfil"
+        title="Foto de perfil"
+        actionText="Actualizar foto de perfil"
         isModalVisible={isModalVisible}
         onChangeVisible={toggleModal}
+        placeholderImage={profileDefault}
         onPressUpdate={onPressUpdateUserImage}
         imageStyles={{ borderRadius: 120 }}
       />

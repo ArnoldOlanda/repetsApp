@@ -1,30 +1,30 @@
-
+//@ts-check
 
 import React, { useState } from 'react'
 import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import { ComportamientoIcon, Huella, Sentimiento } from '../components/Icons'
-import { startUpdatePetImage } from '../../store/slices/pets/thunks'
+import { ComportamientoIcon, Huella } from '../components/Icons'
 import { UploadImageModal } from '../../components/UploadImageModal'
 
+//@ts-ignore
 import placeholder from '../../assets/pet_placeholder.png'
+import { useDetailPet } from '../hooks/useDetailPet'
 
 
 const windowWidth = Dimensions.get('screen').width
 
 export const DetailPetScreen = ({ navigation }) => {
 
-  const { selectedPet, isLoading } = useSelector(state => state.pets);
-  const dispatch = useDispatch();
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const toggleModal = (visible) => setIsModalVisible(visible);
-  const onPressUpdatePetImage = (image) => {
-    dispatch( startUpdatePetImage(image) )
-  }
+  const {
+    selectedPet,
+    isLoading,
+    setIsModalVisible,
+    isModalVisible,
+    onPressUpdatePetImage,
+    toggleModal
+  } = useDetailPet();
 
   const CaracteristicaItem = ({ titulo, desc }) => (
     <View style={styles.caracteristicaItem}>
@@ -40,7 +40,6 @@ export const DetailPetScreen = ({ navigation }) => {
       </View>))
   }
 
-  console.log(selectedPet);
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -111,7 +110,8 @@ export const DetailPetScreen = ({ navigation }) => {
       </ScrollView>
 
       <UploadImageModal
-      title='Actualizar imagen de mascota'
+      title='Imagen de mascota'
+      actionText='Actualizar imagen de mascota'
       currentImage={ selectedPet.img }
       isModalVisible={ isModalVisible }
       onChangeVisible={ toggleModal }

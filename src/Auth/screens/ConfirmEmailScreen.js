@@ -1,54 +1,36 @@
-import React, { useEffect, useState } from 'react'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+//@ts-check
+import React, {useEffect, useState} from 'react';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {CodeField, Cursor} from 'react-native-confirmation-code-field';
 
-import {
-  CodeField,
-  Cursor,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-import { useDispatch, useSelector } from 'react-redux';
+import {Button} from '../../components/Button';
+import {useConfirmEmailStore} from '../hooks/useConfirmEmailStore';
 
-import { Button } from '../../components/Button'
-import { startCheckingVerifyAccount } from '../../store/slices/auth';
+const windowWidth = Dimensions.get('screen').width;
+const windowHeight = Dimensions.get('screen').height;
 
-
-const windowWidth = Dimensions.get('screen').width
-const windowHeight = Dimensions.get('screen').height
-
-const CELL_COUNT = 4;
-
-
-export const ConfirmEmailScreen = ({ navigation }) => {
-
-  const { errorMessage,verifiedNewUser } = useSelector( state => state.auth )
-  const dispatch = useDispatch();
-
-  const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
+export const ConfirmEmailScreen = () => {
+  const {
+    CELL_COUNT,
+    errorMessage,
+    getCellOnLayoutHandler,
+    isLoading,
+    onPressButton,
+    props,
+    ref,
     setValue,
-  });
-
-  const onPressButton = () => {
-    dispatch( startCheckingVerifyAccount( value ) )
-  }
-
-  useEffect(() => {
-    verifiedNewUser !== false && navigation.navigate('StartScreen')
-  }, [ verifiedNewUser ])
-  
-
+    value,
+  } = useConfirmEmailStore();
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Verificacion de Email</Text>
       <Text style={styles.text}>Escriba el codigo enviado a su correo</Text>
-      <Text style={{ ...styles.text, color: '#000000' }}>ejemplodecorreo@gmail.com</Text>
+      <Text style={{...styles.text, color: '#000000'}}>
+        ejemplodecorreo@gmail.com
+      </Text>
 
       <View style={styles.inputContainer}>
-
         <CodeField
           ref={ref}
           {...props}
@@ -60,7 +42,7 @@ export const ConfirmEmailScreen = ({ navigation }) => {
           rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({ index, symbol, isFocused }) => (
+          renderCell={({index, symbol, isFocused}) => (
             <Text
               key={index}
               style={[styles.cell, isFocused && styles.focusCell]}
@@ -69,31 +51,31 @@ export const ConfirmEmailScreen = ({ navigation }) => {
             </Text>
           )}
         />
-
-
       </View>
-      {
-        errorMessage !== ''
-        && (
-          <View style={styles.errorMessageContainer}>
-            <Text style={styles.errorMessageText} >{errorMessage}</Text>
-          </View>
-        )
-      }
-      <View style={{ flexDirection: 'row', paddingBottom: 15 }}>
-        <Text style={{ fontWeight: '500' }}>¿No recibiste el codigo?  </Text><Text style={{ color: '#2782CA', fontWeight: '500' }}>Reenviar</Text>
+      {errorMessage !== '' && (
+        <View style={styles.errorMessageContainer}>
+          <Text style={styles.errorMessageText}>{errorMessage}</Text>
+        </View>
+      )}
+      <View style={{flexDirection: 'row', paddingBottom: 15}}>
+        <Text style={{fontWeight: '500'}}>¿No recibiste el codigo? </Text>
+        <Text style={{color: '#2782CA', fontWeight: '500'}}>Reenviar</Text>
       </View>
-      <Button text={'Continuar'} onPress={onPressButton} />
+      <Button
+        text={'Continuar'}
+        onPress={onPressButton}
+        isLoading={isLoading}
+      />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
     alignItems: 'center',
-    marginTop: 40
+    marginTop: 40,
   },
   title: {
     fontSize: 22,
@@ -111,7 +93,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20
+    marginVertical: 20,
   },
   //
   codeFieldRoot: {
@@ -120,7 +102,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20
+    marginVertical: 20,
   },
   cell: {
     width: 50,
@@ -145,6 +127,6 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   errorMessageText: {
-    color: '#f00'
-  }
-})
+    color: '#f00',
+  },
+});
