@@ -9,10 +9,11 @@ import {
   setNewNotification,
 } from '../store/slices/notifications/notificationSlice';
 import {checkSubscriptionStatus} from '../helpers/checkSubscriptionStatus';
-import {HomeScreen, DetailPehouseScreen} from '../screens';
+import {HomeScreen} from '../screens';
 import {ChatScreen} from '../Messages/screens';
 import {NotificationsScreen} from '../screens/NotificationsScreen';
 import {ReservationStepsScreen} from '../Reservations/screens/ReservationStepsScreen';
+import {DetailPehouseScreen} from '../Pethouses/screens/DetailPehouseScreen';
 
 const windowHeight = Dimensions.get('window').height;
 
