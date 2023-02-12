@@ -61,10 +61,7 @@ export const HomeScreen = ({ navigation }) => {
                         activeOpacity={0.7}
                         onPress={() => navigation.navigate('Profile')}
                     >
-                        <Image
-                            source={image ? { uri: image } : profileDefault}
-                            style={{ width: 42, height: 42, borderRadius: 50 }}
-                        />
+                        <Icon name='search' size={25} />
                     </TouchableOpacity>
                     <TouchableOpacity 
                         activeOpacity={0.5}
@@ -77,10 +74,7 @@ export const HomeScreen = ({ navigation }) => {
             </View>
 
             {/* Categories section */}
-            <View style={styles.categoryContainer}>
-                <Text style={{ ...styles.categoryText, color: colors.text }}>Categorias</Text>
-                <Text style={{ color: '#F8CF50' }}>Ver todos <Icon name='chevron-forward-circle' size={15} /> </Text>
-            </View>
+           
             <View style={styles.buttonCategoriesContainer}>
                 <TouchableOpacity style={{
                     ...styles.buttonCategory,
@@ -119,9 +113,12 @@ export const HomeScreen = ({ navigation }) => {
                 {
                     isLoading
                         ? (<SkeletonPethousesList />)
-                        : (pethouses.filter(ele => (ele.propietario._id != uid))
+                        : /*(pethouses.filter(ele => (ele.propietario._id != uid))
                             .map(e => (<PetHouseItem key={e.uid} data={e} />))
-                        )
+                        )*/
+                        pethouses.map(e => (<PetHouseItem key={e.uid} data={e} />))
+
+
                 }
             </ScrollView>
             {/* <ChatBot /> */}
@@ -144,6 +141,7 @@ const styles = StyleSheet.create({
         width: windowWidth,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginBottom: 15
     },
     distritoText: {
         fontSize: 20,
@@ -186,6 +184,7 @@ const styles = StyleSheet.create({
     },
     petHousesListContainer: {
         marginTop: 16,
-        width: windowWidth
+        width: windowWidth,
+        paddingHorizontal: 27,
     },
 })

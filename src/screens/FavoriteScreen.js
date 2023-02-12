@@ -23,14 +23,14 @@ export const FavoriteScreen = () => {
       </View>
       <ScrollView
         style={styles.petHousesListContainer}
-        contentContainerStyle={{ alignItems: 'center' }}
+        contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}
       >
         {
           isLoading 
             ? <ActivityIndicator size='large' color='black' />
             : (
               favoritesPethouses.length < 1
-                ? ( <Text style={{ color: colors.text2 }}>Aun no tienes favoritos</Text> )
+                ? ( <Text style={{ color: colors.text2, fontSize: 20}}>Aun no tienes favoritos</Text> )
                 : ( favoritesPethouses.map(e => (<PetHouseItem key={e.uid} data={e} favoriteScreen />)))
             )
         }
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   },
   petHousesListContainer: {
     marginTop: 16,
+    paddingHorizontal: 27,
     width: windowWidth
   }
 })

@@ -21,7 +21,7 @@ export const Petlist = () => {
         ?(<SkeletonPetList />)
         :(
             (pets.length < 1)
-            ? <View style={{ marginTop: 20 }}><Text>Aun no tienes mascotas</Text></View>
+            ? <View style={{ height:'100%',justifyContent:'center' }}><Text style={{fontSize:16}}>Aun no tienes mascotas</Text></View>
             : (
                 <FlatList
                     style={styles.petListContainer}

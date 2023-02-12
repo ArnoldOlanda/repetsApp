@@ -16,7 +16,7 @@ export const MyPetsScreen = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.titleContainer}>
+            {/*<View style={styles.titleContainer}>
                 <Title text='Mis Mascotas' icon='🐶' />
                 <View>
                     <Image 
@@ -25,6 +25,7 @@ export const MyPetsScreen = () => {
                     />
                 </View>
             </View>
+            */}
 
             <SearchBox />
 

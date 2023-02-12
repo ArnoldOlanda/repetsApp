@@ -44,101 +44,105 @@ export const RegisterPetScreen = () => {
 
     return (
         <View style={styles.container}>
-
+            {/*
             <View style={styles.titleContainer}>
                 <Title text='Registra a tu mascota' icon='🐶' />
+
                 <Text style={{ color: '#B7B7B7', fontWeight: '400', lineHeight: 19 }}>
                     Agrega a tu nueva mascota
                 </Text>
             </View>
+            */
+            }
 
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
                 <ScrollView
                     style={styles.formContainer}
                     keyboardShouldPersistTaps="handled"
                 >
+                    <View>
+                        <InputText
+                            label='Nombre'
+                            value={nombre}
+                            onChangeText={onInputTextChange}
+                            changeTextKey='nombre'
+                            placeholder='Nombre de la mascota'
+                            error={!!nombreValid && formSubmitted}
+                            errorMessage={nombreValid}
+                        />
+                        <View style={styles.inputContainer}>
+                            <Text style={styles.labelText}>Tipo de mascota</Text>
+                            <TouchableOpacity
+                                style={{...styles.input, marginBottom:11}}
+                                onPress={() => {
+                                    setTipoMascotaModalVisible(true);
+                                }}
+                            >
+                                {
+                                    (tipoMascota.length === 0)
+                                        ? <Text style={{color:"#B7B7B7"}}>Presione para elegir un tipo de mascota</Text>
+                                        : <Text>{tipoMascota}</Text>
+                                }
+                            </TouchableOpacity>
+                        </View>
 
-                    <InputText
-                        label='Nombre'
-                        value={nombre}
-                        onChangeText={onInputTextChange}
-                        changeTextKey='nombre'
-                        placeholder='Nombre de la mascota'
-                        error={!!nombreValid && formSubmitted}
-                        errorMessage={nombreValid}
-                    />
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.labelText}>Tipo de mascota</Text>
-                        <TouchableOpacity
-                            style={styles.input}
-                            onPress={() => {
-                                setTipoMascotaModalVisible(true);
-                            }}
-                        >
-                            {
-                                (tipoMascota.length === 0)
-                                    ? <Text>Presione para elegir un tipo de mascota</Text>
-                                    : <Text>{tipoMascota}</Text>
-                            }
-                        </TouchableOpacity>
-                    </View>
+                        <InputText
+                            label='Raza'
+                            value={raza}
+                            onChangeText={onInputTextChange}
+                            changeTextKey='raza'
+                            placeholder='Raza de la mascota'
+                            error={!!razaValid && formSubmitted}
+                            errorMessage={razaValid}
+                        />
 
-                    <InputText
-                        label='Raza'
-                        value={raza}
-                        onChangeText={onInputTextChange}
-                        changeTextKey='raza'
-                        placeholder='Raza de la mascota'
-                        error={!!razaValid && formSubmitted}
-                        errorMessage={razaValid}
-                    />
+                        <InputText
+                            label='Años'
+                            value={edad}
+                            onChangeText={onInputTextChange}
+                            changeTextKey='edad'
+                            placeholder='Edad de la mascota'
+                            error={!!edadValid && formSubmitted}
+                            errorMessage={edadValid}
+                            keyboardType='numeric'
+                        />
 
-                    <InputText
-                        label='Años'
-                        value={edad}
-                        onChangeText={onInputTextChange}
-                        changeTextKey='edad'
-                        placeholder='Edad de la mascota'
-                        error={!!edadValid && formSubmitted}
-                        errorMessage={edadValid}
-                        keyboardType='numeric'
-                    />
+                        <InputText
+                            label='Descripcion de la mascota'
+                            value={descripcion}
+                            onChangeText={onInputTextChange}
+                            changeTextKey='descripcion'
+                            placeholder='Breve descripcion de la mascota'
+                            error={!!descripcionValid && formSubmitted}
+                            errorMessage={descripcionValid}
+                        />
 
-                    <InputText
-                        label='Descripcion de la mascota'
-                        value={descripcion}
-                        onChangeText={onInputTextChange}
-                        changeTextKey='descripcion'
-                        placeholder='Breve descripcion de la mascota'
-                        error={!!descripcionValid && formSubmitted}
-                        errorMessage={descripcionValid}
-                    />
-
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.labelText}>Caracteristicas</Text>
-                        <TouchableOpacity
-                            style={styles.input}
-                            onPress={() => setCaracteristicasModalVisible(true)}
-                        >
-                            {
-                                (caracteristicasMascota.length === 0)
-                                    ? <Text>Presione para seleccionar</Text>
-                                    : <Text>
-                                        {
-                                            caracteristicasMascota.map(e => (e + ' '))
-                                        }
-                                    </Text>
-                            }
-                        </TouchableOpacity>
+                        <View style={styles.inputContainer}>
+                            <Text style={styles.labelText}>Caracteristicas</Text>
+                            <TouchableOpacity
+                                style={styles.input}
+                                onPress={() => setCaracteristicasModalVisible(true)}
+                            >
+                                {
+                                    (caracteristicasMascota.length === 0)
+                                        ? <Text style={{color:"#B7B7B7"}}>Presione para seleccionar</Text>
+                                        : <Text>
+                                            {
+                                                caracteristicasMascota.map(e => (e + ' '))
+                                            }
+                                        </Text>
+                                }
+                            </TouchableOpacity>
+                        </View>
                     </View>
 
                     <Button
                         text='Registrar'
                         onPress={onPressRegisterButton}
                         isLoading={isLoading}
-                        stylesProps={{ marginTop: 51, width: windowWidth * 0.85 }} 
+                        stylesProps={{marginTop: 30,  width: windowWidth * 0.85 }} 
                     />
-                    <View style={{ height: 100 }} />
+                    
 
                 </ScrollView>
             </KeyboardAvoidingView>
@@ -175,26 +179,31 @@ const styles = StyleSheet.create({
         width: windowWidth,
         paddingHorizontal: 27,
         height: 50,
-        marginBottom: 11
+        //marginBottom: 11
     },
     formContainer: {
         width: windowWidth,
-        paddingHorizontal: 27
+        paddingHorizontal: 27,
+        //paddingVertical: 20,
+      
     },
     labelText: {
         fontSize: 16,
         fontWeight: '500',
         lineHeight: 19,
-        color: '#000'
+        marginBottom: 3,
+        //color: '#000'
     },
     input: {
-        backgroundColor: '#ECF2F0',
+        backgroundColor: '#F5F5F5',
         borderRadius: 5,
-        height: 33,
+        height: 40,
         paddingLeft: 13,
-        paddingVertical: 5
+        //paddingVertical: 5,
+        //alignItems: 'center',
+        justifyContent: 'center'
     },
     inputContainer: {
-        marginBottom: 15
+        
     },
 })

@@ -15,7 +15,7 @@ export const RadioButtonsMultiSelect = ({ options, currentValue, keyName, onChan
     }
 
     return (
-        <View style={{ height: 60 }}>
+        <View >
             <View style={styles.buttonOptionsContainer}>
                 {
                     options.map(e => {
@@ -34,7 +34,7 @@ export const RadioButtonsMultiSelect = ({ options, currentValue, keyName, onChan
                                 }
                             >
                                 <Text
-                                    style={(!selected) ? styles.buttonOptionText : {}}
+                                    style={(!selected) ? styles.buttonOptionText : {color:'white'}}
                                 >
                                     {e}
                                 </Text>
@@ -43,7 +43,7 @@ export const RadioButtonsMultiSelect = ({ options, currentValue, keyName, onChan
                                         <Icon
                                             name='checkmark-circle'
                                             size={18}
-                                            color='#2782CA'
+                                            color='#ECF2F0'
                                             style={styles.icon}
                                         />)
                                 }
@@ -59,26 +59,37 @@ export const RadioButtonsMultiSelect = ({ options, currentValue, keyName, onChan
         </View>
     )
 }
+const gap = 15
 
 const styles = StyleSheet.create({
     buttonOptionsContainer: {
         marginTop: 5,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginVertical: -(gap / 2),
+        marginHorizontal: -(gap / 2)
+
+        
     },
     buttonOption: {
+        flex:1,
         position: 'relative',
-        backgroundColor: '#ECF2F0',
+        backgroundColor: '#2782CA',
         borderRadius: 5,
         height: 33,
         paddingVertical: 5,
         width: 85,
-        alignItems: 'center'
+        alignItems: 'center',
+        marginVertical: (gap / 2),
+        marginHorizontal: (gap / 2)
+        //marginHorizontal: 10,
+        
     },
     buttonOptionText: {
         color: '#2782CA'
     },
     buttonOptionActive: {
+        flex:1,
         position: 'relative',
         backgroundColor: '#ECF2F0',
         borderRadius: 5,
@@ -87,7 +98,12 @@ const styles = StyleSheet.create({
         width: 85,
         borderWidth: 1,
         borderColor: '#2782CA',
+        marginVertical: (gap / 2),
+        marginHorizontal: (gap / 2),
+        //marginHorizontal: 10,
+        
         alignItems: 'center'
+        
     },
     icon: {
         position: 'absolute',

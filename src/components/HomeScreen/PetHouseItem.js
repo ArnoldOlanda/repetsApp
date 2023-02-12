@@ -65,10 +65,11 @@ export const PetHouseItem = ({ data, favorite, favoriteScreen }) => {
                 <View>
                     <Text style={{...styles.text, color:colors.text}}>{nombre}</Text>
                     <Text style={{ fontSize: 12, color: colors.text2 }} >{distrito}, {provincia}</Text>
-                    <Text style={{ color:colors.text2 }} >S/.{tarifa_dia} día - S/.{tarifa_hora} hora</Text>
+                    <Text style={{ color:colors.text2 }} >S/ {tarifa_dia} día - S/ {tarifa_hora} hora</Text>
                 </View>
                 <View>
                     <Text style={{...styles.text, color:colors.text}}><Icon name='star' /> 4.5</Text>
+                    
                 </View>
             </View>
         </TouchableOpacity>
@@ -78,7 +79,7 @@ export const PetHouseItem = ({ data, favorite, favoriteScreen }) => {
 const styles = StyleSheet.create({
     container: {
         position: 'relative',
-        width: 250,
+        width: '100%',
         marginBottom: 10
     },
     image: {

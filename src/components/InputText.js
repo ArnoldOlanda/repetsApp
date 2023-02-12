@@ -20,23 +20,27 @@ export const InputText = ({
 
     return (
         <View style={styles.inputContainer}>
-            <Text style={styles.textInput}> { label } </Text>
+            <Text style={styles.textInput}>{ label }</Text>
             <TextInput
                 style={ error 
                     ? {
                         ...styles.input, 
                         borderWidth:1, 
                         borderColor:'red',
-                        height: multiline ? 80 : 38
+                        height: multiline ? 80 : 38,
+                        
+
                     }
                     :{
                         ...styles.input,
-                        height: multiline ? 80 : 38
+                        height: multiline ? 80 : 38,
+                        
                     } 
                 }
                 value={ value }
                 onChangeText={ value => onChangeText(changeTextKey , value)}
-                placeholder={ placeholder } 
+                placeholder={ placeholder }
+                placeholderTextColor="gray"  
                 secureTextEntry={ typePassword }
                 keyboardType={ keyboardType ? keyboardType : '' }
                 multiline={ multiline }
@@ -52,20 +56,22 @@ export const InputText = ({
 
 const styles = StyleSheet.create({
     inputContainer: {
-        width: windowWidth * 0.90,
+        width: '100%',
         justifyContent: 'center',
         marginBottom: 15,
+        
     },
     textInput: {
         fontWeight: '500',
         fontSize: 16,
-        color: '#000',
+        
+        //color: '#000',
         marginBottom: 3,
     },
     input: {
-        width: windowWidth * 0.87,
+        width: '100%',
         paddingHorizontal: 15,
-        backgroundColor: '#ECF2F0',
+        backgroundColor: '#F5F5F5',
         borderRadius: 5,
         fontSize: 14,
         color: '#111',

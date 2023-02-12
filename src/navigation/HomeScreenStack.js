@@ -79,7 +79,12 @@ export const HomeScreenStack = () => {
       />
       <Stack.Screen
         name="ChatScreen"
-        options={{headerShown: false}}
+        options={{
+          headerShown: true,
+          title:"Mensajes",
+          headerTitleStyle:{fontSize:22, fontWeight: '800'}
+        }}
+        
         component={ChatScreen}
       />
       <Stack.Screen
@@ -93,7 +98,13 @@ export const HomeScreenStack = () => {
       />
       <Stack.Screen
         name="Notifications"
-        options={{headerShown: false}}
+        
+        options={{
+          headerShown: true,
+          title:"Notificaciones",
+          headerTitleStyle:{fontSize:22, fontWeight: '800'}
+        }}
+
         component={NotificationsScreen}
       />
       {/* <Stack.Screen name='ReservationPethouse' options={{ title:'' }} component={ ReservationScreen } /> */}

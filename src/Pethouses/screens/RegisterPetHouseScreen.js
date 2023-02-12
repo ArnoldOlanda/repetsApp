@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState} from 'react';
 import {
   Dimensions,
   ScrollView,
@@ -19,13 +19,12 @@ import {RadioButtonsMultiSelect} from '../components/RadioButtonsMultiSelect';
 import {useRegisterPethouse} from '../hooks/useRegisterPethouse';
 
 const tamanioMascotasOptions = ['Pequeños', 'Medianos', 'Grandes'];
-const tipoAlojamientoOptions = ['Horas', 'Dias', 'Semanas'];
+const tipoAlojamientoOptions = ['Horas', 'Dias'];
 
 const windowWidth = Dimensions.get('window').width;
 
 export const RegisterPetHouseScreen = () => {
   const {isLoading} = useSelector(state => state.pethouses);
-
   const {
     formState,
     formSubmited,
@@ -63,21 +62,24 @@ export const RegisterPetHouseScreen = () => {
     tarifaDiaValid,
   } = formValidation;
 
+  
+
+  
   return (
     <View style={styles.container}>
-      <View style={{width: windowWidth, paddingHorizontal: 27}}>
+      {/*<View style={{width: windowWidth, paddingHorizontal: 27}}>
         <Title text="Registra tu Hospedaje" icon="🏠" />
       </View>
       <Text style={{width: windowWidth, paddingHorizontal: 27}}>
         Ingresa la informacion para tu hospedaje
-      </Text>
+      </Text>*/}
 
       <ScrollView
         style={styles.formContainer}
         keyboardShouldPersistTaps="handled">
         <InputText
-          label="Nombre de tu hospedaje"
-          placeholder="Nombre del hospedaje"
+          label="Nombre"
+          placeholder="Nombre de tu hospedaje"
           onChangeText={onInputTextChange}
           changeTextKey="nombre"
           value={nombre}
@@ -86,8 +88,8 @@ export const RegisterPetHouseScreen = () => {
         />
 
         <InputText
-          label="Escriba una pequeña descripcion de tu alojamiento"
-          placeholder="Descripcion breve"
+          label="Descripción"
+          placeholder="Escribe una pequeña descripción de tu hospedaje"
           onChangeText={onInputTextChange}
           changeTextKey="descripcion"
           value={descripcion}
@@ -97,7 +99,7 @@ export const RegisterPetHouseScreen = () => {
         />
 
         <View style={styles.inputContainer}>
-          <Text style={styles.labelText}>Seleccione una provincia</Text>
+          <Text style={styles.labelText}>Provincia</Text>
           <RNPickerSelect
             useNativeAndroidPickerStyle={false}
             style={{
@@ -124,7 +126,7 @@ export const RegisterPetHouseScreen = () => {
               // { label: 'La union', value: 'la union' },
             ]}
             placeholder={{
-              label: 'Selecciona una opcion',
+              label: 'Seleccione una provincia',
               value: '',
               color: 'lightgray',
             }}
@@ -135,7 +137,7 @@ export const RegisterPetHouseScreen = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.labelText}>Seleccione un distrito</Text>
+          <Text style={styles.labelText}>Distrito</Text>
           <RNPickerSelect
             useNativeAndroidPickerStyle={false}
             value={distrito}
@@ -162,7 +164,7 @@ export const RegisterPetHouseScreen = () => {
               {label: 'Selva alegre', value: 'selva alegre'},
             ]}
             placeholder={{
-              label: 'Selecciona una opcion',
+              label: 'Seleccione un distrito',
               value: '',
               color: 'lightgray',
             }}
@@ -173,7 +175,7 @@ export const RegisterPetHouseScreen = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.labelText}>Tipo de mascota que aceptas</Text>
+          <Text style={styles.labelText}>Tipo de mascota que permites</Text>
           <TouchableOpacity
             activeOpacity={0.6}
             style={
@@ -183,7 +185,7 @@ export const RegisterPetHouseScreen = () => {
             }
             onPress={() => setTipoMascotaModalVisible(true)}>
             {tipoMascota.length === 0 ? (
-              <Text>Presione para elegir un tipo de mascota</Text>
+              <Text style={{color:'gray'}}>Presione para elegir un tipo de mascota</Text>
             ) : (
               <Text>{tipoMascota}</Text>
             )}
@@ -205,7 +207,7 @@ export const RegisterPetHouseScreen = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.labelText}>Tipo de alojamiento que aceptas</Text>
+          <Text style={styles.labelText}>Tipo de tarifa que aceptas</Text>
 
           <RadioButtonsMultiSelect
             options={tipoAlojamientoOptions}
@@ -215,7 +217,9 @@ export const RegisterPetHouseScreen = () => {
           />
         </View>
 
-        <View style={styles.inputContainer}>
+        {
+          tipoAlojamiento.includes("horas")?
+        <View style={{...styles.inputContainer, marginBottom: 0}}>
           <InputText
             label="Establezca una tarifa por horas"
             placeholder="Tarifa por hora"
@@ -226,25 +230,31 @@ export const RegisterPetHouseScreen = () => {
             errorMessage={tarifaHoraValid}
             keyboardType="numeric"
           />
-        </View>
+        </View>:<></>
+        }
 
-        <View style={styles.inputContainer}>
-          <InputText
-            label="Establezca una tarifa por dia"
-            placeholder="Tarifa por dia"
-            onChangeText={onInputTextChange}
-            changeTextKey="tarifaDia"
-            value={tarifaDia}
-            error={!!tarifaDiaValid && formSubmited}
-            errorMessage={tarifaDiaValid}
-            keyboardType="numeric"
-          />
-        </View>
+        { tipoAlojamiento.includes("dias")?
+            <View style={{...styles.inputContainer, marginBottom: 0}}>
+            <InputText
+              label="Establezca una tarifa por dia"
+              placeholder="Tarifa por dia"
+              onChangeText={onInputTextChange}
+              changeTextKey="tarifaDia"
+              value={tarifaDia}
+              error={!!tarifaDiaValid && formSubmited}
+              errorMessage={tarifaDiaValid}
+              keyboardType="numeric"
+            />
+          </View>:<></>
+          
+        }
+      
+
 
         <View style={styles.inputContainer}>
           <Text style={styles.labelText}>
             Seleccione las fotos de su hospedaje
-            <Text style={{fontSize: 12}}>(Maximo 3)</Text>
+            <Text style={{fontSize: 12}}> (Maximo 3)</Text>
           </Text>
           <GalleryImages
             onChange={onSetNewImageToArray}
@@ -256,7 +266,7 @@ export const RegisterPetHouseScreen = () => {
         <Button
           text="Registrar"
           onPress={onPressRegisterPetHouse}
-          stylesProps={{marginTop: 51, width: windowWidth * 0.85}}
+          stylesProps={{marginTop: 10, width: '100%'}}
           isLoading={isLoading}
         />
       </ScrollView>
@@ -284,21 +294,26 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 33,
     paddingLeft: 13,
+    paddingTop: 0,
     paddingBottom: 0,
-    paddingVertical: 5,
+    
+    justifyContent: 'center'
   },
   inputContainer: {
-    marginBottom: 8,
+    marginBottom: 15,
+    //backgroundColor: 'red'
+    
   },
   labelText: {
-    fontSize: 14,
     fontWeight: '500',
+    fontSize: 16,
     lineHeight: 19,
-    color: '#000',
+    marginBottom: 3,
+    //color: '#000',
   },
   formContainer: {
     width: windowWidth,
-    paddingHorizontal: 27,
+    paddingHorizontal: 15,
     marginTop: 10,
   },
   buttonOptionsContainer: {

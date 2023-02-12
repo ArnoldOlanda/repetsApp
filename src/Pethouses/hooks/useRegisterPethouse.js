@@ -71,7 +71,7 @@ export const useRegisterPethouse = () => {
 
   const onPressRegisterPetHouse = () => {
     setFormSubmited(true);
-
+    console.log(tipoAlojamiento)
     if (!isFormValid) {
       return ToastAndroid.show(
         'Revise los datos ingresados',
@@ -91,6 +91,7 @@ export const useRegisterPethouse = () => {
       tarifaHora,
       tarifaDia,
     };
+    
     dispatch(startRegisterNewPethouse(data));
     ToastAndroid.show('Pethuse registrada', ToastAndroid.SHORT);
     navigation.navigate('MainProfile');

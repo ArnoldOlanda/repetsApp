@@ -27,10 +27,10 @@ export const SearchBox = () => {
 
 const styles = StyleSheet.create({
     searchAddContainer: {
-        marginTop: 16,
+        marginTop: 5,
         width: windowWidth,
         height: 38,
-        paddingHorizontal: 27,
+        paddingHorizontal: 15,
         flexDirection: 'row',
         alignItems: 'center'
     },

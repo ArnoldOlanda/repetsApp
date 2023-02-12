@@ -10,7 +10,7 @@ import {
   DetailPetScreen,
   MyPetsScreen,
 } from '../Pets/screens';
-import {UpdateUserInfoScreen} from '../screens/UpdateUserInfoScreen';
+import {UpdateUserInfo} from '../screens/UpdateUserInfoScreen';
 import {RegisterPetHouseScreen} from '../Pethouses/screens/RegisterPetHouseScreen';
 
 const Stack = createStackNavigator();
@@ -69,22 +69,34 @@ export const ProfileUserStack = () => {
       <Stack.Screen
         name="UpdateUserInfo"
         options={{title: ''}}
-        component={UpdateUserInfoScreen}
+        component={UpdateUserInfo}
       />
       <Stack.Screen
         name="RegisterPethouse"
-        options={{title: ''}}
+        options={{
+          headerShown: true,
+          title:'Registra tu Hospedaje 🏠',
+          headerTitleStyle:{fontSize:22, fontWeight: '800'}
+        }}
         component={RegisterPetHouseScreen}
       />
 
       <Stack.Screen
         name="MyPets"
-        options={{title: ''}}
+        options={{
+          headerShown: true,
+          title:'Mis Mascotas 🐶',
+          headerTitleStyle:{fontSize:22, fontWeight: '800'}
+        }}
         component={MyPetsScreen}
       />
       <Stack.Screen
         name="RegisterPet"
-        options={{title: ''}}
+        options={{
+          headerShown: true,
+          title:'Registra a tu mascota 🐶',
+          headerTitleStyle:{fontSize:22, fontWeight: '800'}
+        }}
         component={RegisterPetScreen}
       />
       <Stack.Screen
